@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="gb2312" ?>
+
+
+<EnvrionMain xmlns="http://www.fd911.net"  version="1.00">
+
+
+<Interests>
+	<Interest date="2002/02/21" deposit_after="1.98"  deposit_range="-0.27"  loans_after="5.31"  loans_range="-0.54"/>
+	<Interest date="2004/10/29" deposit_after="2.25"  deposit_range="0.27"   loans_after="5.58"  loans_range="0.27"/>
+	<Interest date="2006/04/28" deposit_after="2.25"  deposit_range="0.00"   loans_after="5.85"  loans_range="0.27"/>
+	<Interest date="2006/08/19" deposit_after="2.52"  deposit_range="0.27"   loans_after="6.12"  loans_range="0.27"/>
+	<Interest date="2007/03/18" deposit_after="2.79"  deposit_range="0.27"   loans_after="6.39"  loans_range="0.27"/>
+	<Interest date="2007/05/19" deposit_after="3.06"  deposit_range="0.27"   loans_after="6.57"  loans_range="0.18"/>
+	<Interest date="2007/07/21" deposit_after="3.33"  deposit_range="0.27"   loans_after="6.84"  loans_range="0.27"/>
+	<Interest date="2007/08/22" deposit_after="3.60"  deposit_range="0.27"   loans_after="7.02"  loans_range="0.18"/>
+	<Interest date="2007/09/15" deposit_after="3.87"  deposit_range="0.27"   loans_after="7.29"  loans_range="0.27"/>
+	<Interest date="2007/12/21" deposit_after="4.14"  deposit_range="0.27"   loans_after="7.47"  loans_range="0.18"/>
+	<Interest date="2008/09/16" deposit_after="4.14"  deposit_range="0.00"   loans_after="7.20"  loans_range="-0.27"/>
+	<Interest date="2008/10/09" deposit_after="3.87"  deposit_range="-0.27"   loans_after="6.93"  loans_range="-0.27"/>
+	<Interest date="2008/11/27" deposit_after="2.52"  deposit_range="-1.08"   loans_after="5.58"  loans_range="-1.08"/>
+	<Interest date="2008/12/23" deposit_after="2.25"  deposit_range="-0.27"   loans_after="5.31"  loans_range="-0.27"/>
+	<Interest date="2010/10/20" deposit_after="2.50"  deposit_range="0.25"   loans_after="5.56"  loans_range="0.25"/>
+	<Interest date="2010/10/26" deposit_after="2.75"  deposit_range="0.25"   loans_after="5.81"  loans_range="0.25"/>
+	<Interest date="2011/02/09" deposit_after="3.00"  deposit_range="0.25"   loans_after="6.06"  loans_range="0.25"/>
+	<Interest date="2011/04/06" deposit_after="3.25"  deposit_range="0.25"   loans_after="6.31"  loans_range="0.25"/>
+	<Interest date="2011/07/07" deposit_after="3.50"  deposit_range="0.25"   loans_after="6.56"  loans_range="0.25"/>
+	<Interest date="2012/06/08" deposit_after="3.25"  deposit_range="-0.25"   loans_after="6.31"  loans_range="-0.25"/>
+	<Interest date="2012/07/06" deposit_after="3.00"  deposit_range="-0.25"   loans_after="6.00"  loans_range="-0.31"/>
+	<Interest date="2014/11/22" deposit_after="2.75"  deposit_range="-0.25"   loans_after="5.60"  loans_range="-0.40"/>
+	<Interest date="2015/03/01" deposit_after="2.50"  deposit_range="-0.25"   loans_after="5.35"  loans_range="-0.25"/>
+	<Interest date="2015/05/11" deposit_after="2.25"  deposit_range="-0.25"   loans_after="5.10"  loans_range="-0.25"/>
+	<Interest date="2015/06/28" deposit_after="2.00"  deposit_range="-0.25"   loans_after="4.85"  loans_range="-0.25"/>
+	<Interest date="2015/08/26" deposit_after="1.75"  deposit_range="-0.25"   loans_after="4.60"  loans_range="-0.25"/>
+	<Interest date="2015/10/24" deposit_after="1.50"  deposit_range="-0.25"   loans_after="4.35"  loans_range="-0.25"/>
+</Interests>
+
+<Reserves>
+	<Reserve date="2003/09/21" big_after="7.00"  big_range="1.00"  small_after="7.00"  small_range="1.00" />
+	<Reserve date="2004/04/25" big_after="7.50"  big_range="0.5"  small_after="7.50"  small_range="0.5" />
+	<Reserve date="2006/07/05" big_after="8.00"  big_range="0.5"  small_after="8.00"  small_range="0.5"/>
+	<Reserve date="2006/08/15" big_after="8.50"  big_range="0.5"  small_after="8.50"  small_range="0.5"/>
+	<Reserve date="2006/11/15" big_after="9.00"  big_range="0.5"  small_after="9.00"  small_range="0.5"/>
+	<Reserve date="2007/01/15" big_after="9.50"  big_range="0.5"  small_after="9.50"  small_range="0.5"/>
+	<Reserve date="2007/02/25" big_after="10.0"  big_range="0.5"  small_after="10.0"  small_range="0.5"/>
+	<Reserve date="2007/04/16" big_after="10.50"  big_range="0.5"  small_after="10.50"  small_range="0.5"/>
+	<Reserve date="2007/05/15" big_after="11.00"  big_range="0.5"  small_after="11.00"  small_range="0.5"/>
+	<Reserve date="2007/06/05" big_after="11.50"  big_range="0.5"  small_after="11.50"  small_range="0.5"/>
+	<Reserve date="2007/08/15" big_after="12.00"  big_range="0.5"  small_after="12.00"  small_range="0.5"/>
+	<Reserve date="2007/09/25" big_after="12.50"  big_range="0.5"  small_after="12.50"  small_range="0.5"/>
+	<Reserve date="2007/10/25" big_after="13.00"  big_range="0.5"  small_after="13.00"  small_range="0.5"/>
+	<Reserve date="2007/11/26" big_after="13.50"  big_range="0.5"  small_after="13.50"  small_range="0.5"/>
+	<Reserve date="2007/12/25" big_after="14.50"  big_range="1.0"  small_after="14.50"  small_range="1.0"/>
+	<Reserve date="2008/01/25" big_after="15.00"  big_range="0.5"  small_after="15.00"  small_range="0.5"/>
+	<Reserve date="2008/03/18" big_after="15.50"  big_range="0.5"  small_after="15.50"  small_range="0.5"/>
+	<Reserve date="2008/04/25" big_after="16.00"  big_range="0.5"  small_after="16.00"  small_range="0.5"/>
+	<Reserve date="2008/05/20" big_after="16.50"  big_range="0.5"  small_after="16.50"  small_range="0.5"/>
+	<Reserve date="2008/06/07" big_after="17.50"  big_range="1.0"  small_after="17.50"  small_range="1.0"/>
+	<Reserve date="2008/09/25" big_after="17.50"  big_range="0.0"  small_after="16.50"  small_range="-1.0"/>
+	<Reserve date="2008/10/15" big_after="17.00"  big_range="-0.5"  small_after="16.00"  small_range="-0.5"/>
+	<Reserve date="2008/12/05" big_after="16.00"  big_range="-1.0"  small_after="14.00"  small_range="-2.0"/>
+	<Reserve date="2008/12/25" big_after="15.50"  big_range="-0.5"  small_after="13.50"  small_range="-0.5"/>
+	<Reserve date="2010/01/18" big_after="16.00"  big_range="0.5"  small_after="13.50"  small_range="0.0"/>
+	<Reserve date="2010/02/25" big_after="16.50"  big_range="0.5"  small_after="13.50"  small_range="0.0"/>
+	<Reserve date="2010/05/10" big_after="17.00"  big_range="0.5"  small_after="13.50"  small_range="0.0"/>
+	<Reserve date="2010/11/16" big_after="17.50"  big_range="0.5"  small_after="14.00"  small_range="0.5"/>
+	<Reserve date="2010/11/29" big_after="18.00"  big_range="0.5"  small_after="14.50"  small_range="0.5"/>
+	<Reserve date="2010/12/20" big_after="18.50"  big_range="0.5"  small_after="15.00"  small_range="0.5"/>
+	<Reserve date="2011/01/20" big_after="19.00"  big_range="0.5"  small_after="15.50"  small_range="0.5"/>
+	<Reserve date="2011/02/24" big_after="19.50"  big_range="0.5"  small_after="16.00"  small_range="0.5"/>
+	<Reserve date="2011/03/25" big_after="20.00"  big_range="0.5"  small_after="16.50"  small_range="0.5"/>
+	<Reserve date="2011/04/21" big_after="20.50"  big_range="0.5"  small_after="17.00"  small_range="0.5"/>
+	<Reserve date="2011/05/18" big_after="21.00"  big_range="0.5"  small_after="17.50"  small_range="0.5"/>
+	<Reserve date="2011/06/20" big_after="21.50"  big_range="0.5"  small_after="18.00"  small_range="0.5"/>
+	<Reserve date="2011/12/05" big_after="21.00"  big_range="-0.5"  small_after="17.50"  small_range="-0.5"/>
+	<Reserve date="2012/02/24" big_after="20.50"  big_range="-0.5"  small_after="17.00"  small_range="-0.5"/>
+	<Reserve date="2012/05/18" big_after="20.00"  big_range="-0.5"  small_after="16.50"  small_range="-0.5"/>
+	<Reserve date="2015/02/05" big_after="19.50"  big_range="-0.5"  small_after="16.00"  small_range="-0.5"/>
+	<Reserve date="2015/04/20" big_after="18.50"  big_range="-1.0"  small_after="15.00"  small_range="-1.0"/>
+	<Reserve date="2015/06/28" big_after="18.00"  big_range="-0.5"  small_after="14.50"  small_range="-0.5"/>
+	<Reserve date="2015/09/06" big_after="17.50"  big_range="-0.5"  small_after="14.00"  small_range="-0.5"/>
+	<Reserve date="2015/10/24" big_after="17.00"  big_range="-0.5"  small_after="13.50"  small_range="-0.5"/>
+	<Reserve date="2016/03/01" big_after="16.50"  big_range="-0.5"  small_after="13.00"  small_range="-0.5"/>
+</Reserves>
+
+</EnvrionMain>

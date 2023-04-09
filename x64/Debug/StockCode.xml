@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="gb2312" ?>
+
+
+<StockCodeMain xmlns="http://www.fd911.net"  version="1.00">
+
+
+<StockCodes>
+	<StockCode code="SH000001" name="上证指数" dayfilepath="F:\stock\day\SH#000001.txt" minfilepath="F:\stock\mintue\SH#000001.txt"/>
+	<StockCode code="SH000016" name="上证50" dayfilepath="F:\stock\day\SH#000016.txt" minfilepath="F:\stock\mintue\SH#000016.txt"/>
+	<StockCode code="SH000300" name="沪深300" dayfilepath="F:\stock\day\SH#000300.txt" minfilepath="F:\stock\mintue\SH#000300.txt"/>
+	<StockCode code="SZ399006" name="创业板指" dayfilepath="F:\stock\day\SZ#399006.txt" minfilepath="F:\stock\mintue\SZ#399006.txt"/>
+	<StockCode code="SZ002487" name="大金重工" dayfilepath="F:\stock\day\SZ#002487.txt" minfilepath="F:\stock\mintue\SZ#002487.txt"/>
+	<StockCode code="SH603318" name="派思股份" dayfilepath="F:\stock\day\SH#603318.txt" minfilepath="F:\stock\mintue\SH#603318.txt"/>
+	<StockCode code="SH603339" name="四方科技" dayfilepath="F:\stock\day\SH#603339.txt" minfilepath="F:\stock\mintue\SH#603339.txt"/>
+	<StockCode code="SZ000619" name="海螺型材" dayfilepath="F:\stock\day\SZ#000619.txt" minfilepath="F:\stock\mintue\SZ#000619.txt"/>
+	<StockCode code="SZ002030" name="达安基因" dayfilepath="F:\stock\day\SZ#002030.txt" minfilepath="F:\stock\mintue\SZ#002030.txt"/>
+	<StockCode code="SZ002873" name="新天药业" dayfilepath="F:\stock\day\SZ#002873.txt" minfilepath="F:\stock\mintue\SZ#002873.txt"/>
+	<StockCode code="SZ300435" name="中泰股份" dayfilepath="F:\stock\day\SZ#300435.txt" minfilepath="F:\stock\mintue\SZ#300435.txt"/>
+	<StockCode code="SZ002048" name="宁波华翔" dayfilepath="F:\stock\day\SZ#002048.txt" minfilepath="F:\stock\mintue\SZ#002048.txt"/>
+	<StockCode code="SH600731" name="湖南海利" dayfilepath="F:\stock\day\SH#600731.txt" minfilepath="F:\stock\mintue\SH#600731.txt"/>
+	<StockCode code="SZ002694" name="顾地科技" dayfilepath="F:\stock\day\SZ#002694.txt" minfilepath="F:\stock\mintue\SZ#002694.txt"/>
+</StockCodes>
+
+
+</StockCodeMain>

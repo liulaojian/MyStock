@@ -52,3 +52,4 @@ CString DecryTeleNum(CString strEncryTeleNum);
 int getMAC(char * mac) ;
 
 
+BOOL BrowseDir(CString& path, HWND hwndOwner, CString title);

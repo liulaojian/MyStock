@@ -142,8 +142,8 @@ xcopy /y /r F:\code\MyStock\Debug\MyStock.pdb  F:\stock\soft3\</Command>
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>xcopy /y /r e:\code\MyStock\x64\Debug\MyStock.exe  e:\stock\soft3\
-xcopy /y /r e:\code\MyStock\x64\Debug\MyStock.pdb  e:\stock\soft3\</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -180,12 +180,13 @@ xcopy /y /r e:\code\MyStock\x64\Debug\MyStock.pdb  e:\stock\soft3\</Command>
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <Optimization>Disabled</Optimization>
+      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>_WINDOWS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.\;.\include;.\framework;.\framework\global;.\framework\data;.\framework\db;.\framework\environment;.\framework\include;.\framework\inteface;.\framework\moudle;.\framework\moudle\database;.\framework\moudle\http;.\framework\moudle\json;.\framework\moudle\net;.\framework\moudle\tinyxml;.\framework\strategy;.\framework\strategy\cmpmothod;.\framework\system;.\framework\ui;.\framework\utils;.\framework\netstock;.\framework\stockfilter;.\framework\stockmonitor;.\framework\arithmetic;.\framework\algorithm;.\framework\stocksniper;.\framework\loopback;.\framework\klinematchtemplate;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ExceptionHandling>Async</ExceptionHandling>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

@@ -7,6 +7,8 @@
 #include "SystemMgr.h"
 #include "Convert.h"
 
+#include <thread>
+
 #define TDXDir  "D:\\new_jyplug"
 
 CStockDataMgr* CStockDataMgr::s_pIntance = NULL;
@@ -82,7 +84,7 @@ BOOL  CStockDataMgr::LoadFromStockCodeXml(CString strXmlPath)
 				{
 					pStockCode->strStockName=strAttValue.c_str();
 
-					CString strDayPath = TDXDir;
+					CString strDayPath = SystemMgr()->GetTDXDir();//TDXDir;
 					CString strDayName = pStockCode->strStockCode;
 					strDayName = strDayName.MakeLower();
 					strDayName += ".day";
@@ -100,7 +102,7 @@ BOOL  CStockDataMgr::LoadFromStockCodeXml(CString strXmlPath)
 
 					pStockCode->strStockDayFilePath = strDayPath;
 
-					CString strMin5Path = TDXDir;
+					CString strMin5Path = SystemMgr()->GetTDXDir();  //TDXDir;
 					CString strMin5Name = pStockCode->strStockCode;
 					strMin5Name = strMin5Name.MakeLower();
 					strMin5Name += ".lc5";
@@ -157,30 +159,53 @@ BOOL CStockDataMgr::InitStockTableList(void)
 	CStockDayTable *pStockDayTable=NULL;
 	CStockMin5Table *pStockMin5Table=NULL;
 	int mMaxSize=vecStockCodeList.size();
-	for(int i=0;i<vecStockCodeList.size();i++)
+
+	int mThreadNums = 1;
+
+	std::vector<std::thread> threads;
+
+	CStockDayTable* pExpStockDayTable= new CStockDayTable("SH000001");
+	CStockMin5Table* pExpStockMin5Table= new CStockMin5Table("SH000001");
+	StockCode* pExpStockCode = NULL;
+	for (int i = 0; i < vecStockCodeList.size(); i++)
 	{
-		pStockCode=vecStockCodeList[i];
+		if (vecStockCodeList[i]->strStockCode == "SH000001")
+			pExpStockCode = vecStockCodeList[i];
+	}
 
-		if(!pStockCode)
-		 continue;
+	if (!pExpStockCode)
+		return FALSE;
+	pExpStockDayTable->LoadFromDayFile(pExpStockCode->strStockDayFilePath);
+	pExpStockMin5Table->LoadFromMin5File(pExpStockCode->strStockMinFilePath);
+	vecStockDayTableList.push_back(pExpStockDayTable);
+	vecStockMin5TableList.push_back(pExpStockMin5Table);
 
-		printf("Loading %s  Index %d Of %d\n",pStockCode->strStockCode,i,mMaxSize);
-		pStockDayTable=new CStockDayTable(pStockCode->strStockCode);
 
-		if(pStockCode->strStockDayFilePath!="")
+	for (int i = 0; i < vecStockCodeList.size(); i++)
+	{
+		pStockCode = vecStockCodeList[i];
+		if (!pStockCode)
+			continue;
+		if (pStockCode->strStockCode == "SH000001")
+			continue;
+
+		printf("Loading %s  Index %d Of %d\n", pStockCode->strStockCode, i, mMaxSize);
+		pStockDayTable = new CStockDayTable(pStockCode->strStockCode);
+
+		if (pStockCode->strStockDayFilePath != "")
 		{
-			if(IsExpStock(pStockCode->strStockCode))
+			if (IsExpStock(pStockCode->strStockCode))
 			{
 				pStockDayTable->LoadFromDayFile(pStockCode->strStockDayFilePath);
 			}
 			else
 			{
-				CStockDayTable *pExpStockDayTable;
-				pExpStockDayTable=GetStockDayTable("SH000001");
-				pStockDayTable->LoadFromDayFileRepairDate(pStockCode->strStockDayFilePath,pExpStockDayTable);
+				pStockDayTable->LoadFromDayFileRepairDate(pStockCode->strStockDayFilePath, pExpStockDayTable);
 			}
-			if(pStockDayTable->GetStockDayDataListSize()>0)
+			if (pStockDayTable->GetStockDayDataListSize() > 0)
+			{
 				vecStockDayTableList.push_back(pStockDayTable);
+			}
 			else
 			{
 				pStockCode->strStockDayFilePath = "";
@@ -188,25 +213,27 @@ BOOL CStockDataMgr::InitStockTableList(void)
 			}
 		}
 
-		if(pStockCode->strStockMinFilePath!="")
+		if (pStockCode->strStockMinFilePath != "")
 		{
-			pStockMin5Table=new CStockMin5Table(pStockCode->strStockCode);
-			if(IsExpStock(pStockCode->strStockCode))
+			pStockMin5Table = new CStockMin5Table(pStockCode->strStockCode);
+			if (IsExpStock(pStockCode->strStockCode))
 			{
 				pStockMin5Table->LoadFromMin5File(pStockCode->strStockMinFilePath);
 			}
 			else
 			{
-				CStockMin5Table *pExpStockMin5Table;
-				pExpStockMin5Table=GetStockMin5Table("SH000001");
-				pStockMin5Table->LoadFromMin5FileRepairDate(pStockCode->strStockMinFilePath,pExpStockMin5Table);
+				pStockMin5Table->LoadFromMin5FileRepairDate(pStockCode->strStockMinFilePath, pExpStockMin5Table);
 			}
 			//pStockMin5Table->AddNearestStockData(pStockMin5Table->GetNearestStockDataFormHttp(100));
 			if (pStockMin5Table->GetStockMin5DataListSize() > 0)
+			{
 				vecStockMin5TableList.push_back(pStockMin5Table);
+			}
+
 		}
 
 	}
+
 
 	Vec_StockCodeList vecTempStockCodeList;
 	for (int i = 0; i < vecStockCodeList.size(); i++)

@@ -246,3 +246,31 @@ DWORD CSystemMgr::GetVolumeSerialNumber(void)
 
 	return mVolumeSerialNumber;
 }
+
+
+CString CSystemMgr::DoGetTDXDir(void)
+{
+	CString strPath;
+	strPath = GetReturnPath();
+	strPath += "\\";
+	strPath += MYSTOCK_INI;
+	char strTemp[MAX_PATH] = { 0 };
+	::GetPrivateProfileString("MyStock", "TdxDir", "D:\\new_jyplug", strTemp, MAX_PATH, strPath);
+
+
+	strTDXDir = strTemp;
+
+	return strTDXDir;
+}
+
+
+void CSystemMgr::SetTDXDir(CString strDir)
+{
+	strTDXDir = strDir;
+	CString strPath;
+	strPath = GetReturnPath();
+	strPath += "\\";
+	strPath += MYSTOCK_INI;
+	::WritePrivateProfileString("MyStock", "TdxDir", strTDXDir, strPath);
+
+}

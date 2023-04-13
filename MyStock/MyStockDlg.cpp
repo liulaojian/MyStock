@@ -181,6 +181,7 @@ BOOL CMyStockDlg::OnInitDialog()
 
 	SystemMgr()->DoGetMyStockXmlFile();
 	SystemMgr()->DoGetTitle();
+	SystemMgr()->DoGetTDXDir();
 
 	CString strTitle=SystemMgr()->GetTitle();
 	SetWindowText(strTitle);

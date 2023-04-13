@@ -41,6 +41,10 @@ public:
 
 	BOOL IsFakeMode(void) {return bFakeMode;}
 	void SetFakeMode(BOOL val) {bFakeMode=val;}
+
+	CString GetTDXDir(void) { return strTDXDir; }
+	CString DoGetTDXDir(void);
+	void SetTDXDir(CString strDir);
 private:
 	static CSystemMgr* s_pIntance;
 
@@ -50,6 +54,8 @@ private:
 
 	unsigned long mXuLiehao;
 	DWORD mVolumeSerialNumber;
+
+	CString strTDXDir;
 
 	BOOL bFakeMode;
 };

@@ -28,7 +28,9 @@ public:
 
 	BOOL  SaveToDb(void);
 
-	Vec_StockDayData  GetStockDayDataList(void) {return vecStockDayData;}
+	Vec_StockDayData  GetStockDayDataList(void) {
+		return vecStockDayData;
+	}
 	int GetStockDayDataListSize(void) {return vecStockDayData.size();}
 
 	CStockDayData * GetLastStockDayData(void);
@@ -104,15 +106,15 @@ public:
 
 	inline void TryLockData() 
 	{
-		//::TryEnterCriticalSection(&dataLock);
+		::TryEnterCriticalSection(&dataLock);
 	}
 	inline void LockData() 
 	{ 
-		//::EnterCriticalSection(&dataLock); 
+		::EnterCriticalSection(&dataLock); 
 	}
 	inline void UnlockData() 
 	{ 
-		//::LeaveCriticalSection(&dataLock);
+		::LeaveCriticalSection(&dataLock);
 	}
 
 private:

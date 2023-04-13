@@ -47,7 +47,7 @@ BOOL CDlgStockChip::OnInitDialog()
 
 	m_StockChipLow=0; //70
 	mSpinChipLow.SetBuddy(&mEditChipLow);
-	mSpinChipLow.SetRange(0, 90);
+	mSpinChipLow.SetRange(0, 95);
 	mSpinChipLow.SetPos(m_StockChipLow);
 
 	m_StockChipHigh=100;

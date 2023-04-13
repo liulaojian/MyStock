@@ -23,4 +23,7 @@ public:
 	afx_msg void OnBnClickedBtnOpen();
 	CEdit mEditXmlFile;
 	virtual BOOL OnInitDialog();
+	CEdit mEditTdxDir;
+	afx_msg void OnBnClickedOk();
+	afx_msg void OnBnClickedBtnOpenTdx();
 };

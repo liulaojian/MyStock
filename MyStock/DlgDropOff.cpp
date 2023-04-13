@@ -6245,12 +6245,34 @@ BOOL CDlgDropOff::DoFilterTanMatch5(void)
 			}
 		}
 #else
-		if (m_60_big_20_nums < 0 && m_10_big_20_nums < 15 && f_ma60_angle <= 0.0 && f_custom_per<1.5 && f_max_vol_per<3.0)
+		/*if (m_60_big_20_nums < 0 && m_10_big_20_nums < 15 && f_ma60_angle <= 0.0 && f_custom_per<1.5 && f_max_vol_per<3.0)
 		//if ( (m_60_big_20_nums + m_10_big_20_nums +f_ma60_angle )<10.0)
 		{
 			bok1 = true;
 		}
+		*/
 
+		if (fVolumePerForM5 < fVolumePer && fVolumePer< fVolumePerForM20 && fVolumePerForM20< fVolumePerForM30)
+		{
+			if (f_ave_volume_per < 10.0 && (f_ave_volume_per>fVolumePerForM30) && (f_max_volume_per< f_ave_volume_per))
+			{
+				double f_per = f_20_10_cross_price_increase / m_10_big_20_nums;
+				if (f_per < 8.0)
+				{
+					f_per = f_60_20_cross_price_increase / m_60_big_20_nums;
+					if (f_per < 8.0)
+						bok1 = true;
+				}
+
+			}
+				
+		}
+		/*if (f_ma10_angle > 60.0 && f_ma10_angle < 70.0)
+		{
+			if(f_ma5_angle>65.0 && f_ma5_angle<77.0)
+				bok1 = true;
+
+		}*/
 #endif
 
 		

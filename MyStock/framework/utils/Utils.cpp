@@ -552,3 +552,24 @@ int getMAC(char * mac)     //用NetAPI来获取网卡MAC地址
 
 
 
+BOOL BrowseDir(CString& path, HWND hwndOwner, CString title)
+{
+	TCHAR szPathName[MAX_PATH];
+	BROWSEINFO bInfo = { 0 };
+	bInfo.hwndOwner = hwndOwner;//父窗口  
+	bInfo.lpszTitle = title;
+	bInfo.ulFlags = BIF_RETURNONLYFSDIRS | BIF_USENEWUI/*包含一个编辑框 用户可以手动填写路径 对话框可以调整大小之类的..*/ |
+		BIF_UAHINT/*带TIPS提示*/ | BIF_NONEWFOLDERBUTTON /*不带新建文件夹按钮*/;
+	LPITEMIDLIST lpDlist;
+	lpDlist = SHBrowseForFolder(&bInfo);
+	if (lpDlist != NULL)//单击了确定按钮  
+	{
+		SHGetPathFromIDList(lpDlist, szPathName);
+		path.Format(_T("%s"), szPathName);
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
+}

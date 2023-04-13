@@ -34,7 +34,9 @@ public:
 
 	CString GetStockCode(void) { return strStockCode;}
 
-	Vec_StockMin5Data GetStockMin5DataList(void) {return vecStockMin5Data;}
+	Vec_StockMin5Data GetStockMin5DataList(void) {
+		return vecStockMin5Data;
+	}
 
 	int  GetStockMin5DataListSize(void) { return vecStockMin5Data.size(); }
 

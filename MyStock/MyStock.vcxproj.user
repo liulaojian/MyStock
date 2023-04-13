@@ -4,22 +4,22 @@
     <LocalDebuggerCommand>F:\stock\soft3\MyStock.exe</LocalDebuggerCommand>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LocalDebuggerCommand>e:\stock\soft3\MyStock.exe</LocalDebuggerCommand>
+    <LocalDebuggerCommand>E:\code\MyStock\x64\Debug\MyStock.exe</LocalDebuggerCommand>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LocalDebuggerWorkingDirectory>..\..\..\stock\soft3</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LocalDebuggerWorkingDirectory>..\..\..\stock\soft3</LocalDebuggerWorkingDirectory>
+    <LocalDebuggerWorkingDirectory>..\x64\Debug</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup>
     <RESOURCE_FILE>MyStock.rc</RESOURCE_FILE>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LocalDebuggerCommand>E:\stock\soft3\MyStock.exe</LocalDebuggerCommand>
-    <LocalDebuggerWorkingDirectory>..\..\..\stock\soft3</LocalDebuggerWorkingDirectory>
+    <LocalDebuggerCommand>E:\code\MyStock\x64\Release\MyStock.exe</LocalDebuggerCommand>
+    <LocalDebuggerWorkingDirectory>..\x64\Release</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>

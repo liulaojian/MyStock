@@ -310,4 +310,6 @@ public:
 	afx_msg void OnMenuShellWeb();
 	afx_msg void OnMenuKLineAnalyze();
 	afx_msg void OnBnClickedBtnBackFlow();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 };

@@ -1,0 +1,147 @@
+﻿  DlgDropOff.cpp
+E:\code\MyStock\MyStock\framework\data\StockDayTable.h(34,36): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\framework\data\StockMin5Table.h(41,38): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\framework\data\StockDataMgr.h(50,41): warning C4267: “return”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(245,35): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(248,42): warning C4305: “初始化”: 从“double”到“float”截断
+E:\code\MyStock\MyStock\DlgDropOff.cpp(256,34): warning C4305: “初始化”: 从“double”到“float”截断
+E:\code\MyStock\MyStock\DlgDropOff.cpp(343,31): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(404,44): warning C4305: “初始化”: 从“double”到“float”截断
+E:\code\MyStock\MyStock\DlgDropOff.cpp(420,17): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“CString”
+E:\code\MyStock\MyStock\DlgDropOff.cpp(477,10): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“CString”
+E:\code\MyStock\MyStock\DlgDropOff.cpp(520,11): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“CString”
+E:\code\MyStock\MyStock\DlgDropOff.cpp(687,12): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(691,19): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(1061,11): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“CString”
+E:\code\MyStock\MyStock\DlgDropOff.cpp(1065,50): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(1081,14): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“CString”
+E:\code\MyStock\MyStock\DlgDropOff.cpp(1084,15): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“CString”
+E:\code\MyStock\MyStock\DlgDropOff.cpp(1087,16): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“CString”
+E:\code\MyStock\MyStock\DlgDropOff.cpp(1108,33): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(1109,33): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(1193,36): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(1194,39): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(1273,11): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“CString”
+E:\code\MyStock\MyStock\DlgDropOff.cpp(1280,32): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(1281,32): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(1293,11): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“CString”
+E:\code\MyStock\MyStock\DlgDropOff.cpp(1987,16): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(2003,33): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(2390,27): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(2433,12): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“CString”
+E:\code\MyStock\MyStock\DlgDropOff.cpp(2478,13): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“CString”
+E:\code\MyStock\MyStock\DlgDropOff.cpp(2720,43): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(2721,43): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(2727,47): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(2896,54): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(2935,27): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(3046,14): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“CString”
+E:\code\MyStock\MyStock\DlgDropOff.cpp(3046,14): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 2 拥有了类型“CString”
+E:\code\MyStock\MyStock\DlgDropOff.cpp(3068,32): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(3069,31): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(3078,20): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(3079,20): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(3080,20): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(3081,25): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(3082,25): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(3083,25): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(3086,28): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(3108,32): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(3251,31): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(3297,30): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(3325,31): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(3356,30): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(3389,31): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(3435,30): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(3467,27): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(3526,30): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(3590,26): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(3628,30): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(4095,51): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(4146,11): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“CString”
+E:\code\MyStock\MyStock\DlgDropOff.cpp(4162,12): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“CString”
+E:\code\MyStock\MyStock\DlgDropOff.cpp(4233,13): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“CString”
+E:\code\MyStock\MyStock\DlgDropOff.cpp(4289,36): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(5230,9): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 2 拥有了类型“unsigned __int64”
+E:\code\MyStock\MyStock\DlgDropOff.cpp(5230,9): message : 请考虑在格式字符串中使用“%zd”
+E:\code\MyStock\MyStock\DlgDropOff.cpp(5236,48): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(5237,48): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(5243,52): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(5279,48): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(5280,48): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(5286,52): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(5319,48): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(5320,48): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(5326,52): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(5364,48): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(5365,48): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(5486,54): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(5487,54): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(5493,58): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(5650,51): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(5651,51): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(5657,55): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(5876,51): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(5877,51): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(5883,55): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(5912,33): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(5953,34): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(6046,51): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(6047,51): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(6048,11): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“CString”
+E:\code\MyStock\MyStock\DlgDropOff.cpp(6048,11): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 2 拥有了类型“CString”
+E:\code\MyStock\MyStock\DlgDropOff.cpp(6055,55): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(6142,48): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(6143,48): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(6149,52): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(6298,51): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(6299,51): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(6305,55): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(6610,50): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(6611,50): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(6617,54): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(6696,51): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(6697,51): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(6704,55): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(6925,31): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(6946,40): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(6987,12): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“CString”
+E:\code\MyStock\MyStock\DlgDropOff.cpp(7059,10): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“CString”
+E:\code\MyStock\MyStock\DlgDropOff.cpp(7063,43): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(7064,43): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(7070,47): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(7306,51): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(7307,51): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(7314,55): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(7416,42): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(7417,42): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(7423,46): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(7507,46): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(7621,37): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(7674,34): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(7686,10): warning C4477: “printf”: 格式字符串“%s”需要类型“char *”的参数，但可变参数 1 拥有了类型“CString”
+E:\code\MyStock\MyStock\DlgDropOff.cpp(7699,49): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(7700,49): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(7706,53): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(7906,51): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(7907,51): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(8029,51): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(8082,32): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(8083,32): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(8268,35): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(8363,35): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(8461,35): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(8663,31): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(8673,9): warning C4476: "printf": 格式说明符中的类型字段字符“\xe4”未知
+E:\code\MyStock\MyStock\DlgDropOff.cpp(8687,31): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(8729,55): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(8732,30): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(8866,52): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(8867,52): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\code\MyStock\MyStock\DlgDropOff.cpp(8873,56): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+  正在生成代码
+  18 of 5628 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    36 functions had inline decision re-evaluated but remain unchanged
+  已完成代码的生成
+  MyStock.vcxproj -> E:\code\MyStock\x64\Release\MyStock.exe

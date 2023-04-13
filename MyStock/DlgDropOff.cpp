@@ -126,6 +126,7 @@ BEGIN_MESSAGE_MAP(CDlgDropOff, CDialogEx)
 	ON_COMMAND(IDR_MENU_SHELL_WEB, &CDlgDropOff::OnMenuShellWeb)
 	ON_COMMAND(IDR_MENU_K_LINE_ANALYZE, &CDlgDropOff::OnMenuKLineAnalyze)
 	ON_BN_CLICKED(IDC_BTN_BACK_FLOW, &CDlgDropOff::OnBnClickedBtnBackFlow)
+	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 
@@ -745,9 +746,9 @@ void CDlgDropOff::OnBnClickedBtnBegin()
 	
 
 	vecDropOffData.clear();
-	pThread=AfxBeginThread(CalcDropOffStockProc,(LPVOID)this,THREAD_PRIORITY_NORMAL,0,0,NULL);
-
-	//CalcDropOffStock();
+	//pThread=AfxBeginThread(CalcDropOffStockProc,(LPVOID)this, THREAD_PRIORITY_TIME_CRITICAL,0,0,NULL);
+	
+	CalcDropOffStockProc(this);
 }
 
 BOOL CDlgDropOff::RefreshData(void)
@@ -1025,8 +1026,8 @@ void CDlgDropOff::OnBnClickedBtnExperFilter2()
 		}
 
 		vecDropOffData.clear();
-		pThread=AfxBeginThread(CalcRsiStockProc,(LPVOID)this,THREAD_PRIORITY_NORMAL,0,0,NULL);
-
+		//pThread=AfxBeginThread(CalcRsiStockProc,(LPVOID)this,THREAD_PRIORITY_NORMAL,0,0,NULL);
+		CalcRsiStockProc(this);
 	}
 	
 }
@@ -1216,7 +1217,8 @@ void CDlgDropOff::OnBnClickedBtnExperFilter3()
 		
 
 		vecDropOffData.clear();
-		pThread=AfxBeginThread(CalcChipStockProc,(LPVOID)this,THREAD_PRIORITY_NORMAL,0,0,NULL);
+		//pThread=AfxBeginThread(CalcChipStockProc,(LPVOID)this,THREAD_PRIORITY_NORMAL,0,0,NULL);
+		CalcChipStockProc(this);
 	}
 
 
@@ -1559,7 +1561,8 @@ void CDlgDropOff::OnBnClickedBtnExperFilter4()
 
 	
 
-	AfxBeginThread(RunFilter4Proc,(LPVOID)this,THREAD_PRIORITY_NORMAL,0,0,NULL);
+	//AfxBeginThread(RunFilter4Proc,(LPVOID)this,THREAD_PRIORITY_NORMAL,0,0,NULL);
+	RunFilter4Proc(this);
 }
 
 #if 0
@@ -1850,7 +1853,8 @@ void CDlgDropOff::OnBnClickedBtnExperFilter5()
 	}
 
 	vecDropOffData.clear();
-	pThread=AfxBeginThread(CalcDownShadowLineProc,(LPVOID)this,THREAD_PRIORITY_NORMAL,0,0,NULL);
+	//pThread=AfxBeginThread(CalcDownShadowLineProc,(LPVOID)this,THREAD_PRIORITY_NORMAL,0,0,NULL);
+	CalcDownShadowLineProc(this);
 }
 
 
@@ -2068,7 +2072,8 @@ void CDlgDropOff::OnBnClickedBtnDropOff()
 				vecDropOffData_Merge=vecDropOffData;
 			}
 			vecDropOffData.clear();
-			pThread=AfxBeginThread(CalcMenuPriceVolumeM5M10Proc,(LPVOID)this,THREAD_PRIORITY_NORMAL,0,0,NULL);
+			//pThread=AfxBeginThread(CalcMenuPriceVolumeM5M10Proc,(LPVOID)this,THREAD_PRIORITY_NORMAL,0,0,NULL);
+			CalcMenuPriceVolumeM5M10Proc(this);
 		}
 		
 	}
@@ -3639,7 +3644,8 @@ void CDlgDropOff::OnBnClickedBtnKdjFilter()
 		mKdjMuls=dlg.GetKDJMuls();
 		mRsiPreNums=dlg.GetRsiPreNums();
 
-		AfxBeginThread(RunFilterKdjProc,(LPVOID)this,THREAD_PRIORITY_NORMAL,0,0,NULL);
+		//AfxBeginThread(RunFilterKdjProc,(LPVOID)this,THREAD_PRIORITY_NORMAL,0,0,NULL);
+		RunFilterKdjProc(this);
 	}	
 }
 
@@ -3749,7 +3755,8 @@ void CDlgDropOff::OnBnClickedBtn3mUp()
 			}
 
 			vecDropOffData.clear();*/
-			AfxBeginThread(RunSerialKeepDownProc,(LPVOID)this,THREAD_PRIORITY_NORMAL,0,0,NULL);
+			//AfxBeginThread(RunSerialKeepDownProc,(LPVOID)this,THREAD_PRIORITY_NORMAL,0,0,NULL);
+			RunSerialKeepDownProc(this);
 		}
 		else if(mSFSel==1)
 		{
@@ -3762,7 +3769,8 @@ void CDlgDropOff::OnBnClickedBtn3mUp()
 			}
 
 			vecDropOffData.clear();
-			AfxBeginThread(RunFilterM5M10M20Proc,(LPVOID)this,THREAD_PRIORITY_NORMAL,0,0,NULL);
+			//AfxBeginThread(RunFilterM5M10M20Proc,(LPVOID)this,THREAD_PRIORITY_NORMAL,0,0,NULL);
+			RunFilterM5M10M20Proc(this);
 		}
 		else if(mSFSel==2)	//均线三角形
 		{
@@ -3789,7 +3797,8 @@ void CDlgDropOff::OnBnClickedBtn3mUp()
 
 				vecDropOffData.clear();
 				vecTanAngleData.clear();
-				AfxBeginThread(RunFilterTanAngleProc,(LPVOID)this,THREAD_PRIORITY_NORMAL,0,0,NULL);
+				//AfxBeginThread(RunFilterTanAngleProc,(LPVOID)this,THREAD_PRIORITY_NORMAL,0,0,NULL);
+				RunFilterTanAngleProc(this);
 
 			}
 
@@ -3841,7 +3850,8 @@ void CDlgDropOff::OnBnClickedBtn3mUp()
 
 					vecDropOffData.clear();
 					vecTanAngleData.clear();
-					AfxBeginThread(RunFilterMulTanAngleProc,(LPVOID)this,THREAD_PRIORITY_NORMAL,0,0,NULL);
+					//AfxBeginThread(RunFilterMulTanAngleProc,(LPVOID)this,THREAD_PRIORITY_NORMAL,0,0,NULL);
+					RunFilterMulTanAngleProc(this);
 				}
 				
 
@@ -3901,7 +3911,8 @@ void CDlgDropOff::OnBnClickedBtn3mUp()
 
 					vecDropOffData.clear();
 					vecTanAngleData.clear();
-					AfxBeginThread(RunFilterSingleTanAngleProc,(LPVOID)this,THREAD_PRIORITY_NORMAL,0,0,NULL);
+					//AfxBeginThread(RunFilterSingleTanAngleProc,(LPVOID)this,THREAD_PRIORITY_NORMAL,0,0,NULL);
+					RunFilterSingleTanAngleProc(this);
 				}
 
 
@@ -6570,8 +6581,10 @@ for (int i = 0; i < vecTanAngleData.size(); i++)
 
 	}
 	
-	
 	bool bok1 = false;
+	if (fNowGrow < -8.0)
+		bok1 = true;
+	/*bool bok1 = false;
 	if (m_10_big_20_nums >=6 && m_10_big_20_nums <=16)
 		bok1 = true;
 
@@ -6588,7 +6601,8 @@ for (int i = 0; i < vecTanAngleData.size(); i++)
 	if(f_temp3>6.0)
 		bok3 = true;
 
-	if (bok1 && bok2 && bok3)
+	if (bok1 && bok2 && bok3)*/
+	if(bok1)
 	{
 		DropOffData* pDropOffData = new DropOffData();
 		pDropOffData->strStockCode = vecTanAngleData[i]->strStockCode;
@@ -8929,4 +8943,27 @@ void CDlgDropOff::OnBnClickedBtnBackFlow()
 {
 	CDlgBackFlow dlg;
 	dlg.DoModal();
+}
+
+
+BOOL CDlgDropOff::PreTranslateMessage(MSG* pMsg)
+{
+	if (pMsg->message == WM_KEYDOWN)
+	{
+		if (pMsg->wParam == VK_ESCAPE || pMsg->wParam == VK_RETURN)//屏蔽ESC和ENTER键
+			return TRUE;
+	}
+	return CDialogEx::PreTranslateMessage(pMsg);
+}
+
+
+BOOL CDlgDropOff::OnEraseBkgnd(CDC* pDC)
+{
+	CRect rectClient;
+	GetClientRect(rectClient);
+	pDC->FillSolidRect(rectClient, RGB(240, 240, 240));
+
+	return TRUE;
+
+	//return CDialogEx::OnEraseBkgnd(pDC);
 }

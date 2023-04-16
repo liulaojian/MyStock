@@ -564,6 +564,9 @@
     <ClInclude Include="framework\arithmetic\StockJettonArithmetic.h">
       <Filter>Framework\function\arithmetic</Filter>
     </ClInclude>
+    <ClInclude Include="framework\arithmetic\StockCRAtithmetic.h">
+      <Filter>Framework\function\arithmetic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyStock.cpp">
@@ -976,6 +979,9 @@
     </ClCompile>
     <ClCompile Include="DlgBackFlow.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="framework\arithmetic\StockCRArithmetic.cpp">
+      <Filter>Framework\function\arithmetic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -6574,6 +6574,29 @@ for (int i = 0; i < vecTanAngleData.size(); i++)
 	int mVolM5ContiUpNums = pTanAngleData->mVolM5ContiUpNums;
 	int mVolM10ContiUpNums = pTanAngleData->mVolM10ContiUpNums;
 
+	int mMaxValuePassDay = pTanAngleData->fPara3;
+
+	double fVolumePerForM30 = pTanAngleData->fVolumePerForM30;
+	double fVolumePerForM20 = pTanAngleData->fVolumePerForM20;
+	double fVolumePer = pTanAngleData->fVolumePer;
+	double fVolumePerForM5 = pTanAngleData->fVolumePerForM5;
+	f_20_10_cross_price_increase = pTanAngleData->fPara7;
+	f_60_20_cross_price_increase = pTanAngleData->fPara6;
+	m_10_big_20_nums = pTanAngleData->mPara6;
+	m_60_big_20_nums = pTanAngleData->mPara7;
+
+	double fcustomtotalvalue = pTanAngleData->fcustomtotalvalue;
+	fcustomtotalvalue = fabs(fcustomtotalvalue);
+	double f_max_increase = f_60_20_cross_price_increase;
+	if (f_max_increase < f_20_10_cross_price_increase)
+		f_max_increase = f_20_10_cross_price_increase;
+
+	double f_custom_per = fcustomtotalvalue / f_max_increase;
+
+	double f_max_vol_per = fVolumePerForM30;
+	if (f_max_vol_per < fVolumePerForM20)
+		f_max_vol_per = fVolumePerForM20;
+	
 	if (pTanAngleData->strStockCode == "SH600854")
 	{
 		int a = 0;
@@ -6582,8 +6605,28 @@ for (int i = 0; i < vecTanAngleData.size(); i++)
 	}
 	
 	bool bok1 = false;
-	if (fNowGrow < -8.0)
-		bok1 = true;
+	
+	//if (fNowGrow < -8.0)
+	//	bok1 = true;
+
+
+	if (fVolumePerForM5 < fVolumePer && fVolumePer < fVolumePerForM20 && fVolumePerForM20 < fVolumePerForM30)
+	{
+		if (f_ave_volume_per < 10.0 && (f_ave_volume_per > fVolumePerForM30) && (f_max_volume_per < f_ave_volume_per))
+		{
+			double f_per = f_20_10_cross_price_increase / m_10_big_20_nums;
+			if (f_per < 8.0)
+			{
+				f_per = f_60_20_cross_price_increase / m_60_big_20_nums;
+				if (f_per < 8.0 && mContiDownNums==0 && mBigIncreaseNums==0 && mNowIsMaxPriceNums==0)
+					bok1 = true;
+			}
+
+		}
+
+	}
+
+	
 	/*bool bok1 = false;
 	if (m_10_big_20_nums >=6 && m_10_big_20_nums <=16)
 		bok1 = true;
@@ -6619,7 +6662,7 @@ for (int i = 0; i < vecTanAngleData.size(); i++)
 		pDropOffData->mFilterNums = vecTanAngleData[i]->mPara6;
 		pDropOffData->mSpecNums = vecTanAngleData[i]->mPara7;
 
-		strInfo.Format("%.2f,%d,%d,%d#p%d#v%d#c%d#%d#%d#%.2f#rb%d#%.2f#vw%d#vs%d#pw%d#%.2f", vecTanAngleData[i]->fPara8, vecTanAngleData[i]->mPara8, vecTanAngleData[i]->mPara9, vecTanAngleData[i]->mPara10, vecTanAngleData[i]->mContiDownNums, vecTanAngleData[i]->mContiVolDownNums, vecTanAngleData[i]->mStepIndex, vecTanAngleData[i]->mNowIsMaxPriceNums,
+		strInfo.Format("%.2f,%d,%d,%d#p%d#v%d#c%d#%d#%d#%.2f#rb%d#%.2f#vw%d#vs%d#pw%d#%.2f", vecTanAngleData[i]->fPara8, vecTanAngleData[i]->mPara8, vecTanAngleData[i]->mPara9, vecTanAngleData[i]->mPara10, vecTanAngleData[i]->mContiDownNums/*P*/, vecTanAngleData[i]->mContiVolDownNums/*v*/, vecTanAngleData[i]->mStepIndex/*c*/, vecTanAngleData[i]->mNowIsMaxPriceNums,
 			vecTanAngleData[i]->mBigIncreaseNums, vecTanAngleData[i]->fNowGrow, vecTanAngleData[i]->mRsi1BigNums, vecTanAngleData[i]->fVolumePer,
 			vecTanAngleData[i]->mVolM5ContiUpNums, vecTanAngleData[i]->mVolM10ContiUpNums, vecTanAngleData[i]->mPriceM5ContiUpNums, vecTanAngleData[i]->fcustomtotalvalue);
 		pDropOffData->strInfo = strInfo;

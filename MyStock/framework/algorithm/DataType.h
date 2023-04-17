@@ -32,9 +32,15 @@ typedef struct
 	float f_min_rsi3;
 	float cr;
 	float f_min_cr;
+	float f_max_cr;
+	int   m_min_cr_day;
+	int   m_max_cr_day;
 
 	float mfi;
 	float f_min_mfi;
+	float f_max_mfi;
+	int   m_min_mfi_day;
+	int   m_max_mfi_day;
 
 	float f_total_value;
 	int   m_low_ave_5_nums;

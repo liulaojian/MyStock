@@ -239,6 +239,7 @@ xcopy /y /r F:\code\MyStock\Debug\MyStock.pdb  F:\stock\soft3\</Command>
     <ClInclude Include="DlgLoopBackSetting.h" />
     <ClInclude Include="DlgM5M10Para.h" />
     <ClInclude Include="DlgPowerArithResult.h" />
+    <ClInclude Include="DlgPVDetail.h" />
     <ClInclude Include="DlgRsiFilter.h" />
     <ClInclude Include="DlgSetting.h" />
     <ClInclude Include="DlgSFSel.h" />
@@ -395,6 +396,7 @@ xcopy /y /r F:\code\MyStock\Debug\MyStock.pdb  F:\stock\soft3\</Command>
     <ClCompile Include="DlgLoopBackSetting.cpp" />
     <ClCompile Include="DlgM5M10Para.cpp" />
     <ClCompile Include="DlgPowerArithResult.cpp" />
+    <ClCompile Include="DlgPVDetail.cpp" />
     <ClCompile Include="DlgRsiFilter.cpp" />
     <ClCompile Include="DlgSetting.cpp" />
     <ClCompile Include="DlgSFSel.cpp" />

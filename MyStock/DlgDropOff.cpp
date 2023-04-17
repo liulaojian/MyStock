@@ -56,6 +56,8 @@
 
 #include "StockCRAtithmetic.h"
 #include "StockMFIArithmetic.h"
+
+#include "DlgPVDetail.h"
 // CDlgDropOff ¶Ô»°¿ò
 
 IMPLEMENT_DYNAMIC(CDlgDropOff, CDialogEx)
@@ -130,6 +132,7 @@ BEGIN_MESSAGE_MAP(CDlgDropOff, CDialogEx)
 	ON_COMMAND(IDR_MENU_K_LINE_ANALYZE, &CDlgDropOff::OnMenuKLineAnalyze)
 	ON_BN_CLICKED(IDC_BTN_BACK_FLOW, &CDlgDropOff::OnBnClickedBtnBackFlow)
 	ON_WM_ERASEBKGND()
+	ON_COMMAND(IDR_MENU_PV_DETAIL, &CDlgDropOff::OnMenuPvDetail)
 END_MESSAGE_MAP()
 
 
@@ -3142,12 +3145,21 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 			pDropOffData->strMinDate=strRsiInfo;
 
 			CString strInfo;
-			/*if (f_cr_min_value < 40.0)
-				strInfo.Format("nowcr=%.2f maxcr=%.2f d=%d mincr=%.2f d=%d **", cr_now_value, f_cr_max_value, cr_size - m_cr_max_value_index,f_cr_min_value, cr_size - m_cr_min_value_index);
-			else
-				strInfo.Format("nowcr=%.2f maxcr=%.2f d=%d mincr=%.2f d=%d", cr_now_value, f_cr_max_value, cr_size - m_cr_max_value_index, f_cr_min_value, cr_size - m_cr_min_value_index);
-			*/
+			
 			strInfo.Format("nowmfi=%.2f maxmfi=%.2f d=%d minmfi=%.2f d=%d", mfi_now_value, f_mfi_max_value, mfi_size - m_mfi_max_value_index, f_mfi_min_value, mfi_size - m_mfi_min_value_index);
+			
+			/*CString strInfo2;
+			if (f_cr_min_value < 40.0)
+				strInfo2.Format("nowcr=%.2f maxcr=%.2f d=%d mincr=%.2f d=%d **", cr_now_value, f_cr_max_value, cr_size - m_cr_max_value_index,f_cr_min_value, cr_size - m_cr_min_value_index);
+			else
+				strInfo2.Format("nowcr=%.2f maxcr=%.2f d=%d mincr=%.2f d=%d", cr_now_value, f_cr_max_value, cr_size - m_cr_max_value_index, f_cr_min_value, cr_size - m_cr_min_value_index);
+			
+			CString strInfo3;
+
+			strInfo3 = strInfo;
+			strInfo3 += "  ";
+			strInfo3 += strInfo2;*/
+
 			pDropOffData->strInfo = strInfo;
 
 			RSIData rsiData;
@@ -3159,8 +3171,16 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 			rsiData.f_min_rsi3 = f_min_rsi3;
 			rsiData.cr = cr_now_value;
 			rsiData.f_min_cr = f_cr_min_value;
+			rsiData.f_max_cr = f_cr_max_value;
+			rsiData.m_min_cr_day = cr_size - m_cr_min_value_index;
+			rsiData.m_max_cr_day= cr_size - m_cr_max_value_index;
+
 			rsiData.mfi = mfi_now_value;
 			rsiData.f_min_mfi = f_mfi_min_value;
+			rsiData.f_max_mfi = f_mfi_max_value;
+			rsiData.m_min_mfi_day= cr_size - m_mfi_min_value_index;
+			rsiData.m_max_mfi_day = cr_size - m_mfi_max_value_index;
+
 			rsiData.strStockCode = pDropOffData->strStockCode;
 			rsiData.strStockName = pDropOffData->strStockName;
 			rsiData.f_total_value = f_total_value;
@@ -8698,7 +8718,7 @@ void CDlgDropOff::OnMenuKLineAnalyze()
 	pStockDayTable= StockDataMgr()->GetStockDayTable(strStockCode);
 
 	CString strNowDate = pStockDayTable->GetNearestStockDayDate(mDropOffTime);
-	CString strBeginDate = pStockDayTable->GetStockDayDatePreOfIndexReverse(strNowDate, 90); //90
+	CString strBeginDate = pStockDayTable->GetStockDayDatePreOfIndexReverse(strNowDate,90); //90
 
 	CDlgStockChart* pDlgStockChart;
 	pDlgStockChart = new CDlgStockChart(this);
@@ -9101,4 +9121,43 @@ BOOL CDlgDropOff::OnEraseBkgnd(CDC* pDC)
 	return TRUE;
 
 	//return CDialogEx::OnEraseBkgnd(pDC);
+}
+
+
+void CDlgDropOff::OnMenuPvDetail()
+{
+	DropOffData* pDropOffData = NULL;
+	for (uint16 i = 0; i < mListCtrlItem.GetItemCount(); i++)
+	{
+		if (mListCtrlItem.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
+		{
+			pDropOffData = reinterpret_cast<DropOffData*>(mListCtrlItem.GetItemData(i));
+			break;
+		}
+	}
+
+	if (!pDropOffData)
+		return;
+
+	RSIData mRSIData;
+	
+	
+	BOOL bFound = FALSE;
+	for (int i = 0; i < vecRSIData.size(); i++)
+	{
+		mRSIData = vecRSIData[i];
+
+		if (mRSIData.strStockCode == pDropOffData->strStockCode)
+		{
+			bFound = TRUE;
+			break;
+		}
+	}
+
+	if (!bFound)
+		return;
+
+	CDlgPVDetail dlg;
+	dlg.SetRSIData(mRSIData);
+	dlg.DoModal();
 }

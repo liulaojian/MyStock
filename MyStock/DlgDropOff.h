@@ -312,4 +312,5 @@ public:
 	afx_msg void OnBnClickedBtnBackFlow();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+	afx_msg void OnMenuPvDetail();
 };

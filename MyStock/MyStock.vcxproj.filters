@@ -570,6 +570,9 @@
     <ClInclude Include="framework\arithmetic\StockMFIArithmetic.h">
       <Filter>Framework\function\arithmetic</Filter>
     </ClInclude>
+    <ClInclude Include="DlgPVDetail.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyStock.cpp">
@@ -988,6 +991,9 @@
     </ClCompile>
     <ClCompile Include="framework\arithmetic\StockMFIArithmetic.cpp">
       <Filter>Framework\function\arithmetic</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgPVDetail.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

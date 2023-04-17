@@ -189,6 +189,8 @@ typedef struct
 	CString strStockName;
 	BOOL bPreDown;
 	int mPara1;
+	float f_macd_per;
+	float f_macd_per_2;
 	CString strDateTime;
 
 } LimitUpData;

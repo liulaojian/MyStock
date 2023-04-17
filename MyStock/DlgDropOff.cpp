@@ -53,6 +53,9 @@
 #include "DlgBackFlow.h"
 
 #include "DlgAngleDetail.h"
+
+#include "StockCRAtithmetic.h"
+#include "StockMFIArithmetic.h"
 // CDlgDropOff 对话框
 
 IMPLEMENT_DYNAMIC(CDlgDropOff, CDialogEx)
@@ -2891,6 +2894,69 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 
 			}
 
+			CStockMFIData* pStockMFIData = CStockMFIArithmetic::CalcMFIData(pDropOffData->strStockCode, strNowDate, 125, K_LINE_DAY, 14);
+			int mfi_size = pStockMFIData->vec_mfi.size();
+			float mfi_now_value = pStockMFIData->vec_mfi[mfi_size - 1];
+			float f_mfi_min_value = 999999.0;
+			int m_mfi_min_value_index = -1;
+
+			for (int j = mfi_size - mRsiPreNums; j < mfi_size; j++)
+			{
+				float f_mfi = pStockMFIData->vec_mfi[j];
+				if (f_mfi < f_mfi_min_value)
+				{
+					f_mfi_min_value = f_mfi;
+					m_mfi_min_value_index = j;
+				}
+			}
+
+			float f_mfi_max_value = -999999.0;
+			int m_mfi_max_value_index = -1;
+			for (int j = mfi_size - mRsiPreNums; j < mfi_size; j++)
+			{
+				float f_mfi = pStockMFIData->vec_mfi[j];
+				if (f_mfi > f_mfi_max_value)
+				{
+					f_mfi_max_value = f_mfi;
+					m_mfi_max_value_index = j;
+				}
+
+			}
+
+
+
+			CStockCRData*  pStockCRData=CStockCRArithmetic::CalcCRData(pDropOffData->strStockCode, strNowDate, 125, K_LINE_DAY, 26);
+			int cr_size = pStockCRData->vec_cr.size();
+
+			float cr_now_value = pStockCRData->vec_cr[cr_size - 1];
+
+			float f_cr_min_value = 999999.0;
+			int m_cr_min_value_index = -1;
+
+			for (int j = cr_size - mRsiPreNums; j < cr_size; j++) 
+			{
+				float f_cr = pStockCRData->vec_cr[j];
+				if (f_cr < f_cr_min_value)
+				{
+					f_cr_min_value = f_cr;
+					m_cr_min_value_index = j;
+				}
+			}
+
+			float f_cr_max_value = -999999.0;
+			int m_cr_max_value_index = -1;
+			for (int j = cr_size - mRsiPreNums; j < cr_size; j++)
+			{
+				float f_cr = pStockCRData->vec_cr[j];
+				if (f_cr > f_cr_max_value)
+				{
+					f_cr_max_value = f_cr;
+					m_cr_max_value_index = j;
+				}
+
+			}
+
+
 			CStockRSIData* pStockRSIData=NULL;
 			pStockRSIData=CStockRSIArithmetic::CalcRSIData(pDropOffData->strStockCode,strNowDate,125,K_LINE_DAY,6,12,24); 
 			int rsi_size=pStockRSIData->vec_rsi_1_value.size();
@@ -3074,6 +3140,16 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 			pDropOffData->strMaxDate=strRsiInfo;
 			strRsiInfo.Format("rsi1=%.2f , rsi2=%.2f , rsi3=%.2f\n",f_min_rsi1,f_min_rsi2,f_min_rsi3);
 			pDropOffData->strMinDate=strRsiInfo;
+
+			CString strInfo;
+			/*if (f_cr_min_value < 40.0)
+				strInfo.Format("nowcr=%.2f maxcr=%.2f d=%d mincr=%.2f d=%d **", cr_now_value, f_cr_max_value, cr_size - m_cr_max_value_index,f_cr_min_value, cr_size - m_cr_min_value_index);
+			else
+				strInfo.Format("nowcr=%.2f maxcr=%.2f d=%d mincr=%.2f d=%d", cr_now_value, f_cr_max_value, cr_size - m_cr_max_value_index, f_cr_min_value, cr_size - m_cr_min_value_index);
+			*/
+			strInfo.Format("nowmfi=%.2f maxmfi=%.2f d=%d minmfi=%.2f d=%d", mfi_now_value, f_mfi_max_value, mfi_size - m_mfi_max_value_index, f_mfi_min_value, mfi_size - m_mfi_min_value_index);
+			pDropOffData->strInfo = strInfo;
+
 			RSIData rsiData;
 			rsiData.rsi_1 = rsi_1;
 			rsiData.rsi_2 = rsi_2;
@@ -3081,11 +3157,21 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 			rsiData.f_min_rsi1 = f_min_rsi1;
 			rsiData.f_min_rsi2 = f_min_rsi2;
 			rsiData.f_min_rsi3 = f_min_rsi3;
+			rsiData.cr = cr_now_value;
+			rsiData.f_min_cr = f_cr_min_value;
+			rsiData.mfi = mfi_now_value;
+			rsiData.f_min_mfi = f_mfi_min_value;
 			rsiData.strStockCode = pDropOffData->strStockCode;
 			rsiData.strStockName = pDropOffData->strStockName;
 			rsiData.f_total_value = f_total_value;
 			rsiData.m_low_ave_5_nums = m_low_ave_5_nums;
 			vecRSIData.push_back(rsiData);
+
+			SAFE_DELETE(pStockMFIData);
+			SAFE_DELETE(pStockCRData);
+			SAFE_DELETE(pStockRSIData);
+			
+
 		}
 		catch (...)
 		{
@@ -7504,11 +7590,9 @@ BOOL CDlgDropOff::DoFilterLimitUpMatch(void)
 		pDropOffData->strStockCode=vecLimitUpData[i]->strStockCode;
 		pDropOffData->strStockName=vecLimitUpData[i]->strStockName;
 
-		if(vecLimitUpData[i]->bPreDown)
-			pDropOffData->fMaxMultiple=1;
-		else
-			pDropOffData->fMaxMultiple=0;
-		pDropOffData->fAveMultiple=0;
+		
+		pDropOffData->fMaxMultiple = vecLimitUpData[i]->f_macd_per_2;
+		pDropOffData->fAveMultiple= vecLimitUpData[i]->f_macd_per;
 		pDropOffData->strMaxDate="";
 		pDropOffData->strMinDate="";
 		pDropOffData->mMaxValuePassDay=0;
@@ -8323,7 +8407,10 @@ void CDlgDropOff::OnMenuNextGrowp()
 	strNowDate = vecStockDayData[mNextIndex]->GetDate();
 
 	CString strInfo;
-	strInfo.Format("%d 交易日后 %s f_per=%f,是否显示K线\n", mCalNextDays, pDropOffData->strStockCode, f_per);
+	if(f_per>=0.0)
+		strInfo.Format("%d 交易日后 %s f_per=%f, 盈利 ,是否显示K线\n", mCalNextDays, pDropOffData->strStockCode, f_per);
+	else
+		strInfo.Format("%d 交易日后 %s f_per=%f, 亏本 ,是否显示K线\n", mCalNextDays, pDropOffData->strStockCode, f_per);
 
 	int result = AfxMessageBox(strInfo, MB_YESNO);
 	if (IDYES == result)
@@ -8418,9 +8505,11 @@ void CDlgDropOff::OnMenuNextGrowp3()
 	strNowDate = vecStockDayData[mNextIndex]->GetDate();
 
 	CString strInfo;
-	
-	strInfo.Format("%d 交易日后 %s f_per=%f,是否显示K线\n", mCalNextDays, pDropOffData->strStockCode, f_per);
 
+	if(f_per>=0.0)
+		strInfo.Format("%d 交易日后 %s f_per=%f, 盈利 ,是否显示K线\n", mCalNextDays, pDropOffData->strStockCode, f_per);
+	else
+		strInfo.Format("%d 交易日后 %s f_per=%f, 亏本 ,是否显示K线\n", mCalNextDays, pDropOffData->strStockCode, f_per);
 	int result = AfxMessageBox(strInfo, MB_YESNO);
 	if (IDYES == result)
 	{
@@ -8514,7 +8603,10 @@ void CDlgDropOff::OnMenuNextGrowp8()
 	double f_per = (f_next_close_price - f_now_close_price) * 100.0 / f_now_close_price;
 
 	CString strInfo;
-	strInfo.Format("%d 交易日后 %s f_per=%f\n", mCalNextDays, pDropOffData->strStockCode, f_per);
+	if(f_per>=0.0)
+		strInfo.Format("%d 交易日后 %s f_per=%f 盈利\n", mCalNextDays, pDropOffData->strStockCode, f_per);
+	else
+		strInfo.Format("%d 交易日后 %s f_per=%f 亏本\n", mCalNextDays, pDropOffData->strStockCode, f_per);
 
 	AfxMessageBox(strInfo);
 }

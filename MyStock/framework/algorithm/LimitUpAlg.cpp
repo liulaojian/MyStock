@@ -293,19 +293,38 @@ Vec_LimitUpData   CLimitUpAlg::CLimitUpAlg::doFilter(CTime mDropOffTime)
 		double f_total_macd = 0.0;
 		double f_now_close = pStockMACDData->vec_close_price[Size_close - 1];
 
-		if (pStockCode->strStockCode == "SH600403")
+		/*std::vector<double> vec_price_ma5 = CStockKDJArithmetic::CalcMA(5, pStockMACDData->vec_close_price);
+		int size_ma5 = vec_price_ma5.size();
+		double f_now_m5 = vec_price_ma5[size_ma5 - 1];
+
+		std::vector<double> vec_price_ma20 = CStockKDJArithmetic::CalcMA(20, pStockMACDData->vec_close_price);
+		int size_ma20 = vec_price_ma20.size();
+		double f_now_m20 = vec_price_ma20[size_ma20 - 1];*/
+		
+		/*if (pStockCode->strStockCode == "SH600403")
 		{
 			f_total_macd = 0.1;
 			f_total_macd = 0.0;
-		}
+		}*/
 		for (int i = Size -200; i < Size; i++)
 		{
 			f_total_macd += pStockMACDData->vec_macd[i];
 		}
 
-		double f_macd_per = f_total_macd  / f_now_close;
+		double f_macd_per = f_total_macd / f_now_close;
+
+		double f_total_macd_2 = 0.0;
+
+		for (int i = Size - 100; i < Size; i++)
+		{
+			f_total_macd_2 += pStockMACDData->vec_macd[i];
+		}
+
+		double f_macd_per_2 = f_total_macd_2 / f_now_close;
+
 		
-		if (f_macd_per < -1.0)
+		
+		if (f_macd_per < -1.0)  
 		{
 			printf("%s  %s  f_macd_per=%.2f\n", (LPCSTR)pStockCode->strStockCode, (LPCSTR)pStockCode->strStockName, f_macd_per);
 			LimitUpData* pLimitUpData = new LimitUpData();
@@ -314,6 +333,8 @@ Vec_LimitUpData   CLimitUpAlg::CLimitUpAlg::doFilter(CTime mDropOffTime)
 
 			pLimitUpData->strDateTime = strNowDate;
 			pLimitUpData->mPara1 = 0;
+			pLimitUpData->f_macd_per = f_macd_per;
+			pLimitUpData->f_macd_per_2 = f_macd_per_2;
 			pLimitUpData->bPreDown = TRUE;
 			vecLimitUpData.push_back(pLimitUpData);
 		}

@@ -30,6 +30,12 @@ typedef struct
 	float f_min_rsi1;
 	float f_min_rsi2;
 	float f_min_rsi3;
+	float cr;
+	float f_min_cr;
+
+	float mfi;
+	float f_min_mfi;
+
 	float f_total_value;
 	int   m_low_ave_5_nums;
 

@@ -567,6 +567,9 @@
     <ClInclude Include="framework\arithmetic\StockCRAtithmetic.h">
       <Filter>Framework\function\arithmetic</Filter>
     </ClInclude>
+    <ClInclude Include="framework\arithmetic\StockMFIArithmetic.h">
+      <Filter>Framework\function\arithmetic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyStock.cpp">
@@ -981,6 +984,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="framework\arithmetic\StockCRArithmetic.cpp">
+      <Filter>Framework\function\arithmetic</Filter>
+    </ClCompile>
+    <ClCompile Include="framework\arithmetic\StockMFIArithmetic.cpp">
       <Filter>Framework\function\arithmetic</Filter>
     </ClCompile>
   </ItemGroup>

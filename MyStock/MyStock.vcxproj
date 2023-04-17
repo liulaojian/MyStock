@@ -281,6 +281,7 @@ xcopy /y /r F:\code\MyStock\Debug\MyStock.pdb  F:\stock\soft3\</Command>
     <ClInclude Include="framework\arithmetic\StockJettonArithmetic.h" />
     <ClInclude Include="framework\arithmetic\StockKDJArithmetic.h" />
     <ClInclude Include="framework\arithmetic\StockMACDArithmetic.h" />
+    <ClInclude Include="framework\arithmetic\StockMFIArithmetic.h" />
     <ClInclude Include="framework\arithmetic\StockNatureAnalysisArithmetic.h" />
     <ClInclude Include="framework\arithmetic\StockOBVArithmetic.h" />
     <ClInclude Include="framework\arithmetic\StockPowerArithmetic.h" />
@@ -433,6 +434,7 @@ xcopy /y /r F:\code\MyStock\Debug\MyStock.pdb  F:\stock\soft3\</Command>
     <ClCompile Include="framework\arithmetic\StockCRArithmetic.cpp" />
     <ClCompile Include="framework\arithmetic\StockKDJArithmetic.cpp" />
     <ClCompile Include="framework\arithmetic\StockMACDArithmetic.cpp" />
+    <ClCompile Include="framework\arithmetic\StockMFIArithmetic.cpp" />
     <ClCompile Include="framework\arithmetic\StockNatureAnalysisArthmetic.cpp" />
     <ClCompile Include="framework\arithmetic\StockOBVArithmetic.cpp" />
     <ClCompile Include="framework\arithmetic\StockPowerArithmetic.cpp" />

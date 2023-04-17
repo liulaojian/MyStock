@@ -55,6 +55,7 @@
 #include "ConceptDataMgr.h"
 
 #include "StockCRAtithmetic.h"
+#include "StockMFIArithmetic.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -221,8 +222,10 @@ BOOL CMyStockDlg::OnInitDialog()
 	pDlgSniperLoopBack=new CDlgSniperLoopBack(this);
 	pDlgSniperLoopBack->Create(IDD_DLG_SNIPER_LOOPBACK);
 
-	CStockCRArithmetic::CalcCRData("SH600036", "2023/04/07", 125, K_LINE_DAY, 26);
+	CStockCRData* pStockCRData=CStockCRArithmetic::CalcCRData("SH600036", "2023/04/07", 125, K_LINE_DAY, 26);
 
+	CStockMFIArithmetic::CalcMFIData("SH600036", "2023/04/07", 125, K_LINE_DAY, 14);
+	
 	//CStockCCIArithmetic::CalcCCIData("SH600036","2018/02/23 1500",125,K_LINE_60MIN,14);
 
 	//CStockRSIArithmetic::CalcRSIData("SH000001","2018/02/23",125,K_LINE_DAY,6,12,24);

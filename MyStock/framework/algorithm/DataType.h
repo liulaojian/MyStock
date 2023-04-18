@@ -30,6 +30,13 @@ typedef struct
 	float f_min_rsi1;
 	float f_min_rsi2;
 	float f_min_rsi3;
+	int   m_min_rsi_day;
+	
+	float f_max_rsi1;
+	float f_max_rsi2;
+	float f_max_rsi3;
+	int   m_max_rsi_day;
+
 	float cr;
 	float f_min_cr;
 	float f_max_cr;
@@ -48,3 +55,5 @@ typedef struct
 } RSIData;
 
 typedef std::vector<RSIData> Vec_RSIData;
+
+typedef std::vector<RSIData*> PVecRSIData;

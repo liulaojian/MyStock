@@ -257,6 +257,8 @@ xcopy /y /r F:\code\MyStock\Debug\MyStock.pdb  F:\stock\soft3\</Command>
     <ClInclude Include="DlgTanAnglePara.h" />
     <ClInclude Include="DlgTanPara2.h" />
     <ClInclude Include="DlgUpdateStockData.h" />
+    <ClInclude Include="DlgVPLowSet.h" />
+    <ClInclude Include="DlgVPSFSel.h" />
     <ClInclude Include="DlgXLH.h" />
     <ClInclude Include="framework\algorithm\Algorithm.h" />
     <ClInclude Include="framework\algorithm\BollFilterAlg.h" />
@@ -414,6 +416,8 @@ xcopy /y /r F:\code\MyStock\Debug\MyStock.pdb  F:\stock\soft3\</Command>
     <ClCompile Include="DlgTanAnglePara.cpp" />
     <ClCompile Include="DlgTanPara2.cpp" />
     <ClCompile Include="DlgUpdateStockData.cpp" />
+    <ClCompile Include="DlgVPLowSet.cpp" />
+    <ClCompile Include="DlgVPSFSel.cpp" />
     <ClCompile Include="DlgXLH.cpp" />
     <ClCompile Include="framework\algorithm\BollFilterAlg.cpp" />
     <ClCompile Include="framework\algorithm\GeneralAnalyze.cpp" />

@@ -47,6 +47,39 @@ BOOL CDlgPVDetail::OnInitDialog()
 	SetWindowText(strTitle);
 
 	CString strInfo;
+
+	strInfo.Format("当前RSI1值 %.2f", mRSIData.rsi_1);
+	mListDetail.AddString(strInfo);
+	strInfo.Format("当前RSI2值 %.2f", mRSIData.rsi_2);
+	mListDetail.AddString(strInfo);
+	strInfo.Format("当前RSI3值 %.2f", mRSIData.rsi_2);
+	mListDetail.AddString(strInfo);
+
+	mListDetail.AddString("    ");
+	mListDetail.AddString("    ");
+	strInfo.Format("最小RSI1值 %.2f", mRSIData.f_min_rsi1);
+	mListDetail.AddString(strInfo);
+	strInfo.Format("最小RSI2值 %.2f", mRSIData.f_min_rsi2);
+	mListDetail.AddString(strInfo);
+	strInfo.Format("最小RSI3值 %.2f", mRSIData.f_min_rsi3);
+	mListDetail.AddString(strInfo);
+	strInfo.Format("最小RSI1距今 %d日", mRSIData.m_min_rsi_day);
+	mListDetail.AddString(strInfo);
+
+	mListDetail.AddString("    ");
+	mListDetail.AddString("    ");
+	strInfo.Format("最大RSI1值 %.2f", mRSIData.f_max_rsi1);
+	mListDetail.AddString(strInfo);
+	strInfo.Format("最大RSI2值 %.2f", mRSIData.f_max_rsi2);
+	mListDetail.AddString(strInfo);
+	strInfo.Format("最大RSI3值 %.2f", mRSIData.f_max_rsi3);
+	mListDetail.AddString(strInfo);
+	strInfo.Format("最大RSI1距今 %d日", mRSIData.m_max_rsi_day);
+	mListDetail.AddString(strInfo);
+
+
+	mListDetail.AddString("    ");
+	mListDetail.AddString("    ");
 	float cr = mRSIData.cr;
 	strInfo.Format("当前CR值 %.2f", cr);
 	mListDetail.AddString(strInfo);

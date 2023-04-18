@@ -127,6 +127,15 @@ public:
 	BOOL DoIndustyInfoStat(void);		//行业信息统计
 	BOOL DoFilterIndustyInfo(IndustryData* pIndustryData);		//行业选择
 	BOOL DoReverseFilterIndustyInfo(IndustryData* pIndustryData);		//行业选择
+
+
+	BOOL DoFiterVPMFIEqu(void);
+	BOOL DoFiterVPCREqu(void);
+
+	BOOL DoFiterVPMFIEquLess75(void);
+
+	BOOL DoFiterVPMFILowVale(int mMfiLowValue,int mMfiLowDay,bool bIsMfiCurMaxEqu,int mMfiDifCurMax);
+
 	//计算上涨系数 量
 	int CalcUpCoeff_Vol_1(std::vector<double> & vec_vol,std::vector<double> & vec_vol_ma5,std::vector<double> & vec_vol_ma10,std::vector<double> & vec_price);
 
@@ -313,4 +322,5 @@ public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnMenuPvDetail();
+	afx_msg void OnBnClickedBtnVpSel();
 };

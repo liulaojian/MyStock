@@ -573,6 +573,12 @@
     <ClInclude Include="DlgPVDetail.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="DlgVPSFSel.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgVPLowSet.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyStock.cpp">
@@ -993,6 +999,12 @@
       <Filter>Framework\function\arithmetic</Filter>
     </ClCompile>
     <ClCompile Include="DlgPVDetail.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgVPSFSel.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgVPLowSet.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

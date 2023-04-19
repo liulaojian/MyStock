@@ -1316,3 +1316,84 @@ void CKLineFilterAlg::FreeVecKLineFilterData2(Vec_KLineFilterData2& vecKLineFilt
 	vecKLineFilterData2.clear();
 
 }
+
+
+
+BOOL CKLineFilterAlg::IsKLineReverse(CString strStockCode, CString strStockName,CTime mNowTime)
+{
+	if (strStockCode == "SH600332")
+	{
+		int a = 0;
+		a++;
+	}
+	
+	CStockKDJData* pStockKDJData = NULL;
+	CStockDayTable* pStockDayTable = NULL;
+	CString strNowDate;
+	pStockDayTable = StockDataMgr()->GetStockDayTable(strStockCode);
+	strNowDate = pStockDayTable->GetNearestStockDayDate(mNowTime);
+
+	pStockKDJData = CStockKDJArithmetic::CalcKDJData(strStockCode, strNowDate, 160, K_LINE_DAY, 9, 3, 3);
+	if (pStockKDJData == NULL)
+		return FALSE;
+
+	std::vector<double> vec_price_ma5, vec_price_ma10, vec_price_ma20, vec_price_ma60;
+	vec_price_ma5 = CStockKDJArithmetic::CalcMA(5, pStockKDJData->vec_close_price);
+	vec_price_ma10 = CStockKDJArithmetic::CalcMA(10, pStockKDJData->vec_close_price);
+	vec_price_ma20 = CStockKDJArithmetic::CalcMA(20, pStockKDJData->vec_close_price);
+	vec_price_ma60 = CStockKDJArithmetic::CalcMA(60, pStockKDJData->vec_close_price);
+
+
+	int kdj_size = pStockKDJData->vec_k.size();
+
+	float f_min_low_value = 99999.0;
+	int   m_min_low_value_index = -1;
+
+	for (int i = kdj_size-95; i < kdj_size; i++)
+	{
+		if (pStockKDJData->vec_low_price[i] < f_min_low_value)
+		{
+			f_min_low_value = pStockKDJData->vec_low_price[i];
+			m_min_low_value_index = i;
+		}
+			
+	}
+
+	int m_min_low_value_dif_day = kdj_size - m_min_low_value_index;
+
+	if (m_min_low_value_dif_day >= 15)		//³¬¹ý15ÈÕ
+	{
+		SAFE_DELETE(pStockKDJData);
+		return FALSE;
+	}
+
+	float f_last_ma20_value = vec_price_ma20[m_min_low_value_index];
+	bool bFail = false;
+	int m_contiu_down_nums = 0;
+	for (int i = m_min_low_value_index-1 ; i >=0; i--)
+	{
+		float f_now_ma20_value = vec_price_ma20[i];
+		if (f_now_ma20_value < f_last_ma20_value)
+			break;
+		m_contiu_down_nums++;
+		f_last_ma20_value = f_now_ma20_value;
+	}
+
+
+	if (m_contiu_down_nums < 25)
+	{
+		bFail = true;
+	}
+
+	if (bFail)
+	{
+
+		SAFE_DELETE(pStockKDJData);
+		return FALSE;
+	}
+
+	printf("%s %s %d\n", (LPCSTR)strStockCode,(LPCSTR)strStockName, m_contiu_down_nums);
+
+	SAFE_DELETE(pStockKDJData);
+	return TRUE;
+}

@@ -136,6 +136,7 @@ public:
 
 	BOOL DoFiterVPMFILowVale(int mMfiLowValue,int mMfiLowDay,bool bIsMfiCurMaxEqu,int mMfiDifCurMax);
 
+	BOOL DoFilterReverseMLine(void);
 	//计算上涨系数 量
 	int CalcUpCoeff_Vol_1(std::vector<double> & vec_vol,std::vector<double> & vec_vol_ma5,std::vector<double> & vec_vol_ma10,std::vector<double> & vec_price);
 

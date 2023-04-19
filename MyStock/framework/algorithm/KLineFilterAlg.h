@@ -51,4 +51,8 @@ public:
 
 	static void FreeVecKLineFilterData2(Vec_KLineFilterData2& vecKLineFilterData2);
 
+
+	//µ¹²¢ÐÐKÏß
+	static BOOL IsKLineReverse(CString strStockCode, CString strStockName,CTime mNowTime);
+
 };

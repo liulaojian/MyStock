@@ -2131,7 +2131,8 @@ void CDlgDropOff::OnBnClickedBtnDropOff()
 	}
 	else if (mFunButtonMenu.m_nMenuResult == IDR_MENU_KLINE_NINE_TURN)
 	{
-		DoFilterKLineNineTurn();
+		//DoFilterKLineNineTurn();
+		DoFilterReverseMLine();
 
 	}
 	else if (mFunButtonMenu.m_nMenuResult == IDR_MENU_GROUP_INFO)
@@ -9211,7 +9212,7 @@ BOOL CDlgDropOff::DoFiterVPMFIEqu(void)
 
 		//float fcrdifper = fcrdif * 100.0 / mRSIData.f_max_cr;
 
-		if (fmfidifper < 2.0 && fMaxRsi < 92.0 && frsidifper<2.0) //&& fcrdifper<3.0
+		if (fmfidifper < 2.0  && frsidifper<2.0) //&& fMaxRsi < 92.0 && fcrdifper<3.0
 		{
 			DropOffData* pDropOffData = new DropOffData();
 			pDropOffData->strStockCode = mRSIData.strStockCode;
@@ -9405,6 +9406,44 @@ BOOL CDlgDropOff::DoFiterVPMFILowVale(int mMfiLowValue, int mMfiLowDay, bool bIs
 	return TRUE;
 }
 
+
+BOOL CDlgDropOff::DoFilterReverseMLine(void)
+{
+
+	CTime mDropOffTime;
+	if (bUsePreDate)
+	{
+		mDataTimeDropOff.GetTime(mDropOffTime);
+	}
+	else
+	{
+		mDropOffTime = CTime::GetCurrentTime();
+	}
+	Vec_DropOffData  vecDropOffData2;
+	for (int i = 0; i < vecDropOffData.size(); i++)
+	{
+		CString strStockCode = vecDropOffData[i]->strStockCode;
+		CString strStockName = vecDropOffData[i]->strStockName;
+
+		if (CKLineFilterAlg::IsKLineReverse(strStockCode, strStockName,mDropOffTime))
+		{
+			vecDropOffData2.push_back(vecDropOffData[i]);
+		}
+	
+	}
+
+	vecDropOffData.clear();
+
+	if (vecDropOffData2.size() > 0)
+		vecDropOffData.assign(vecDropOffData2.begin(), vecDropOffData2.end());
+
+	SetTimer(DROPOFF_EVENT_REFRESH_DATA, 300, 0);
+	return TRUE;
+
+	return TRUE;
+}
+
+
 void CDlgDropOff::OnBnClickedBtnVpSel()
 {
 	CDlgVPSFSel dlg;
@@ -9487,3 +9526,6 @@ void CDlgDropOff::OnBnClickedBtnVpSel()
 
 	}
 }
+
+
+

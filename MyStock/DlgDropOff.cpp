@@ -4962,6 +4962,8 @@ BOOL  CDlgDropOff::DoFilterTanAngle(void)
 	{
 		mDropOffTime=CTime::GetCurrentTime();
 	}
+
+	vecRSIData.clear();
 	
 	mTanAngleAlg.SetKLineType(mKLineType);
 
@@ -8743,7 +8745,7 @@ void CDlgDropOff::OnMenuKLineAnalyze()
 	pStockDayTable= StockDataMgr()->GetStockDayTable(strStockCode);
 
 	CString strNowDate = pStockDayTable->GetNearestStockDayDate(mDropOffTime);
-	CString strBeginDate = pStockDayTable->GetStockDayDatePreOfIndexReverse(strNowDate,90); //90
+	CString strBeginDate = pStockDayTable->GetStockDayDatePreOfIndexReverse(strNowDate,110); //90
 
 	CDlgStockChart* pDlgStockChart;
 	pDlgStockChart = new CDlgStockChart(this);
@@ -9199,12 +9201,17 @@ BOOL CDlgDropOff::DoFiterVPMFIEqu(void)
 
 		float fmfidifper = fmfidif * 100.0 / mRSIData.f_max_mfi;
 
+		float fCurRsi = mRSIData.rsi_1;
+		float fMaxRsi = mRSIData.f_max_rsi1;
 
+		float frsidif = fabs(fMaxRsi - fCurRsi);
+		float frsidifper = frsidif * 100.0 / fMaxRsi;
+		
 		//float fcrdif= fabs(mRSIData.cr - mRSIData.f_max_cr);
 
 		//float fcrdifper = fcrdif * 100.0 / mRSIData.f_max_cr;
 
-		if (fmfidifper < 2.0 ) //&& fcrdifper<3.0
+		if (fmfidifper < 2.0 && fMaxRsi < 92.0 && frsidifper<2.0) //&& fcrdifper<3.0
 		{
 			DropOffData* pDropOffData = new DropOffData();
 			pDropOffData->strStockCode = mRSIData.strStockCode;
@@ -9237,7 +9244,7 @@ BOOL CDlgDropOff::DoFiterVPMFIEqu(void)
 	return TRUE;
 }
 
-BOOL CDlgDropOff::DoFiterVPCREqu(void)
+BOOL CDlgDropOff::DoFiterVPLimDrop(void)
 {
 	RSIData mRSIData;
 	for (int i = 0; i < vecRSIData.size(); i++)
@@ -9253,7 +9260,11 @@ BOOL CDlgDropOff::DoFiterVPCREqu(void)
 
 		float fcrdifper = fcrdif * 100.0 / mRSIData.f_max_cr;
 
-		if (fcrdifper < 2.0) //&&  fmfidifper < 2.0
+		float fCurRsi = mRSIData.rsi_1;
+		float fMaxRsi = mRSIData.f_max_rsi1;
+
+		if(fMaxRsi>90.0 && fCurRsi<60.0)
+		//if (fcrdifper < 2.0) //&&  fmfidifper < 2.0
 		{
 			DropOffData* pDropOffData = new DropOffData();
 			pDropOffData->strStockCode = mRSIData.strStockCode;
@@ -9346,8 +9357,10 @@ BOOL CDlgDropOff::DoFiterVPMFILowVale(int mMfiLowValue, int mMfiLowDay, bool bIs
 		{
 			if (mRSIData.m_min_mfi_day <= mMfiLowDay)
 			{
-				if(!bIsMfiCurMaxEqu)
-					bok1 = true;
+				if (!bIsMfiCurMaxEqu)
+				{
+						bok1 = true;
+				}
 				else
 				{
 					float fdif = fabs(mRSIData.mfi - mRSIData.f_max_mfi);
@@ -9414,7 +9427,7 @@ void CDlgDropOff::OnBnClickedBtnVpSel()
 			DoFiterVPMFIEqu();
 
 		}
-		else if (mSFSel == 1) //CR相等
+		else if (mSFSel == 1) //极限下降
 		{
 			bReserveFilter = mCheckReserveFilter.GetCheck();
 
@@ -9426,7 +9439,7 @@ void CDlgDropOff::OnBnClickedBtnVpSel()
 
 			vecDropOffData.clear();
 
-			DoFiterVPCREqu();
+			DoFiterVPLimDrop();
 
 		}
 		else if (mSFSel == 2) //MFI<75相等

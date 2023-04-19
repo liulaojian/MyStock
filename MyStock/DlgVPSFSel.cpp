@@ -49,7 +49,7 @@ BOOL CDlgVPSFSel::OnInitDialog()
 	ret = mCmbSFSel.AddString("MFI相等");
 	mCmbSFSel.SetItemData(ret, 0);
 
-	ret = mCmbSFSel.AddString("CR相等");
+	ret = mCmbSFSel.AddString("极限下降");
 	mCmbSFSel.SetItemData(ret, 1);
 
 

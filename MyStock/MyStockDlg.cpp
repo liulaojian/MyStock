@@ -231,7 +231,7 @@ BOOL CMyStockDlg::OnInitDialog()
 	//CStockRSIArithmetic::CalcRSIData("SH000001","2018/02/23",125,K_LINE_DAY,6,12,24);
 	//CStockMACDArithmetic::CalcMACDData("SH000001","2018/02/23",125,K_LINE_DAY,12,26,9);
 	//CStockOBVArithmetic::CalcOBVData("SH600016","2018/02/23",125,K_LINE_DAY,30);
-	//CStockSARArithmetic::CalcSARData("SH600016","2018/02/23",128,K_LINE_DAY,4);
+	CStockSARArithmetic::CalcSARData("SH600016","2023/04/07",128,K_LINE_DAY,4);
 	//CStockASIArithmetic::CalcASIData("SH000001","2018/02/23",125,K_LINE_DAY,6);
 	//CStockKDJArithmetic::CalcKDJData("SH000001","2018/02/28",125,K_LINE_DAY,9,3,3);
 	//CStockBOLLArithmetic::CalcBOLLData("SH600016","2018/02/28",125,K_LINE_DAY,20);

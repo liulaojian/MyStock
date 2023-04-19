@@ -130,7 +130,7 @@ public:
 
 
 	BOOL DoFiterVPMFIEqu(void);
-	BOOL DoFiterVPCREqu(void);
+	BOOL DoFiterVPLimDrop(void);
 
 	BOOL DoFiterVPMFIEquLess75(void);
 

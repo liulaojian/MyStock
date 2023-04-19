@@ -567,6 +567,8 @@ BOOL CStockChartStatic::Init(void)
 		mAftExtendNums=(mEndPos-mBeginPos)*1;
 
 
+	int mNums = mEndPos - mBeginPos;
+
 	strDrawBeginDate = strBeginDate;//pStockDayTable->GetStockDayDatePreOfIndex(strBeginDate,mPreExtendNums);
 	strDrawEndDate = strEndDate;//pStockDayTable->GetStockDayDateAftOfIndex(strEndDate,mAftExtendNums);
 	mDrawBeginPos=pStockDayTable->GetNearestStockDayIndex(strDrawBeginDate);
@@ -588,7 +590,7 @@ BOOL CStockChartStatic::Init(void)
 	f_draw_max_volume = f_max_volume + ((f_max_volume - f_min_volume) * 5) / 100.0;
 
 
-	pStockKDJData = CStockKDJArithmetic::CalcKDJData(pStockDayTable->GetStockCode(), strEndDate, 160, K_LINE_DAY, 9, 3, 3);//
+	pStockKDJData = CStockKDJArithmetic::CalcKDJData(pStockDayTable->GetStockCode(), strEndDate, mNums+70, K_LINE_DAY, 9, 3, 3);//
 
 	std::vector<double> vec_price_ma5, vec_price_ma10, vec_price_ma20,vec_price_ma60;
 	vec_price_ma5= CStockKDJArithmetic::CalcMA(5, pStockKDJData->vec_close_price);

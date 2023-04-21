@@ -57,6 +57,10 @@
 #include "StockCRAtithmetic.h"
 #include "StockMFIArithmetic.h"
 
+#include "StockPSYArithmetic.h"
+#include "StockVRArithmetic.h"
+
+
 #include "DlgPVDetail.h"
 #include "DlgVPSFSel.h"
 #include "DlgVPLowSet.h"
@@ -78,22 +82,9 @@ void CDlgDropOff::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LIST_ITEM, mListCtrlItem);
-	DDX_Control(pDX, IDC_EDIT_FMUL, mEditFMul);
-	DDX_Control(pDX, IDC_SPIN1, mSpin);
-	DDX_Control(pDX, IDC_EDIT_MIN_NUMS, mEditMinNums);
-	DDX_Control(pDX, IDC_SPIN_MIN_NUMS, mSpinMinNums);
-	DDX_Control(pDX, IDC_EDIT_DAYNUMS, mEditDayNums);
-	DDX_Control(pDX, IDC_SPIN_DAY_NUMS, mSpinDayNums);
-	DDX_Control(pDX, IDC_EDIT_AVE_FMUL, mEditAveMul);
-	DDX_Control(pDX, IDC_SPIN_AVE, mSpinAve);
-	DDX_Control(pDX, IDC_CHECK_AVE, mCheckAve);
-	DDX_Control(pDX, IDC_CHECK_MAX, mCheckMax);
-	DDX_Control(pDX, IDC_CHECK_AVE_10_DAY, mCheckAve10Day);
+	
 	DDX_Control(pDX, IDC_CHECK_DATE, mCheckDate);
 	DDX_Control(pDX, IDC_DATETIMEPICKER1, mDataTimeDropOff);
-	DDX_Control(pDX, IDC_CHECK_AVE_5_DAY, mCheckAve5Day);
-	DDX_Control(pDX, IDC_EDIT_MAX_DAYS, mEditMaxDays);
-	DDX_Control(pDX, IDC_SPIN_MAX_DAYS, mSpinMaxDays);
 	DDX_Control(pDX, IDC_CHECK_RESERVE_FILTER, mCheckReserveFilter);
 	DDX_Control(pDX, IDCMENU_BTN_DROP_OFF, mFunButtonMenu);
 	DDX_Control(pDX, IDC_CHECK_MERGE_FILTER, mCheckMergeFilter);
@@ -102,11 +93,11 @@ void CDlgDropOff::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CDlgDropOff, CDialogEx)
-	ON_BN_CLICKED(IDC_BTN_BEGIN, &CDlgDropOff::OnBnClickedBtnBegin)
+	//ON_BN_CLICKED(IDC_BTN_BEGIN, &CDlgDropOff::OnBnClickedBtnBegin)
 	ON_WM_TIMER()
 	ON_BN_CLICKED(IDC_CHECK_DATE, &CDlgDropOff::OnClickedCheckDate)
-	ON_BN_CLICKED(IDC_BTN_EXPER_FILTER, &CDlgDropOff::OnBnClickedBtnExperFilter)
-	ON_BN_CLICKED(IDC_BTN_EXPER_FILTER2, &CDlgDropOff::OnBnClickedBtnExperFilter2)
+	//ON_BN_CLICKED(IDC_BTN_EXPER_FILTER, &CDlgDropOff::OnBnClickedBtnExperFilter)
+	//ON_BN_CLICKED(IDC_BTN_EXPER_FILTER2, &CDlgDropOff::OnBnClickedBtnExperFilter2)
 	ON_BN_CLICKED(IDC_BTN_EXPER_FILTER3, &CDlgDropOff::OnBnClickedBtnExperFilter3)
 	ON_BN_CLICKED(IDC_BTN_EXPER_FILTER4, &CDlgDropOff::OnBnClickedBtnExperFilter4)
 	ON_BN_CLICKED(IDC_BTN_EXPER_FILTER5, &CDlgDropOff::OnBnClickedBtnExperFilter5)
@@ -173,38 +164,23 @@ BOOL CDlgDropOff::OnInitDialog()
 	bDropOffStockProc=false;
 
 	fDivMulti=20.0;
-	mSpin.SetBuddy(&mEditFMul);
-	mSpin.SetRange(8, 30);
-	mSpin.SetPos(20);
+	
 
 	fAveDivMulti=3.0;
-	mSpinAve.SetBuddy(&mEditAveMul);
-	mSpinAve.SetRange(20, 150);
-	mSpinAve.SetPos(30);
+	
 
 	mMinNums=3;
-	mSpinMinNums.SetBuddy(&mEditMinNums);
-	mSpinMinNums.SetRange(2, 15);
-	mSpinMinNums.SetPos(3);
-
+	
 	mDayNums=100;
-	mSpinDayNums.SetBuddy(&mEditDayNums);
-	mSpinDayNums.SetRange(40, 150);
-	mSpinDayNums.SetPos(100);
+	
 
 	mMaxDayNums=30;
-	mSpinMaxDays.SetBuddy(&mEditMaxDays);
-	mSpinMaxDays.SetRange(20, 70);
-	mSpinMaxDays.SetPos(30);
+	
 
 	bUseAve=false;
 	bUseMax=true;
 	bUseAve10Day=false;
 	bUseAve5Day=false;
-	mCheckAve.SetCheck(0);
-	mCheckMax.SetCheck(1);
-	mCheckAve10Day.SetCheck(0);
-	mCheckAve5Day.SetCheck(0);
 
 	bReserveFilter=false;
 	mCheckReserveFilter.SetCheck(0);
@@ -683,6 +659,8 @@ static UINT  CalcDropOffStockProc(LPVOID pParam)
 	pDlgDropOff->SetTimer(DROPOFF_EVENT_REFRESH_DATA,300,0);
 	return 0;
 }
+
+/*
 void CDlgDropOff::OnBnClickedBtnBegin()
 {
 	if(bDropOffStockProc)
@@ -691,32 +669,15 @@ void CDlgDropOff::OnBnClickedBtnBegin()
 		return;
 	}
 	CString strVal;
-	mEditFMul.GetWindowText(strVal);
-	int temp=atoi(strVal);
-	fDivMulti=temp;
-
-	mEditAveMul.GetWindowText(strVal);
-	temp=atoi(strVal);
-	fAveDivMulti=temp/10.0;
-		
-
-	mEditMinNums.GetWindowText(strVal);
-	temp=atoi(strVal);
-	mMinNums=temp;
-
-	mEditDayNums.GetWindowText(strVal);
-	temp=atoi(strVal);
-	mDayNums=temp;
-
-	mEditMaxDays.GetWindowText(strVal);
-	temp=atoi(strVal);
-	mMaxDayNums=temp;
+	
 
 
-	bUseAve=mCheckAve.GetCheck();
-	bUseMax=mCheckMax.GetCheck();
-	bUseAve10Day=mCheckAve10Day.GetCheck();
-	bUseAve5Day=mCheckAve5Day.GetCheck();
+
+
+	bUseAve = false;
+	bUseMax = true;	
+	bUseAve10Day=false;
+	bUseAve5Day= false;
 	if(!bUseAve&&!bUseMax)
 	{
 		AfxMessageBox("平均和最大必须选择一个");
@@ -759,6 +720,7 @@ void CDlgDropOff::OnBnClickedBtnBegin()
 	
 	CalcDropOffStockProc(this);
 }
+*/
 
 BOOL CDlgDropOff::RefreshData(void)
 {
@@ -856,82 +818,13 @@ void CDlgDropOff::OnClickedCheckDate()
 }
 
 //经验过滤
-void CDlgDropOff::OnBnClickedBtnExperFilter()
+/*void CDlgDropOff::OnBnClickedBtnExperFilter()
 {
-
-#if 0
-	bUseAve=mCheckAve.GetCheck();
-	bUseAve5Day=mCheckAve5Day.GetCheck();
-	if((!bUseAve)||(!bUseAve5Day))
-	{
-		AfxMessageBox("经验过滤只适用于5日平均和使用平均");
-		return;
-	}
-	if(mDayNums>55||mDayNums<45)
-	{
-
-		AfxMessageBox("经验过滤只适用于最近天数在45-55间");
-		return;
-	}
-	Vec_DropOffData  vecDropOffData2;
-	vecDropOffData2=vecDropOffData;
-	vecDropOffData.clear();
-	DropOffData *pDropOffData=NULL;
-	for(int i=0;i<vecDropOffData2.size();i++)
-	{
-		pDropOffData=vecDropOffData2[i];
-		if(pDropOffData)
-		{
-
-			if(pDropOffData->fMaxMultiple>10.0&&pDropOffData->fMaxMultiple<15.0)
-			{
-				if(pDropOffData->fAveMultiple>3.0&&pDropOffData->fAveMultiple<4.0)
-				{
-					if(pDropOffData->mMaxValuePassDay>=28&&pDropOffData->mMaxValuePassDay<=43)
-					{
-						vecDropOffData.push_back(pDropOffData);
-
-					}
-					
-				}
-
-			}
-		}
-
-	}
-
-	SetTimer(DROPOFF_EVENT_REFRESH_DATA,300,0);
-#endif
-
-	if(mMaxParaMode==MAX_PARA_MODE_LOOSE)
-		mMaxParaMode=MAX_PARA_MODE_STRICT;
-	else
-		mMaxParaMode=MAX_PARA_MODE_LOOSE;
-
-	if(mMaxParaMode==MAX_PARA_MODE_LOOSE)
-	{
-		fDivMulti=10.0;
-		mSpin.SetPos(10);
-
-		mMaxDayNums=45;
-		mSpinMaxDays.SetPos(45);
-		this->SetWindowText("缩量查找法 最大法宽松模式");
-	}
-	else
-	{
-		fDivMulti=20.0;
-		mSpin.SetPos(20);
-
-		mMaxDayNums=30;
-		mSpinMaxDays.SetPos(30);
-		this->SetWindowText("缩量查找法 最大法严格模式");
-
-	}
+	
 
 
 
-
-}
+}*/
 
 
 static UINT  CalcRsiStockProc(LPVOID pParam)
@@ -955,7 +848,7 @@ static UINT  CalcRsiStockProc(LPVOID pParam)
 	return 0;
 }
 
-
+/*
 void CDlgDropOff::OnBnClickedBtnExperFilter2()
 {
 
@@ -1040,7 +933,7 @@ void CDlgDropOff::OnBnClickedBtnExperFilter2()
 	}
 	
 }
-
+*/
 
 BOOL CDlgDropOff::CalcRsiStock(void)
 {
@@ -2132,7 +2025,7 @@ void CDlgDropOff::OnBnClickedBtnDropOff()
 	else if (mFunButtonMenu.m_nMenuResult == IDR_MENU_KLINE_NINE_TURN)
 	{
 		//DoFilterKLineNineTurn();
-		DoFilterReverseMLine();
+	//	DoFilterReverseMLine();
 
 	}
 	else if (mFunButtonMenu.m_nMenuResult == IDR_MENU_GROUP_INFO)
@@ -2894,12 +2787,46 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 				strNowDate=pStockDayTable->GetNearestStockDayDate(mDropOffTime);
 			}
 
-			if(pDropOffData->strStockCode=="SH600618")
+			if(pDropOffData->strStockCode=="SZ002343")
 			{
 				int a=0;
 				a++;
 
 			}
+
+			CStockVRData*  pStockVRData=CStockVRArithmetic::CalcVRData(pDropOffData->strStockCode, strNowDate, 125, K_LINE_DAY, 26);
+			int vr_size = pStockVRData->vec_vr.size();
+
+			float vr_now_value = pStockVRData->vec_vr[vr_size - 1];
+			float f_vr_min_value = 999999.0;
+			int m_vr_min_value_index = -1;
+
+			for (int j = vr_size - mRsiPreNums; j < vr_size; j++)
+			{
+				float f_vr = pStockVRData->vec_vr[j];
+				if (f_vr < f_vr_min_value)
+				{
+					f_vr_min_value = f_vr;
+					m_vr_min_value_index = j;
+				}
+			}
+
+
+			float f_vr_max_value = -999999.0;
+			int m_vr_max_value_index = -1;
+			for (int j = vr_size - mRsiPreNums; j < vr_size; j++)
+			{
+				float f_vr = pStockVRData->vec_vr[j];
+				if (f_vr > f_vr_max_value)
+				{
+					f_vr_max_value = f_vr;
+					m_vr_max_value_index = j;
+				}
+
+			}
+
+
+
 
 			CStockMFIData* pStockMFIData = CStockMFIArithmetic::CalcMFIData(pDropOffData->strStockCode, strNowDate, 125, K_LINE_DAY, 14);
 			int mfi_size = pStockMFIData->vec_mfi.size();
@@ -3207,12 +3134,21 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 			rsiData.m_min_mfi_day= cr_size - m_mfi_min_value_index;
 			rsiData.m_max_mfi_day = cr_size - m_mfi_max_value_index;
 
+
+			rsiData.vr= vr_now_value;
+			rsiData.f_min_vr= f_vr_min_value;
+			rsiData.f_max_vr= f_vr_max_value;
+			rsiData.m_min_vr_day= vr_size-m_vr_min_value_index;
+			rsiData.m_max_vr_day= vr_size - m_vr_max_value_index;
+
+
 			rsiData.strStockCode = pDropOffData->strStockCode;
 			rsiData.strStockName = pDropOffData->strStockName;
 			rsiData.f_total_value = f_total_value;
 			rsiData.m_low_ave_5_nums = m_low_ave_5_nums;
 			vecRSIData.push_back(rsiData);
 
+			SAFE_DELETE(pStockVRData);
 			SAFE_DELETE(pStockMFIData);
 			SAFE_DELETE(pStockCRData);
 			SAFE_DELETE(pStockRSIData);
@@ -9121,11 +9057,36 @@ BOOL  CDlgDropOff::DoReverseFilterIndustyInfo(IndustryData* pIndustryData)
 
 }
 
+
+bool sortCodeNameFun(const DropOffData* pData1, const DropOffData* pData2)
+{
+	CString strStockCode_1;
+	if (pData1->strStockCode.Left(2) == "SH")
+		strStockCode_1 = "HH";
+	else
+		strStockCode_1 = "ZZ";
+	strStockCode_1 += pData1->strStockCode.Mid(2);
+
+	CString strStockCode_2;
+	if (pData2->strStockCode.Left(2) == "SH")
+		strStockCode_2 = "HH";
+	else
+		strStockCode_2 = "ZZ";
+	strStockCode_2 += pData2->strStockCode.Mid(2);
+
+	return strStockCode_1 < strStockCode_2;
+}
 //回测
 void CDlgDropOff::OnBnClickedBtnBackFlow()
 {
-	CDlgBackFlow dlg;
-	dlg.DoModal();
+	//CDlgBackFlow dlg;
+	//dlg.DoModal();
+
+	std::sort(vecDropOffData.begin(), vecDropOffData.end(), sortCodeNameFun);
+
+	
+
+	SetTimer(DROPOFF_EVENT_REFRESH_DATA, 300, 0);
 }
 
 
@@ -9314,7 +9275,7 @@ BOOL CDlgDropOff::DoFiterVPMFIEquLess75(void)
 
 		//float fcrdifper = fcrdif * 100.0 / mRSIData.f_max_cr;
 
-		if (fmfidifper < 2.0 && mRSIData.mfi <75.0) //&& fcrdifper<3.0
+		if (fmfidifper < 2.0) //&& fcrdifper<3.0  && mRSIData.mfi <75.0
 		{
 			DropOffData* pDropOffData = new DropOffData();
 			pDropOffData->strStockCode = mRSIData.strStockCode;

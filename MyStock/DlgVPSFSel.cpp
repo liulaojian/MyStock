@@ -46,18 +46,18 @@ BOOL CDlgVPSFSel::OnInitDialog()
 	int ret;
 
 
-	ret = mCmbSFSel.AddString("MFI相等");
+	ret = mCmbSFSel.AddString("MFI RSI相等");
 	mCmbSFSel.SetItemData(ret, 0);
 
 	ret = mCmbSFSel.AddString("极限下降");
 	mCmbSFSel.SetItemData(ret, 1);
 
 
-	ret = mCmbSFSel.AddString("MFI<75相等");
+	ret = mCmbSFSel.AddString("MFI相等");
 	mCmbSFSel.SetItemData(ret, 2);
 
-	ret = mCmbSFSel.AddString("MFI低值设置");
-	mCmbSFSel.SetItemData(ret, 3);
+	//ret = mCmbSFSel.AddString("MFI低值设置");
+	//mCmbSFSel.SetItemData(ret, 3);
 
 	mCmbSFSel.SetCurSel(0);
 

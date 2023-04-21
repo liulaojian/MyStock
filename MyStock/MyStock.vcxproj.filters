@@ -579,6 +579,12 @@
     <ClInclude Include="DlgVPLowSet.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="framework\arithmetic\StockPSYArithmetic.h">
+      <Filter>Framework\function\arithmetic</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\arithmetic\StockVRArithmetic.h">
+      <Filter>Framework\function\arithmetic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyStock.cpp">
@@ -1006,6 +1012,12 @@
     </ClCompile>
     <ClCompile Include="DlgVPLowSet.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="framework\arithmetic\StockPSYArithmetic.cpp">
+      <Filter>Framework\function\arithmetic</Filter>
+    </ClCompile>
+    <ClCompile Include="framework\arithmetic\StockVRArithmetic.cpp">
+      <Filter>Framework\function\arithmetic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

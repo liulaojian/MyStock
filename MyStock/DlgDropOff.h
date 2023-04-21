@@ -269,27 +269,14 @@ protected:
 public:
 	virtual BOOL OnInitDialog();
 	CListCtrl mListCtrlItem;
-	afx_msg void OnBnClickedBtnBegin();
+	//afx_msg void OnBnClickedBtnBegin();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
-	CEdit mEditFMul;
-	CSpinButtonCtrl mSpin;
-	CEdit mEditMinNums;
-	CSpinButtonCtrl mSpinMinNums;
-	CEdit mEditDayNums;
-	CSpinButtonCtrl mSpinDayNums;
-	CEdit mEditAveMul;
-	CSpinButtonCtrl mSpinAve;
-	CButton mCheckAve;
-	CButton mCheckMax;
-	CButton mCheckAve10Day;
+	
 	CButton mCheckDate;
 	CDateTimeCtrl mDataTimeDropOff;
 	afx_msg void OnClickedCheckDate();
-	CButton mCheckAve5Day;
-	CEdit mEditMaxDays;
-	CSpinButtonCtrl mSpinMaxDays;
-	afx_msg void OnBnClickedBtnExperFilter();
-	afx_msg void OnBnClickedBtnExperFilter2();
+	//afx_msg void OnBnClickedBtnExperFilter();
+	//afx_msg void OnBnClickedBtnExperFilter2();
 	afx_msg void OnBnClickedBtnExperFilter3();
 	CButton mCheckReserveFilter;
 	afx_msg void OnBnClickedBtnExperFilter4();

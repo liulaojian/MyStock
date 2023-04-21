@@ -83,13 +83,14 @@ BOOL CDlgAngleDetail::OnInitDialog()
 	mListDetail.AddString(strInfo);
 
 
+	double f_20_10_cross_price_increase = pTanAngleData->fPara7;
+	strInfo.Format("10日均线上穿20日后的涨幅 %.2f", f_20_10_cross_price_increase);
+	mListDetail.AddString(strInfo);
+
 	double f_60_20_cross_price_increase = pTanAngleData->fPara6;
 	strInfo.Format("20日均线上穿60日后的涨幅 %.2f", f_60_20_cross_price_increase);
 	mListDetail.AddString(strInfo);
 
-	double f_20_10_cross_price_increase = pTanAngleData->fPara7;
-	strInfo.Format("10日均线上穿20日后的涨幅 %.2f", f_20_10_cross_price_increase);
-	mListDetail.AddString(strInfo);
 
 	double f_60_day_increase = pTanAngleData->fPara8;
 	strInfo.Format("60日均线上升趋势以来的涨幅 %.2f", f_60_day_increase);

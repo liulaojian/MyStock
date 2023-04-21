@@ -49,6 +49,14 @@ typedef struct
 	int   m_min_mfi_day;
 	int   m_max_mfi_day;
 
+
+	float vr;
+	float f_min_vr;
+	float f_max_vr;
+	int m_min_vr_day;
+	int m_max_vr_day;
+
+
 	float f_total_value;
 	int   m_low_ave_5_nums;
 

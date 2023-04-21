@@ -56,6 +56,8 @@
 
 #include "StockCRAtithmetic.h"
 #include "StockMFIArithmetic.h"
+#include "StockPSYArithmetic.h"
+#include "StockVRArithmetic.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -226,6 +228,9 @@ BOOL CMyStockDlg::OnInitDialog()
 
 	CStockMFIArithmetic::CalcMFIData("SH600036", "2023/04/07", 125, K_LINE_DAY, 14);
 	
+	CStockPSYArithmetic::CalcPSYData("SH600036", "2023/04/07", 125, K_LINE_DAY, 12);
+
+	CStockVRArithmetic::CalcVRData("SH600036", "2023/04/07", 125, K_LINE_DAY, 26);
 	//CStockCCIArithmetic::CalcCCIData("SH600036","2018/02/23 1500",125,K_LINE_60MIN,14);
 
 	//CStockRSIArithmetic::CalcRSIData("SH000001","2018/02/23",125,K_LINE_DAY,6,12,24);

@@ -119,6 +119,24 @@ BOOL CDlgPVDetail::OnInitDialog()
 	mListDetail.AddString(strInfo);
 
 
+	mListDetail.AddString("    ");
+	mListDetail.AddString("    ");
+
+	strInfo.Format("当前VR值 %.2f", mRSIData.vr);
+	mListDetail.AddString(strInfo);
+
+
+	strInfo.Format("最小VR值 %.2f", mRSIData.f_min_vr);
+	mListDetail.AddString(strInfo);
+	strInfo.Format("最小VR值距今 %d 日", mRSIData.m_min_vr_day);
+	mListDetail.AddString(strInfo);
+
+
+	strInfo.Format("最大VR值 %.2f", mRSIData.f_max_vr);
+	mListDetail.AddString(strInfo);
+
+	strInfo.Format("最大VR值距今 %d 日", mRSIData.m_max_vr_day);
+	mListDetail.AddString(strInfo);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE

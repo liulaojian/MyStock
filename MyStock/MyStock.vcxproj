@@ -289,9 +289,11 @@ xcopy /y /r F:\code\MyStock\Debug\MyStock.pdb  F:\stock\soft3\</Command>
     <ClInclude Include="framework\arithmetic\StockOBVArithmetic.h" />
     <ClInclude Include="framework\arithmetic\StockPowerArithmetic.h" />
     <ClInclude Include="framework\arithmetic\StockProfitLossArithmetic.h" />
+    <ClInclude Include="framework\arithmetic\StockPSYArithmetic.h" />
     <ClInclude Include="framework\arithmetic\StockRiskLevelArithmetic.h" />
     <ClInclude Include="framework\arithmetic\StockRSIArithmetic.h" />
     <ClInclude Include="framework\arithmetic\StockSARArithmetic.h" />
+    <ClInclude Include="framework\arithmetic\StockVRArithmetic.h" />
     <ClInclude Include="framework\arithmetic\StockWRArithmetic.h" />
     <ClInclude Include="framework\data\ConceptDataMgr.h" />
     <ClInclude Include="framework\data\IndustryDataMgr.h" />
@@ -445,9 +447,11 @@ xcopy /y /r F:\code\MyStock\Debug\MyStock.pdb  F:\stock\soft3\</Command>
     <ClCompile Include="framework\arithmetic\StockOBVArithmetic.cpp" />
     <ClCompile Include="framework\arithmetic\StockPowerArithmetic.cpp" />
     <ClCompile Include="framework\arithmetic\StockProfitLossArithmetic.cpp" />
+    <ClCompile Include="framework\arithmetic\StockPSYArithmetic.cpp" />
     <ClCompile Include="framework\arithmetic\StockRiskLevelArithmetic.cpp" />
     <ClCompile Include="framework\arithmetic\StockRSIArithmetic.cpp" />
     <ClCompile Include="framework\arithmetic\StockSARArithmetic.cpp" />
+    <ClCompile Include="framework\arithmetic\StockVRArithmetic.cpp" />
     <ClCompile Include="framework\arithmetic\StockWRArithmetic.cpp" />
     <ClCompile Include="framework\data\ConceptDataMgr.cpp" />
     <ClCompile Include="framework\data\IndustryDataMgr.cpp" />

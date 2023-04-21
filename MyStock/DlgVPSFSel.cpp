@@ -59,6 +59,9 @@ BOOL CDlgVPSFSel::OnInitDialog()
 	//ret = mCmbSFSel.AddString("MFI低值设置");
 	//mCmbSFSel.SetItemData(ret, 3);
 
+	ret = mCmbSFSel.AddString("VR相等");
+	mCmbSFSel.SetItemData(ret, 4);
+
 	mCmbSFSel.SetCurSel(0);
 
 	return TRUE;  // return TRUE unless you set the focus to a control

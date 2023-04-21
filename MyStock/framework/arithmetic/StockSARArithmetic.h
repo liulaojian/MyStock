@@ -8,7 +8,7 @@ class CStockSARData:public KLineBaseData
 public:
 	CStockSARData() {}
 	virtual ~CStockSARData() {}
-	std::vector<double> vec_sar;
+	std::vector<float> vec_sar;
 	int mN;
 	CString strStockCode;
 };

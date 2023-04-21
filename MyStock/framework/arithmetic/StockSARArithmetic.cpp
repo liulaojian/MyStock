@@ -14,7 +14,7 @@ CStockSARArithmetic::~CStockSARArithmetic()
 
 }
 
-
+/*
 CStockSARData* CStockSARArithmetic::CalcSARData(CString strStockCode,CString strDateTime,int mNums,int mType,int mN)
 {
 	KLineBaseData *pKLineBaseData=NULL;
@@ -185,4 +185,182 @@ CStockSARData* CStockSARArithmetic::CalcSARData(CString strStockCode,CString str
 	SAFE_DELETE(pKLineBaseData);
 
 	return pStockSARData;
+}*/
+
+#define LONG	0
+#define SHORT   1
+
+static float MAX_(float a, float b)
+{
+	return a > b ? a : b;
+}
+
+static float MIN_(float a, float b)
+{
+	return a < b ? a : b;
+}
+
+CStockSARData* CStockSARArithmetic::CalcSARData(CString strStockCode, CString strDateTime, int mNums, int mType, int mN)
+{
+	KLineBaseData* pKLineBaseData = NULL;
+	
+	int mRelNums = mNums + mN+1;
+
+
+	if (mType == K_LINE_DAY)
+	{
+		CStockDayTable* pStockDayTable;
+		pStockDayTable = StockDataMgr()->GetStockDayTable(strStockCode);
+		if (!pStockDayTable)
+			return NULL;
+
+		pKLineBaseData = CKLineDataBean::ConvStockDayDataToArithmeticBaseData(pStockDayTable, strDateTime, mRelNums);
+
+	}
+	else if (mType == K_LINE_5IN)
+	{
+		CStockMin5Table* pStockMin5Table;
+		pStockMin5Table = StockDataMgr()->GetStockMin5Table(strStockCode);
+		if (!pStockMin5Table)
+			return NULL;
+		pKLineBaseData = CKLineDataBean::ConvStockDayDataToArithmeticBaseDataMin5(pStockMin5Table, strDateTime, mRelNums);
+
+	}
+	else if (mType == K_LINE_15IN)
+	{
+		CStockMin5Table* pStockMin5Table;
+		pStockMin5Table = StockDataMgr()->GetStockMin5Table(strStockCode);
+		if (!pStockMin5Table)
+			return NULL;
+		pKLineBaseData = CKLineDataBean::ConvStockDayDataToArithmeticBaseDataMin15(pStockMin5Table, strDateTime, mRelNums);
+	}
+	else if (mType == K_LINE_30IN)
+	{
+		CStockMin5Table* pStockMin5Table;
+		pStockMin5Table = StockDataMgr()->GetStockMin5Table(strStockCode);
+		if (!pStockMin5Table)
+			return NULL;
+		pKLineBaseData = CKLineDataBean::ConvStockDayDataToArithmeticBaseDataMin30(pStockMin5Table, strDateTime, mRelNums);
+	}
+	else if (mType == K_LINE_60MIN)
+	{
+		CStockMin5Table* pStockMin5Table;
+		pStockMin5Table = StockDataMgr()->GetStockMin5Table(strStockCode);
+		if (!pStockMin5Table)
+			return NULL;
+		pKLineBaseData = CKLineDataBean::ConvStockDayDataToArithmeticBaseDataMin60(pStockMin5Table, strDateTime, mRelNums);
+	}
+
+	if (!pKLineBaseData)
+		return NULL;
+
+
+	std::vector<float> vec_sar;
+	float preSip;
+	float af = 0.02;
+	int flag = LONG;
+	float sar=0.0;
+	float sip=0.0;
+	float preSar=0.0;
+	float bb;
+	int i;
+	for (int n = 1; n < pKLineBaseData->m_length; n++)
+	{
+		float node_low = pKLineBaseData->vec_low_price[n];
+		float node_high = pKLineBaseData->vec_high_price[n];
+
+		float preNode_low = pKLineBaseData->vec_low_price[n-1];
+		float preNode_high = pKLineBaseData->vec_high_price[n-1];
+
+		i = n - 1;
+		if (i == 0)
+		{
+			sar = pKLineBaseData->vec_low_price[n];
+			sip = pKLineBaseData->vec_high_price[n];
+			bb = 0;
+		}
+		else if (i < (mN - 1))
+		{
+			sar = MIN_(sar, node_low);
+			bb = 0;
+		}
+		else if (i == (mN - 1))
+		{
+			sar = MIN_(sar, node_low);
+			bb = sar;
+		}
+
+		if (i >= mN)
+		{
+			preSip = sip;
+			if (flag ==LONG) 
+			{
+				if (node_low < preSar) 
+				{
+					flag = SHORT;
+					sip = node_low;
+					af = 0.02;
+					sar = MAX_(node_high, preNode_high);
+					sar = MAX_(sar, preSip + af * (sip - preSip));
+				}
+				else 
+				{
+					flag = LONG;
+					if (node_high > preSip) {
+						sip = node_high;
+						af = MIN_(af + 0.02, 0.2);
+					
+					}
+					sar = MIN_(node_low, preNode_low);
+					sar = MIN_(sar, preSar + af * (sip - preSar));
+				}
+			}
+			else 
+			{
+				if (node_high > preSar) 
+				{
+					flag = LONG;
+					sip = node_high;
+					af = 0.02;
+					sar = MIN_(node_low, preNode_low);
+					sar = MIN_(sar, preSar + af * (sip - preSip));
+				}
+				else 
+				{
+					flag = SHORT;
+					if (node_low < preSip) {
+						sip = node_low;
+						af = MIN_(af + 0.02, 0.2);
+					}
+					sar = MAX_(node_high, preNode_high);
+					sar = MAX_(sar, preSar + af * (sip - preSar));
+				}
+			}
+			bb = sar;
+			vec_sar.push_back(bb);
+		}
+
+		preSar = sar;
+
+	}
+
+
+	CStockSARData* pCStockSARData;
+	pCStockSARData = new CStockSARData();
+	pCStockSARData->vec_open_price.assign(pKLineBaseData->vec_open_price.begin() + mN+1, pKLineBaseData->vec_open_price.end());
+	pCStockSARData->vec_high_price.assign(pKLineBaseData->vec_high_price.begin() + mN + 1, pKLineBaseData->vec_high_price.end());
+	pCStockSARData->vec_low_price.assign(pKLineBaseData->vec_low_price.begin() + mN + 1, pKLineBaseData->vec_low_price.end());
+	pCStockSARData->vec_close_price.assign(pKLineBaseData->vec_close_price.begin() + mN + 1, pKLineBaseData->vec_close_price.end());
+	pCStockSARData->vec_avg_price.assign(pKLineBaseData->vec_avg_price.begin() + mN + 1, pKLineBaseData->vec_avg_price.end());
+	pCStockSARData->vec_time.assign(pKLineBaseData->vec_time.begin() + mN + 1, pKLineBaseData->vec_time.end());
+	pCStockSARData->vec_volume.assign(pKLineBaseData->vec_volume.begin() + mN + 1, pKLineBaseData->vec_volume.end());
+	pCStockSARData->vec_volume_price.assign(pKLineBaseData->vec_volume_price.begin() + mN + 1, pKLineBaseData->vec_volume_price.end());
+	pCStockSARData->vec_sar = vec_sar;
+	pCStockSARData->m_length = vec_sar.size();
+	pCStockSARData->m_type = pKLineBaseData->m_type;
+	pCStockSARData->mN = mN;
+	pCStockSARData->strStockCode = strStockCode;
+	SAFE_DELETE(pKLineBaseData);
+	return pCStockSARData;
+
 }

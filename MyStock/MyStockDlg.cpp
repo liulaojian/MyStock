@@ -58,6 +58,8 @@
 #include "StockMFIArithmetic.h"
 #include "StockPSYArithmetic.h"
 #include "StockVRArithmetic.h"
+#include "StockBiasQlArithmetic.h"
+#include "StockDMIAtithmetic.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -224,19 +226,24 @@ BOOL CMyStockDlg::OnInitDialog()
 	pDlgSniperLoopBack=new CDlgSniperLoopBack(this);
 	pDlgSniperLoopBack->Create(IDD_DLG_SNIPER_LOOPBACK);
 
-	CStockCRData* pStockCRData=CStockCRArithmetic::CalcCRData("SH600036", "2023/04/07", 125, K_LINE_DAY, 26);
-
-	CStockMFIArithmetic::CalcMFIData("SH600036", "2023/04/07", 125, K_LINE_DAY, 14);
+	//CStockCRData* pStockCRData=CStockCRArithmetic::CalcCRData("SH600036", "2023/04/07", 125, K_LINE_DAY, 26);
 	
-	CStockPSYArithmetic::CalcPSYData("SH600036", "2023/04/07", 125, K_LINE_DAY, 12);
+	//CStockMFIArithmetic::CalcMFIData("SH600036", "2023/04/07", 125, K_LINE_DAY, 14);
+	
+	//CStockPSYArithmetic::CalcPSYData("SH600036", "2023/04/07", 125, K_LINE_DAY, 12);
 
-	CStockVRArithmetic::CalcVRData("SH600036", "2023/04/07", 125, K_LINE_DAY, 26);
+	//CStockVRArithmetic::CalcVRData("SH600036", "2023/04/07", 125, K_LINE_DAY, 26);
+
+	//CStockDMIArithmetic::CalcDMIData("SH600036", "2023/04/07", 125, K_LINE_DAY, 14,6);
+
+	//CStockBIASQLArithmetic::CalcBiasQlData("SH600036", "2023/04/07", 125, K_LINE_DAY, 6,6);
+
 	//CStockCCIArithmetic::CalcCCIData("SH600036","2018/02/23 1500",125,K_LINE_60MIN,14);
 
 	//CStockRSIArithmetic::CalcRSIData("SH000001","2018/02/23",125,K_LINE_DAY,6,12,24);
 	//CStockMACDArithmetic::CalcMACDData("SH000001","2018/02/23",125,K_LINE_DAY,12,26,9);
 	//CStockOBVArithmetic::CalcOBVData("SH600016","2018/02/23",125,K_LINE_DAY,30);
-	CStockSARArithmetic::CalcSARData("SH600016","2022/12/29",125,K_LINE_DAY,4);
+	//CStockSARArithmetic::CalcSARData("SH600016","2022/12/29",125,K_LINE_DAY,4);
 	//CStockASIArithmetic::CalcASIData("SH000001","2018/02/23",125,K_LINE_DAY,6);
 	//CStockKDJArithmetic::CalcKDJData("SH000001","2018/02/28",125,K_LINE_DAY,9,3,3);
 	//CStockBOLLArithmetic::CalcBOLLData("SH600016","2018/02/28",125,K_LINE_DAY,20);

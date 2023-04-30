@@ -561,9 +561,6 @@
     <ClInclude Include="DlgBackFlow.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="framework\arithmetic\StockJettonArithmetic.h">
-      <Filter>Framework\function\arithmetic</Filter>
-    </ClInclude>
     <ClInclude Include="framework\arithmetic\StockCRAtithmetic.h">
       <Filter>Framework\function\arithmetic</Filter>
     </ClInclude>
@@ -583,6 +580,24 @@
       <Filter>Framework\function\arithmetic</Filter>
     </ClInclude>
     <ClInclude Include="framework\arithmetic\StockVRArithmetic.h">
+      <Filter>Framework\function\arithmetic</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgFilterIncrease.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgStockIndexInfo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="StockBiasQlArithmetic.h">
+      <Filter>Framework\function\arithmetic</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgSpecSel.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\arithmetic\StockDMIAtithmetic.h">
+      <Filter>Framework\function\arithmetic</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\arithmetic\BaseIndicator.h">
       <Filter>Framework\function\arithmetic</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1017,6 +1032,24 @@
       <Filter>Framework\function\arithmetic</Filter>
     </ClCompile>
     <ClCompile Include="framework\arithmetic\StockVRArithmetic.cpp">
+      <Filter>Framework\function\arithmetic</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgFilterIncrease.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgStockIndexInfo.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="StockBiasQlArithmetic.cpp">
+      <Filter>Framework\function\arithmetic</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgSpecSel.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="framework\arithmetic\StockDMIAtithmetic.cpp">
+      <Filter>Framework\function\arithmetic</Filter>
+    </ClCompile>
+    <ClCompile Include="framework\arithmetic\BaseIndicator.cpp">
       <Filter>Framework\function\arithmetic</Filter>
     </ClCompile>
   </ItemGroup>

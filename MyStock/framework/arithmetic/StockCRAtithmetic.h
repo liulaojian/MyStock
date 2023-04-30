@@ -8,6 +8,10 @@ public:
 	CStockCRData() {}
 	virtual ~CStockCRData() {}
 	std::vector<float> vec_cr;
+	std::vector<float> vec_ma1;
+	std::vector<float> vec_ma2;
+	std::vector<float> vec_ma3;
+	std::vector<float> vec_ma4;
 	int mCRNum;
 	CString strStockCode;
 };

@@ -85,7 +85,7 @@ BOOL CDlgSFSel::OnInitDialog()
 	ret=mCmbSFSel.AddString("TAN配套5(<10)"); //TAN配套5  //(角度均衡)
 	mCmbSFSel.SetItemData(ret,11);
 
-	ret=mCmbSFSel.AddString("TAN配套6(选步长5)");
+	ret=mCmbSFSel.AddString("TAN配套6(长时间涨)");
 	mCmbSFSel.SetItemData(ret,12);
 
 	//ret=mCmbSFSel.AddString("K线分析-配套");

@@ -229,6 +229,7 @@ xcopy /y /r F:\code\MyStock\Debug\MyStock.pdb  F:\stock\soft3\</Command>
     <ClInclude Include="DlgDays.h" />
     <ClInclude Include="DlgDropOff.h" />
     <ClInclude Include="DlgDropOffRsi.h" />
+    <ClInclude Include="DlgFilterIncrease.h" />
     <ClInclude Include="DlgFindStockDestribute.h" />
     <ClInclude Include="DlgHistoryCmpResult.h" />
     <ClInclude Include="DlgIndustryInfo.h" />
@@ -245,9 +246,11 @@ xcopy /y /r F:\code\MyStock\Debug\MyStock.pdb  F:\stock\soft3\</Command>
     <ClInclude Include="DlgSFSel.h" />
     <ClInclude Include="DlgSimilarResult.h" />
     <ClInclude Include="DlgSniperLoopBack.h" />
+    <ClInclude Include="DlgSpecSel.h" />
     <ClInclude Include="DlgStockChart.h" />
     <ClInclude Include="DlgStockChip.h" />
     <ClInclude Include="DlgStockDateSel.h" />
+    <ClInclude Include="DlgStockIndexInfo.h" />
     <ClInclude Include="DlgStockMonitor.h" />
     <ClInclude Include="DlgStockMonitorKDJ.h" />
     <ClInclude Include="DlgStockNatureAnalysis.h" />
@@ -276,12 +279,13 @@ xcopy /y /r F:\code\MyStock\Debug\MyStock.pdb  F:\stock\soft3\</Command>
     <ClInclude Include="framework\algorithm\ThreeLowFilterAlg.h" />
     <ClInclude Include="framework\algorithm\TimePriceMapAlg.h" />
     <ClInclude Include="framework\algorithm\TriAngleAlg.h" />
+    <ClInclude Include="framework\arithmetic\BaseIndicator.h" />
     <ClInclude Include="framework\arithmetic\KLineDataBean.h" />
     <ClInclude Include="framework\arithmetic\StockASIArithmetic.h" />
     <ClInclude Include="framework\arithmetic\StockBOLLArithmetic.h" />
     <ClInclude Include="framework\arithmetic\StockCCIArithmetic.h" />
     <ClInclude Include="framework\arithmetic\StockCRAtithmetic.h" />
-    <ClInclude Include="framework\arithmetic\StockJettonArithmetic.h" />
+    <ClInclude Include="framework\arithmetic\StockDMIAtithmetic.h" />
     <ClInclude Include="framework\arithmetic\StockKDJArithmetic.h" />
     <ClInclude Include="framework\arithmetic\StockMACDArithmetic.h" />
     <ClInclude Include="framework\arithmetic\StockMFIArithmetic.h" />
@@ -374,6 +378,7 @@ xcopy /y /r F:\code\MyStock\Debug\MyStock.pdb  F:\stock\soft3\</Command>
     <ClInclude Include="Resource.h" />
     <ClInclude Include="scriptcontrol1.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="StockBiasQlArithmetic.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
@@ -390,6 +395,7 @@ xcopy /y /r F:\code\MyStock\Debug\MyStock.pdb  F:\stock\soft3\</Command>
     <ClCompile Include="DlgDays.cpp" />
     <ClCompile Include="DlgDropOff.cpp" />
     <ClCompile Include="DlgDropOffRsi.cpp" />
+    <ClCompile Include="DlgFilterIncrease.cpp" />
     <ClCompile Include="DlgFindStockDestribute.cpp" />
     <ClCompile Include="DlgHistoryCmpResult.cpp" />
     <ClCompile Include="DlgIndustryInfo.cpp" />
@@ -406,9 +412,11 @@ xcopy /y /r F:\code\MyStock\Debug\MyStock.pdb  F:\stock\soft3\</Command>
     <ClCompile Include="DlgSFSel.cpp" />
     <ClCompile Include="DlgSimilarResult.cpp" />
     <ClCompile Include="DlgSniperLoopBack.cpp" />
+    <ClCompile Include="DlgSpecSel.cpp" />
     <ClCompile Include="DlgStockChart.cpp" />
     <ClCompile Include="DlgStockChip.cpp" />
     <ClCompile Include="DlgStockDateSel.cpp" />
+    <ClCompile Include="DlgStockIndexInfo.cpp" />
     <ClCompile Include="DlgStockMonitor.cpp" />
     <ClCompile Include="DlgStockMonitorKDJ.cpp" />
     <ClCompile Include="DlgStockNatureAnalysis.cpp" />
@@ -435,11 +443,16 @@ xcopy /y /r F:\code\MyStock\Debug\MyStock.pdb  F:\stock\soft3\</Command>
     <ClCompile Include="framework\algorithm\ThreeLowFilterAlg.cpp" />
     <ClCompile Include="framework\algorithm\TimePriceMap.cpp" />
     <ClCompile Include="framework\algorithm\TriAngleAlg.cpp" />
+    <ClCompile Include="framework\arithmetic\BaseIndicator.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="framework\arithmetic\KLineDataBean.cpp" />
     <ClCompile Include="framework\arithmetic\StockASIAtithmetic.cpp" />
     <ClCompile Include="framework\arithmetic\StockBOLLArithmetic.cpp" />
     <ClCompile Include="framework\arithmetic\StockCCIArithmetic.cpp" />
     <ClCompile Include="framework\arithmetic\StockCRArithmetic.cpp" />
+    <ClCompile Include="framework\arithmetic\StockDMIAtithmetic.cpp" />
     <ClCompile Include="framework\arithmetic\StockKDJArithmetic.cpp" />
     <ClCompile Include="framework\arithmetic\StockMACDArithmetic.cpp" />
     <ClCompile Include="framework\arithmetic\StockMFIArithmetic.cpp" />
@@ -554,6 +567,7 @@ xcopy /y /r F:\code\MyStock\Debug\MyStock.pdb  F:\stock\soft3\</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="StockBiasQlArithmetic.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MyStock.rc" />

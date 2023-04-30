@@ -59,11 +59,18 @@
 
 #include "StockPSYArithmetic.h"
 #include "StockVRArithmetic.h"
-
+#include "StockBiasQlArithmetic.h"
+#include "StockDMIAtithmetic.h"
 
 #include "DlgPVDetail.h"
 #include "DlgVPSFSel.h"
 #include "DlgVPLowSet.h"
+#include "DlgFilterIncrease.h"
+
+#include "DlgStockIndexInfo.h"
+#include "DlgSpecSel.h"
+
+#include "CommonMacro.h"
 // CDlgDropOff 对话框
 
 IMPLEMENT_DYNAMIC(CDlgDropOff, CDialogEx)
@@ -1117,10 +1124,33 @@ void CDlgDropOff::OnBnClickedBtnExperFilter3()
 		}
 
 		
-
 		vecDropOffData.clear();
 		//pThread=AfxBeginThread(CalcChipStockProc,(LPVOID)this,THREAD_PRIORITY_NORMAL,0,0,NULL);
-		CalcChipStockProc(this);
+		if (fStockChipLow == 0.0 && fStockChipHigh == 100.0)
+		{
+			Vec_StockCodeList vecStockCodeList = StockDataMgr()->GetStockCodeList();
+
+			for (int i = 0; i < vecStockCodeList.size(); i++)
+			{
+				DropOffData* pDropOffData = new DropOffData();
+				pDropOffData->strStockCode = vecStockCodeList[i]->strStockCode;
+				pDropOffData->strStockName = vecStockCodeList[i]->strStockName;
+				pDropOffData->fMaxMultiple = 0;
+				pDropOffData->fAveMultiple = 0;
+				pDropOffData->strMaxDate = "";
+				pDropOffData->strMinDate = "";
+				pDropOffData->mMaxValuePassDay = 0;
+				pDropOffData->fDownTotalRang = -1.0;
+				vecDropOffData.push_back(pDropOffData);
+
+			}
+			FilterByReserve();
+			FilterByMerge();
+			SetTimer(DROPOFF_EVENT_REFRESH_DATA, 300, 0);
+			
+		}
+		else
+			CalcChipStockProc(this);
 	}
 
 
@@ -2048,6 +2078,30 @@ void CDlgDropOff::OnBnClickedBtnDropOff()
 	else if (mFunButtonMenu.m_nMenuResult == IDR_MENU_INDUSTRY_INFO)
 	{
 		DoIndustyInfoStat();
+	}
+	else if (mFunButtonMenu.m_nMenuResult == IDR_MENU_EXP_ANALY)
+	{
+		CDlgStockIndexInfo dlg;
+		dlg.DoModal();
+	}
+	else if (mFunButtonMenu.m_nMenuResult == IDR_MENU_FILTER_SPECIAL)
+	{
+		CDlgSpecSel dlg;
+		if (dlg.DoModal() == IDOK)
+		{
+			int mSfSel = dlg.GetSfSel();
+
+			if (mSfSel == 0)		//Bias-ql 过滤
+			{
+				DoFilterSpecialBiasQl();
+			}
+			else if (mSfSel == 1)	//DMI过滤
+			{
+				DoFilterSpecialDMI();
+			}
+
+		}
+
 	}
 }
 
@@ -6676,11 +6730,18 @@ for (int i = 0; i < vecTanAngleData.size(); i++)
 	
 	bool bok1 = false;
 	
+	if(m_60_big_20_nums<0 && m_continus_price_m60_up_nums>=70)
+		bok1 = true;
+	else if (m_60_big_20_nums > 50 && m_continus_price_m60_up_nums >= 50)
+		bok1 = true;
+	//if(mVolM5ContiUpNums<=3 && mVolM10ContiUpNums<=3)
+	//	bok1 = true;
+
 	//if (fNowGrow < -8.0)
 	//	bok1 = true;
 
 
-	if (fVolumePerForM5 < fVolumePer && fVolumePer < fVolumePerForM20 && fVolumePerForM20 < fVolumePerForM30)
+	/*if (fVolumePerForM5 < fVolumePer && fVolumePer < fVolumePerForM20 && fVolumePerForM20 < fVolumePerForM30)
 	{
 		if (f_ave_volume_per < 10.0 && (f_ave_volume_per > fVolumePerForM30) && (f_max_volume_per < f_ave_volume_per))
 		{
@@ -6694,7 +6755,9 @@ for (int i = 0; i < vecTanAngleData.size(); i++)
 
 		}
 
-	}
+	}*/
+
+
 
 	
 	/*bool bok1 = false;
@@ -8720,11 +8783,18 @@ typedef struct
 	std::string strIndusty;
 	int mNums;
 	float f_per;
+	float f_per2;
 }IndustyStatResult;
 BOOL CDlgDropOff::DoIndustyInfoStat(void)
 {
 	std::map<std::string, int > industyMapNum;
 	std::map<std::string, int > industyMapAllNum;
+
+	CDlgFilterIncrease dlgIncrease;
+	if (dlgIncrease.DoModal() != IDOK)
+		return FALSE;
+
+	float fIncrease = dlgIncrease.GetIncrease();
 
 	for (int i = 0; i < vecTanAngleData.size(); i++)
 	{
@@ -8743,7 +8813,7 @@ BOOL CDlgDropOff::DoIndustyInfoStat(void)
 		if (f_60_20_cross_price_increase < f_20_10_cross_price_increase)
 			f_up_per = f_20_10_cross_price_increase;
 
-		if (f_up_per < 10.0)
+		if (f_up_per < fIncrease) //15.0
 		{
 			std::string strCode = (LPCSTR)pTanAngleData->strStockCode;
 			std::vector<std::string> vecIndusty = IndustryDataMgr()->FindIndustryByStockCode(strCode);
@@ -8789,24 +8859,57 @@ BOOL CDlgDropOff::DoIndustyInfoStat(void)
 	std::vector<IndustyStatResult*> vecIndustyStatResult;
 
 	
-	printf("----------------涨幅10%以内--------------------------\n");
+
+	printf("----------------涨幅%.2f \%以内--------------------------\n", fIncrease);
 	iternum = industyMapNum.begin();
 	while (iternum != industyMapNum.end())
 	{
 		int nums = iternum->second;
 		
-		int mStockNums = IndustryDataMgr()->GetIndustryStockNums(iternum->first);
-		double  f_per = (double)nums * 100.0 / (double)mStockNums;
+		bool bFound = false;
+		int mStockNums = 0;
+		for (int i = 0; i < vecTanAngleData.size(); i++)
+		{
+			bFound = false;
+			std::vector<std::string> vecIndusty = IndustryDataMgr()->FindIndustryByStockCode((LPCSTR)vecTanAngleData[i]->strStockCode);
+			for (int j = 0; j < vecIndusty.size(); j++)
+			{
+				if (iternum->first == vecIndusty[j])
+				{
+					bFound = true;
+					break;
+				}
+			}
+			if (bFound)
+				mStockNums++;
+		}
+		
+		double  f_per;
+		if (mStockNums == 0)
+			f_per = 0.0;
+		else
+			f_per = (double)nums * 100.0 / (double)mStockNums;
 
-		printf("%s  %d  占比%.2f\n", iternum->first.c_str(),nums, f_per);
+		mStockNums = IndustryDataMgr()->GetIndustryStockNums(iternum->first);
+
+		double f_per2 = (double)nums * 100.0 / (double)mStockNums;
+		//printf("%s  %d  占比%.2f\n", iternum->first.c_str(),nums, f_per);
 		
 		IndustyStatResult* pIndustyStatResult = new IndustyStatResult();
 		pIndustyStatResult->strIndusty = iternum->first;
 		pIndustyStatResult->mNums = nums;
 		pIndustyStatResult->f_per = f_per;
+		pIndustyStatResult->f_per2 = f_per2;
 		vecIndustyStatResult.push_back(pIndustyStatResult);
 
 		iternum++;
+	}
+	std::sort(vecIndustyStatResult.begin(), vecIndustyStatResult.end(), [&](IndustyStatResult* p1, IndustyStatResult* p2)->bool {return p1->f_per > p2->f_per; });
+
+	for (int i = 0; i < vecIndustyStatResult.size(); i++)
+	{
+		printf("%s  %d  行业上涨占比%.2f   行业总占比 %.2f\n", vecIndustyStatResult[i]->strIndusty.c_str(), vecIndustyStatResult[i]->mNums, 
+			vecIndustyStatResult[i]->f_per, vecIndustyStatResult[i]->f_per2);
 	}
 	printf("-----------------------------------------------\n");
 
@@ -8885,8 +8988,8 @@ BOOL CDlgDropOff::DoIndustyInfoStat(void)
 		double f_cmp_all= pIndustryDataStat->f_per / f_per_all;
 		if (f_per_all < -0.5)
 			f_cmp_all = 0.0;
-		printf("行业 %s 有 %d 个  %s ,行业共有%d只股占比%.2f  十比率%.2f  \n", pIndustryDataStat->strIndustryName.c_str(), pIndustryDataStat->mAccordNums,
-			pIndustryDataStat->strTotalInfo.c_str(), pIndustryDataStat->mTotalNums, pIndustryDataStat->f_per, f_cmp_bs);
+		printf("行业 %s 有 %d 个  %s ,行业共有%d只股占比%.2f  其中小涨比率%.2f  \n", pIndustryDataStat->strIndustryName.c_str(), pIndustryDataStat->mAccordNums,
+			pIndustryDataStat->strTotalInfo.c_str(), pIndustryDataStat->mTotalNums, pIndustryDataStat->f_per, f_per_10);
 		printf("----------------------------------------------\n");
 	}
 	for (int j = 0; j < vecIndustyStatResult.size(); j++)
@@ -8903,7 +9006,9 @@ BOOL CDlgDropOff::DoIndustyInfoStat(void)
 	}
 	vecIndustyStatAllResult.clear();
 	
-	CTime mDropOffTime;
+	
+	
+	/*CTime mDropOffTime;
 	if (bUsePreDate)
 	{
 		mDataTimeDropOff.GetTime(mDropOffTime);
@@ -8915,7 +9020,35 @@ BOOL CDlgDropOff::DoIndustyInfoStat(void)
 
 	CDlgIndustryInfo dlgIndustryInfo;
 	dlgIndustryInfo.SetStockDateTime(mDropOffTime);
-	dlgIndustryInfo.DoModal();
+	dlgIndustryInfo.DoModal();*/
+
+	CDlgIndustrySel dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		IndustryData* pIndustryData = dlg.GetSelIndustryData();
+		
+		Vec_DropOffData  vecDropOffData_bk;
+		DropOffData* pDropOffData = NULL;
+		BOOL bFound = FALSE;
+		for (int j = 0; j < vecDropOffData.size(); j++)
+		{
+			pDropOffData = vecDropOffData[j];
+
+			bool bFound = false;
+			std::vector<std::string> strIndustryList = IndustryDataMgr()->FindIndustryByStockCode((LPCSTR)pDropOffData->strStockCode);
+			for (int n = 0; n < strIndustryList.size(); n++)
+			{
+				if (strIndustryList[n] == pIndustryData->strIndustryName)
+					bFound = true;
+			}
+			if (bFound)
+				vecDropOffData_bk.push_back(pDropOffData);
+		}
+
+		vecDropOffData.assign(vecDropOffData_bk.begin(), vecDropOffData_bk.end());
+		SetTimer(DROPOFF_EVENT_REFRESH_DATA, 300, 0);
+	}
+
 
 	return TRUE;
 }
@@ -9405,18 +9538,18 @@ BOOL CDlgDropOff::DoFilterReverseMLine(void)
 }
 
 
-BOOL CDlgDropOff::DoFiterVPVREqu(void)
+BOOL CDlgDropOff::DoFiterVPCREqu(void)
 {
 	RSIData mRSIData;
 	for (int i = 0; i < vecRSIData.size(); i++)
 	{
 		mRSIData = vecRSIData[i];
 
-		float fvrdif = fabs(mRSIData.vr - mRSIData.f_max_vr);
+	//	float fvrdif = fabs(mRSIData.vr - mRSIData.f_max_vr);
 
-		float fvrdifper = fvrdif * 100.0 / mRSIData.f_max_vr;
+//		float fvrdifper = fvrdif * 100.0 / mRSIData.f_max_vr;
 
-		if (fvrdifper < 2.0) 
+		if (mRSIData.cr>= mRSIData.f_max_cr  && mRSIData.vr<350.0 && mRSIData.vr >200.0)  //
 		{
 			DropOffData* pDropOffData = new DropOffData();
 			pDropOffData->strStockCode = mRSIData.strStockCode;
@@ -9449,6 +9582,148 @@ BOOL CDlgDropOff::DoFiterVPVREqu(void)
 	return TRUE;
 
 }
+
+#if 0
+BOOL CDlgDropOff::DOFilterAngleAndVR(void)
+{
+	RSIData mRSIData;
+	TanAngleData* pTanAngleData = NULL;
+	for (int i = 0; i < vecRSIData.size(); i++)
+	{
+		mRSIData = vecRSIData[i];
+		pTanAngleData = NULL;
+		for (int j = 0; j < vecTanAngleData.size(); j++)
+		{
+			if (vecTanAngleData[j]->strStockCode == mRSIData.strStockCode)
+			{
+				pTanAngleData = vecTanAngleData[j];
+				break;
+			}
+		}
+		if (!pTanAngleData)
+			continue;
+
+		double f_ave_volume_per = pTanAngleData->fPara5;
+		int m_ave_volume_per = f_ave_volume_per * 100;
+
+
+		float f_vr = mRSIData.vr;
+		int m_vr = f_vr;
+
+		int m_vr_ave_dif = abs(m_vr - m_ave_volume_per);
+
+		double f_ma5_angle = pTanAngleData->fPara0;
+		double f_ma10_angle = pTanAngleData->fPara1;
+		double f_ma20_angle = pTanAngleData->fPara2;
+		bool bOk1 = false;
+		if (f_ma5_angle > f_ma10_angle && f_ma10_angle > f_ma20_angle && f_ma5_angle>45.0)
+			bOk1 = true;
+
+		double f_20_10_cross_price_increase = pTanAngleData->fPara7;  //10日均线上穿20日后的涨幅
+		double f_60_20_cross_price_increase = pTanAngleData->fPara6;  //20日均线上穿60日后的涨幅
+		
+		float  f_cross_price_increase = f_20_10_cross_price_increase > f_60_20_cross_price_increase ? f_20_10_cross_price_increase : f_60_20_cross_price_increase;
+		bool bOk2 = false;
+		if (f_cross_price_increase < 35.0)
+			bOk2 = true;
+
+		if ((m_vr_ave_dif<=100)&& bOk1 && bOk2 && m_vr>200)
+		{
+			DropOffData* pDropOffData = new DropOffData();
+			pDropOffData->strStockCode = mRSIData.strStockCode;
+			pDropOffData->strStockName = mRSIData.strStockName;
+			pDropOffData->fAveMultiple = mRSIData.f_total_value;
+			pDropOffData->fMaxMultiple = mRSIData.m_low_ave_5_nums;
+
+			CString strRsiInfo;
+			strRsiInfo.Format("rsi1=%.2f , rsi2=%.2f , rsi3=%.2f\n", mRSIData.rsi_1, mRSIData.rsi_2, mRSIData.rsi_3);
+			pDropOffData->strMaxDate = strRsiInfo;
+			strRsiInfo.Format("rsi1=%.2f , rsi2=%.2f , rsi3=%.2f\n", mRSIData.f_min_rsi1, mRSIData.f_min_rsi2, mRSIData.f_min_rsi3);
+			pDropOffData->strMinDate = strRsiInfo;
+			CString strInfo;
+			strInfo.Format("nowmfi=%.2f maxmfi=%.2f d=%d minmfi=%.2f d=%d", mRSIData.mfi, mRSIData.f_max_mfi, mRSIData.m_max_mfi_day, mRSIData.f_min_mfi, mRSIData.m_min_mfi_day);
+			pDropOffData->strInfo = strInfo;
+			vecDropOffData.push_back(pDropOffData);
+		}
+
+	}
+
+	std::sort(vecDropOffData.begin(), vecDropOffData.end(), sortFun);
+
+	FilterByReserve();
+	FilterByMerge();
+
+	SetTimer(DROPOFF_EVENT_REFRESH_DATA, 300, 0);
+
+	return TRUE;
+}
+#else
+
+BOOL CDlgDropOff::DOFilterAngleAndVR(void)
+{
+	RSIData mRSIData;
+	TanAngleData* pTanAngleData = NULL;
+	for (int i = 0; i < vecRSIData.size(); i++)
+	{
+		mRSIData = vecRSIData[i];
+		
+		pTanAngleData = NULL;
+		for (int j = 0; j < vecTanAngleData.size(); j++)
+		{
+			if (vecTanAngleData[j]->strStockCode == mRSIData.strStockCode)
+			{
+				pTanAngleData = vecTanAngleData[j];
+				break;
+			}
+		}
+		if (!pTanAngleData)
+			continue;
+		
+		int mNowIsMaxPriceNums = pTanAngleData->mNowIsMaxPriceNums;
+
+		float f_vr = mRSIData.vr;
+		float f_max_vr = mRSIData.f_max_vr;
+
+		int m_max_vr_day = mRSIData.m_max_vr_day;
+
+		int m_min_vr_day = mRSIData.m_min_vr_day;
+
+		if ((f_vr>100&& f_vr<200)  && (f_max_vr>210 && f_max_vr<297) && (m_max_vr_day<=4) && (m_min_vr_day>=5) && (mNowIsMaxPriceNums==0))
+		{
+			DropOffData* pDropOffData = new DropOffData();
+			pDropOffData->strStockCode = mRSIData.strStockCode;
+			pDropOffData->strStockName = mRSIData.strStockName;
+			pDropOffData->fAveMultiple = mRSIData.f_total_value;
+			pDropOffData->fMaxMultiple = mRSIData.m_low_ave_5_nums;
+
+			CString strRsiInfo;
+			strRsiInfo.Format("rsi1=%.2f , rsi2=%.2f , rsi3=%.2f\n", mRSIData.rsi_1, mRSIData.rsi_2, mRSIData.rsi_3);
+			pDropOffData->strMaxDate = strRsiInfo;
+			strRsiInfo.Format("rsi1=%.2f , rsi2=%.2f , rsi3=%.2f\n", mRSIData.f_min_rsi1, mRSIData.f_min_rsi2, mRSIData.f_min_rsi3);
+			pDropOffData->strMinDate = strRsiInfo;
+			CString strInfo;
+			strInfo.Format("nowmfi=%.2f maxmfi=%.2f d=%d minmfi=%.2f d=%d", mRSIData.mfi, mRSIData.f_max_mfi, mRSIData.m_max_mfi_day, mRSIData.f_min_mfi, mRSIData.m_min_mfi_day);
+			pDropOffData->strInfo = strInfo;
+			vecDropOffData.push_back(pDropOffData);
+		}
+
+	}
+
+	std::sort(vecDropOffData.begin(), vecDropOffData.end(), sortFun);
+
+	FilterByReserve();
+	FilterByMerge();
+
+	SetTimer(DROPOFF_EVENT_REFRESH_DATA, 300, 0);
+
+	return TRUE;
+}
+
+
+
+#endif
+
+
 void CDlgDropOff::OnBnClickedBtnVpSel()
 {
 	CDlgVPSFSel dlg;
@@ -9528,7 +9803,7 @@ void CDlgDropOff::OnBnClickedBtnVpSel()
 			}
 
 		}
-		else if (mSFSel == 4)  //VR<100
+		else if (mSFSel == 4)  //CR EQU
 		{
 			bReserveFilter = mCheckReserveFilter.GetCheck();
 
@@ -9539,8 +9814,21 @@ void CDlgDropOff::OnBnClickedBtnVpSel()
 			}
 
 			vecDropOffData.clear();
+			DoFiterVPCREqu();
+		}
+		else if (mSFSel == 5)  //VR Angle
+		{
+			bReserveFilter = mCheckReserveFilter.GetCheck();
 
-			DoFiterVPVREqu();
+			if (bReserveFilter)
+			{
+				vecDropOffData_Reserve.clear();
+				vecDropOffData_Reserve = vecDropOffData;
+			}
+
+			vecDropOffData.clear();
+			DOFilterAngleAndVR();
+			//DoFiterVPVREqu();
 		}
 
 	}
@@ -9548,3 +9836,168 @@ void CDlgDropOff::OnBnClickedBtnVpSel()
 
 
 
+BOOL CDlgDropOff::DoFilterSpecialBiasQl(void)
+{
+	CTime mDropOffTime;
+	if (bUsePreDate)
+	{
+		mDataTimeDropOff.GetTime(mDropOffTime);
+	}
+	else
+	{
+		mDropOffTime = CTime::GetCurrentTime();
+	}
+	CStockDayTable* pStockDayTable = NULL;
+
+	Vec_DropOffData  vecDropOffData_bk;
+	DropOffData* pDropOffData = NULL;
+	CStocBIASQLData* pStocBIASQLData = NULL;
+	for (int i = 0; i < vecDropOffData.size(); i++)
+	{
+		pDropOffData = vecDropOffData[i];
+		pStockDayTable = StockDataMgr()->GetStockDayTable(pDropOffData->strStockCode);
+		CString strNowDate = pStockDayTable->GetNearestStockDayDate(mDropOffTime);
+		pStocBIASQLData= CStockBIASQLArithmetic::CalcBiasQlData(pDropOffData->strStockCode, strNowDate, 125, K_LINE_DAY, 6, 6);
+
+		int m_size = pStocBIASQLData->vec_bias.size();
+
+		float fmin_bias = 99999.0;
+		for (int i = m_size - 4; i < m_size; i++)
+		{
+			if (pStocBIASQLData->vec_bias[i] < fmin_bias)
+			{
+				fmin_bias = pStocBIASQLData->vec_bias[i];
+			}
+		}
+
+		float fmax_bias = -99999.0;
+		int m_max_bias_index = -1;
+		for (int i = m_size - 20; i < m_size; i++)
+		{
+			if (pStocBIASQLData->vec_bias[i] > fmax_bias)
+			{
+				fmax_bias = pStocBIASQLData->vec_bias[i];
+				m_max_bias_index = m_size - i;
+			}
+		}
+
+		float f_now_bias = pStocBIASQLData->vec_bias[m_size - 1];
+		float f_now_ql = pStocBIASQLData->vec_ql[m_size - 1];
+
+		float f_pre_bias = pStocBIASQLData->vec_bias[m_size - 2];
+		float f_pre_ql = pStocBIASQLData->vec_ql[m_size - 2];
+
+		bool bok = false;
+
+		if (f_pre_bias< f_pre_ql && f_now_bias> f_now_ql  ) //&& fmin_bias<-8.0
+			bok = true;
+		if (bok)
+		{
+			//pDropOffData->fMaxMultiple = fmin_bias;
+			//pDropOffData->fAveMultiple = fmax_bias;
+			//pDropOffData->strMaxDate.Format("%d", m_max_bias_index);
+			vecDropOffData_bk.push_back(pDropOffData);
+		}
+
+		SAFE_DELETE(pStocBIASQLData);
+	}
+
+	vecDropOffData.assign(vecDropOffData_bk.begin(), vecDropOffData_bk.end());
+
+	FilterByReserve();
+	FilterByMerge();
+
+	SetTimer(DROPOFF_EVENT_REFRESH_DATA, 300, 0);
+
+	return TRUE;
+}
+
+
+
+BOOL  CDlgDropOff::DoFilterSpecialDMI(void)
+{
+	CTime mDropOffTime;
+	if (bUsePreDate)
+	{
+		mDataTimeDropOff.GetTime(mDropOffTime);
+	}
+	else
+	{
+		mDropOffTime = CTime::GetCurrentTime();
+	}
+	CStockDayTable* pStockDayTable = NULL;
+
+	Vec_DropOffData  vecDropOffData_bk;
+	DropOffData* pDropOffData = NULL;
+	CStockDMIData* pStockDMIData = NULL;
+	for (int i = 0; i < vecDropOffData.size(); i++)
+	{
+		pDropOffData = vecDropOffData[i];
+		pStockDayTable = StockDataMgr()->GetStockDayTable(pDropOffData->strStockCode);
+		CString strNowDate = pStockDayTable->GetNearestStockDayDate(mDropOffTime);
+
+		pStockDMIData= CStockDMIArithmetic::CalcDMIData(pStockDayTable->GetStockCode(), strNowDate, 125, K_LINE_DAY, 14, 6);
+		int size = pStockDMIData->m_length;
+		int mUpIndex = -1;
+		int mPreDay = 2;
+		for (int j = size - 1; j >= size - mPreDay; j--)
+		{
+			float f_now_adx = pStockDMIData->vec_adx[j];
+			float f_now_adxr = pStockDMIData->vec_adxr[j];
+
+			float f_pre_adx = pStockDMIData->vec_adx[j-1];
+			float f_pre_adxr = pStockDMIData->vec_adxr[j-1];
+
+			if (f_now_adx > f_now_adxr)
+			{
+				if (f_pre_adx < f_pre_adxr)
+				{
+					mUpIndex = j;
+					break;
+				}
+			}
+
+		}
+
+		if (mUpIndex < 0)
+		{
+			SAFE_DELETE(pStockDMIData);
+			continue;
+		}
+
+
+		float f_now_adx = pStockDMIData->vec_adx[mUpIndex];
+		float f_now_adxr = pStockDMIData->vec_adxr[mUpIndex];
+
+		float f_now_pdi= pStockDMIData->vec_pdi[mUpIndex];
+		float f_now_mdi= pStockDMIData->vec_mdi[mUpIndex];
+
+		bool bok = false;
+		if (f_now_pdi > f_now_mdi && f_now_adx > f_now_mdi ) //&& f_now_adx< f_now_pdi
+			bok = true;
+
+		//bool bok2 = false;
+		//if (f_now_pdi > 32.0 && f_now_adx> f_now_adxr&& f_now_adx<40.0 &&  (f_now_pdi - f_now_mdi) > 20.0)
+		//	bok2 = true;
+
+		if (bok)
+		{
+			pDropOffData->fMaxMultiple = size- mUpIndex;
+			vecDropOffData_bk.push_back(pDropOffData);
+		}
+
+		SAFE_DELETE(pStockDMIData);
+
+	}
+
+	vecDropOffData.assign(vecDropOffData_bk.begin(), vecDropOffData_bk.end());
+
+	FilterByReserve();
+	FilterByMerge();
+
+	SetTimer(DROPOFF_EVENT_REFRESH_DATA, 300, 0);
+
+
+	return TRUE;
+
+}

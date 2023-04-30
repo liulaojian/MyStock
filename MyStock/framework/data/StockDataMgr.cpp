@@ -242,8 +242,18 @@ BOOL CStockDataMgr::InitStockTableList(void)
 
 		if (!pStockCode)
 			continue;
-		if (pStockCode->strStockDayFilePath != "")
-			vecTempStockCodeList.push_back(pStockCode);
+		bool bFound = false;
+		for (int j = 0; j < vecStockDayTableList.size(); j++)
+		{
+			if (pStockCode->strStockCode == vecStockDayTableList[j]->GetStockCode())
+			{
+				bFound = true;
+				break;
+			}
+		}
+		if(!bFound)
+			continue;
+		vecTempStockCodeList.push_back(pStockCode);
 	}
 	vecStockCodeList.clear();
 	vecStockCodeList = vecTempStockCodeList;

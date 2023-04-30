@@ -103,6 +103,79 @@ CStockCRData* CStockCRArithmetic::CalcCRData(CString strStockCode, CString strDa
 		}
 	}
 
+	std::vector<float> vec_price_ma10, vec_price_ma20, vec_price_ma40, vec_price_ma62;
+	vec_price_ma10 = CStockCRArithmetic::CalcMA(10, vec_cr_value);
+	std::vector<float> vec_price_ma1;
+	if (vec_price_ma10.size() > 5)
+	{
+		vec_price_ma1.assign(vec_price_ma10.begin(), vec_price_ma10.end() - 5);
+	}
+	vec_price_ma20 = CStockCRArithmetic::CalcMA(20, vec_cr_value);
+	std::vector<float> vec_price_ma2;
+	if (vec_price_ma20.size() > 9)
+	{
+		vec_price_ma2.assign(vec_price_ma20.begin(), vec_price_ma20.end() - 9);
+	}
+
+	vec_price_ma40 = CStockCRArithmetic::CalcMA(40, vec_cr_value);
+	std::vector<float> vec_price_ma3;
+	if (vec_price_ma40.size() > 17)
+	{
+		vec_price_ma3.assign(vec_price_ma40.begin(), vec_price_ma40.end() - 17);
+	}
+
+	vec_price_ma62 = CStockCRArithmetic::CalcMA(62, vec_cr_value);
+	std::vector<float> vec_price_ma4;
+	if (vec_price_ma62.size() > 25)
+	{
+		vec_price_ma4.assign(vec_price_ma62.begin(), vec_price_ma62.end() - 25);
+	}
+
+
+	std::vector<float> vec_ma1;
+	std::vector<float> vec_ma2;
+	std::vector<float> vec_ma3;
+	std::vector<float> vec_ma4;
+
+	for (int i = 0; i < vec_cr_value.size(); i++)
+	{
+		int m1_dif_size= vec_cr_value.size()- vec_price_ma1.size();
+		if (i >= m1_dif_size)
+		{
+			vec_ma1.push_back(vec_price_ma1[i - m1_dif_size]);
+		}
+		else
+			vec_ma1.push_back(0.0);
+
+		int m2_dif_size = vec_cr_value.size() - vec_price_ma2.size();
+		if (i >= m2_dif_size)
+		{
+			vec_ma2.push_back(vec_price_ma2[i - m2_dif_size]);
+		}
+		else
+			vec_ma2.push_back(0.0);
+
+
+		int m3_dif_size = vec_cr_value.size() - vec_price_ma3.size();
+		if (i >= m3_dif_size)
+		{
+			vec_ma3.push_back(vec_price_ma3[i - m3_dif_size]);
+		}
+		else
+			vec_ma3.push_back(0.0);
+
+		int m4_dif_size = vec_cr_value.size() - vec_price_ma4.size();
+		if (i >= m4_dif_size)
+		{
+			vec_ma4.push_back(vec_price_ma4[i - m4_dif_size]);
+		}
+		else
+			vec_ma4.push_back(0.0);
+
+	}
+
+
+
 	CStockCRData* pCStockCRData;
 	pCStockCRData = new CStockCRData();
 	pCStockCRData->vec_open_price.assign(pKLineBaseData->vec_open_price.begin() + 1, pKLineBaseData->vec_open_price.end());
@@ -114,6 +187,10 @@ CStockCRData* CStockCRArithmetic::CalcCRData(CString strStockCode, CString strDa
 	pCStockCRData->vec_volume.assign(pKLineBaseData->vec_volume.begin() + 1, pKLineBaseData->vec_volume.end());
 	pCStockCRData->vec_volume_price.assign(pKLineBaseData->vec_volume_price.begin() + 1, pKLineBaseData->vec_volume_price.end());
 	pCStockCRData->vec_cr = vec_cr_value;
+	pCStockCRData->vec_ma1 = vec_ma1;
+	pCStockCRData->vec_ma2 = vec_ma2;
+	pCStockCRData->vec_ma3 = vec_ma3;
+	pCStockCRData->vec_ma4 = vec_ma4;
 	pCStockCRData->m_length = vec_cr_value.size();
 	pCStockCRData->m_type = pKLineBaseData->m_type;
 	pCStockCRData->mCRNum = mCrNum;

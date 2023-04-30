@@ -136,7 +136,13 @@ public:
 
 	BOOL DoFiterVPMFILowVale(int mMfiLowValue,int mMfiLowDay,bool bIsMfiCurMaxEqu,int mMfiDifCurMax);
 
-	BOOL DoFiterVPVREqu(void);
+	BOOL DoFiterVPCREqu(void);
+
+	BOOL DOFilterAngleAndVR(void);
+
+	BOOL DoFilterSpecialBiasQl (void);
+
+	BOOL DoFilterSpecialDMI(void);
 
 	BOOL DoFilterReverseMLine(void);
 	//计算上涨系数 量

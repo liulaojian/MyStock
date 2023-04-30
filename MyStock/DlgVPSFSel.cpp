@@ -59,8 +59,12 @@ BOOL CDlgVPSFSel::OnInitDialog()
 	//ret = mCmbSFSel.AddString("MFI低值设置");
 	//mCmbSFSel.SetItemData(ret, 3);
 
-	ret = mCmbSFSel.AddString("VR相等");
+	ret = mCmbSFSel.AddString("CR 相等");
 	mCmbSFSel.SetItemData(ret, 4);
+
+
+	ret = mCmbSFSel.AddString("VR Angle");
+	mCmbSFSel.SetItemData(ret, 5);
 
 	mCmbSFSel.SetCurSel(0);
 

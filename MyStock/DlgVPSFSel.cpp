@@ -63,7 +63,7 @@ BOOL CDlgVPSFSel::OnInitDialog()
 	mCmbSFSel.SetItemData(ret, 4);
 
 
-	ret = mCmbSFSel.AddString("VR Angle");
+	ret = mCmbSFSel.AddString("VR 相等");
 	mCmbSFSel.SetItemData(ret, 5);
 
 	mCmbSFSel.SetCurSel(0);

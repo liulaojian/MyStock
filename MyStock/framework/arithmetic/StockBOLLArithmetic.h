@@ -24,6 +24,8 @@ public:
 
 	static CStockBOLLData *CalcBOLLData(CString strStockCode,CString strDateTime,int mNums,int mType,int mN1);
 
+	static std::vector<double> CalcMA(int n, std::vector<double> vec_value);
+
 	static void CalcCloseAverage(int n,std::vector<double> closePrice,std::vector<double> &data);
 
 };

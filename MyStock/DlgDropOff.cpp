@@ -9612,6 +9612,45 @@ BOOL CDlgDropOff::DoFiterVPCREqu(void)
 
 }
 
+BOOL  CDlgDropOff::DoFiterVPVREqu(void)
+{
+	RSIData mRSIData;
+	for (int i = 0; i < vecRSIData.size(); i++)
+	{
+		mRSIData = vecRSIData[i];
+
+		if (mRSIData.vr >= mRSIData.f_max_vr )  
+		{
+			DropOffData* pDropOffData = new DropOffData();
+			pDropOffData->strStockCode = mRSIData.strStockCode;
+			pDropOffData->strStockName = mRSIData.strStockName;
+			pDropOffData->fAveMultiple = mRSIData.f_total_value;
+			pDropOffData->fMaxMultiple = mRSIData.m_low_ave_5_nums;
+
+			CString strRsiInfo;
+			strRsiInfo.Format("rsi1=%.2f , rsi2=%.2f , rsi3=%.2f\n", mRSIData.rsi_1, mRSIData.rsi_2, mRSIData.rsi_3);
+			pDropOffData->strMaxDate = strRsiInfo;
+			strRsiInfo.Format("rsi1=%.2f , rsi2=%.2f , rsi3=%.2f\n", mRSIData.f_min_rsi1, mRSIData.f_min_rsi2, mRSIData.f_min_rsi3);
+			pDropOffData->strMinDate = strRsiInfo;
+			CString strInfo;
+			strInfo.Format("nowmfi=%.2f maxmfi=%.2f d=%d minmfi=%.2f d=%d", mRSIData.mfi, mRSIData.f_max_mfi, mRSIData.m_max_mfi_day, mRSIData.f_min_mfi, mRSIData.m_min_mfi_day);
+			pDropOffData->strInfo = strInfo;
+			vecDropOffData.push_back(pDropOffData);
+		}
+
+	}
+
+	std::sort(vecDropOffData.begin(), vecDropOffData.end(), sortFun);
+
+	FilterByReserve();
+	FilterByMerge();
+
+	SetTimer(DROPOFF_EVENT_REFRESH_DATA, 300, 0);
+
+	return TRUE;
+
+}
+
 #if 0
 BOOL CDlgDropOff::DOFilterAngleAndVR(void)
 {
@@ -9845,7 +9884,7 @@ void CDlgDropOff::OnBnClickedBtnVpSel()
 			vecDropOffData.clear();
 			DoFiterVPCREqu();
 		}
-		else if (mSFSel == 5)  //VR Angle
+		else if (mSFSel == 5)  //VR ПаµИ
 		{
 			bReserveFilter = mCheckReserveFilter.GetCheck();
 
@@ -9856,7 +9895,8 @@ void CDlgDropOff::OnBnClickedBtnVpSel()
 			}
 
 			vecDropOffData.clear();
-			DOFilterAngleAndVR();
+			DoFiterVPVREqu();
+			//DOFilterAngleAndVR();
 			//DoFiterVPVREqu();
 		}
 

@@ -46,7 +46,7 @@ BOOL CDlgSpecSel::OnInitDialog()
 	int ret;
 
 
-	ret = mCmbSfSel.AddString("Bias-Ql上穿");
+	ret = mCmbSfSel.AddString("均线上穿");
 	mCmbSfSel.SetItemData(ret, 0);
 
 

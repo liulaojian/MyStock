@@ -600,6 +600,9 @@
     <ClInclude Include="framework\arithmetic\BaseIndicator.h">
       <Filter>Framework\function\arithmetic</Filter>
     </ClInclude>
+    <ClInclude Include="DlgIndustryFilter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyStock.cpp">
@@ -1051,6 +1054,9 @@
     </ClCompile>
     <ClCompile Include="framework\arithmetic\BaseIndicator.cpp">
       <Filter>Framework\function\arithmetic</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgIndustryFilter.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

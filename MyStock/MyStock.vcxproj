@@ -232,6 +232,7 @@ xcopy /y /r F:\code\MyStock\Debug\MyStock.pdb  F:\stock\soft3\</Command>
     <ClInclude Include="DlgFilterIncrease.h" />
     <ClInclude Include="DlgFindStockDestribute.h" />
     <ClInclude Include="DlgHistoryCmpResult.h" />
+    <ClInclude Include="DlgIndustryFilter.h" />
     <ClInclude Include="DlgIndustryInfo.h" />
     <ClInclude Include="DlgIndustrySel.h" />
     <ClInclude Include="DlgKdjPara.h" />
@@ -398,6 +399,7 @@ xcopy /y /r F:\code\MyStock\Debug\MyStock.pdb  F:\stock\soft3\</Command>
     <ClCompile Include="DlgFilterIncrease.cpp" />
     <ClCompile Include="DlgFindStockDestribute.cpp" />
     <ClCompile Include="DlgHistoryCmpResult.cpp" />
+    <ClCompile Include="DlgIndustryFilter.cpp" />
     <ClCompile Include="DlgIndustryInfo.cpp" />
     <ClCompile Include="DlgIndustrySel.cpp" />
     <ClCompile Include="DlgKdjPara.cpp" />

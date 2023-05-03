@@ -142,6 +142,8 @@ public:
 
 	BOOL DoFilterSpecialBiasQl (void);
 
+	BOOL DoFilterSpecialAveLine(void);
+
 	BOOL DoFilterSpecialDMI(void);
 
 	BOOL DoFilterReverseMLine(void);

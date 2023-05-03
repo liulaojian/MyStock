@@ -69,6 +69,7 @@
 
 #include "DlgStockIndexInfo.h"
 #include "DlgSpecSel.h"
+#include "DlgIndustryFilter.h"
 
 #include "CommonMacro.h"
 // CDlgDropOff 对话框
@@ -2070,9 +2071,36 @@ void CDlgDropOff::OnBnClickedBtnDropOff()
 			mDropOffTime = CTime::GetCurrentTime();
 		}
 
+#if 0
 		CDlgGlobalInfo dlg;
-		dlg.SetStockDateTime(mDropOffTime);
+
 		dlg.DoModal();
+#else
+		CDlgIndustryFilter dlg;
+		dlg.SetStockDateTime(mDropOffTime);
+		if (dlg.DoModal() == IDOK)
+		{
+			vecDropOffData.clear();
+			DropOffData* pDropOffData = NULL;
+			Vec_IndustryFilterInfo vecIndustryFilterInfo = dlg.GetResultFilterInfo();
+
+			for (int i = 0; i < vecIndustryFilterInfo.size(); i++)
+			{
+				pDropOffData = new DropOffData();
+				pDropOffData->strStockCode = vecIndustryFilterInfo[i]->strStockCode;
+				pDropOffData->strStockName = vecIndustryFilterInfo[i]->strStockName;
+				vecDropOffData.push_back(pDropOffData);
+			}
+
+			FilterByReserve();
+			FilterByMerge();
+
+			SetTimer(DROPOFF_EVENT_REFRESH_DATA, 300, 0);
+		}
+
+#endif
+		
+
 
 	}
 	else if (mFunButtonMenu.m_nMenuResult == IDR_MENU_INDUSTRY_INFO)
@@ -2093,7 +2121,8 @@ void CDlgDropOff::OnBnClickedBtnDropOff()
 
 			if (mSfSel == 0)		//Bias-ql 过滤
 			{
-				DoFilterSpecialBiasQl();
+				//DoFilterSpecialBiasQl();
+				DoFilterSpecialAveLine();
 			}
 			else if (mSfSel == 1)	//DMI过滤
 			{
@@ -9893,7 +9922,7 @@ BOOL CDlgDropOff::DoFilterSpecialBiasQl(void)
 			bok = true;
 		if (bok)
 		{
-			//pDropOffData->fMaxMultiple = fmin_bias;
+			pDropOffData->fMaxMultiple = fmin_bias;
 			//pDropOffData->fAveMultiple = fmax_bias;
 			//pDropOffData->strMaxDate.Format("%d", m_max_bias_index);
 			vecDropOffData_bk.push_back(pDropOffData);
@@ -9912,6 +9941,106 @@ BOOL CDlgDropOff::DoFilterSpecialBiasQl(void)
 	return TRUE;
 }
 
+
+BOOL CDlgDropOff::DoFilterSpecialAveLine(void)
+{
+	CTime mDropOffTime;
+	if (bUsePreDate)
+	{
+		mDataTimeDropOff.GetTime(mDropOffTime);
+	}
+	else
+	{
+		mDropOffTime = CTime::GetCurrentTime();
+	}
+	CStockDayTable* pStockDayTable = NULL;
+
+	Vec_DropOffData  vecDropOffData_bk;
+	DropOffData* pDropOffData = NULL;
+	CStockKDJData* pStockKDJData = NULL;
+	for (int i = 0; i < vecDropOffData.size(); i++)
+	{
+		pDropOffData = vecDropOffData[i];
+		pStockDayTable = StockDataMgr()->GetStockDayTable(pDropOffData->strStockCode);
+		CString strNowDate = pStockDayTable->GetNearestStockDayDate(mDropOffTime);
+		pStockKDJData = CStockKDJArithmetic::CalcKDJData(pDropOffData->strStockCode, strNowDate, 125, K_LINE_DAY, 9, 3, 3);
+		std::vector<double> vec_price_ma5, vec_price_ma10, vec_price_ma20;
+		vec_price_ma5 = CStockKDJArithmetic::CalcMA(5, pStockKDJData->vec_close_price);
+		vec_price_ma10 = CStockKDJArithmetic::CalcMA(10, pStockKDJData->vec_close_price);
+		vec_price_ma20 = CStockKDJArithmetic::CalcMA(20, pStockKDJData->vec_close_price);
+		
+		int m_size = pStockKDJData->vec_k.size();
+
+		bool b_m5_up_m10 = false;
+
+		bool b_m5_up_m20 = false;
+		
+		for (int i = m_size - 1; i >= m_size - 6; i--)
+		{
+			double f_now_m5 = vec_price_ma5[i];
+			double f_now_m10 = vec_price_ma10[i];
+			double f_now_m20 = vec_price_ma20[i];
+
+			double f_pre_m5 = vec_price_ma5[i-1];
+			double f_pre_m10 = vec_price_ma10[i-1];
+			double f_pre_m20 = vec_price_ma20[i-1];
+
+			if (f_now_m5 > f_now_m10 && f_pre_m5 < f_pre_m10)
+				b_m5_up_m10 = true;
+			if (f_now_m5 > f_now_m20 && f_pre_m5 < f_pre_m20)
+				b_m5_up_m20 = true;
+
+		}
+		
+		
+		bool b_m10_up_m20 = false;
+
+		for (int i = m_size - 1; i >= m_size - 8; i--)
+		{
+			double f_now_m10 = vec_price_ma10[i];
+			double f_now_m20 = vec_price_ma20[i];
+
+			double f_pre_m10 = vec_price_ma10[i - 1];
+			double f_pre_m20 = vec_price_ma20[i - 1];
+			if (f_now_m10 > f_now_m20 && f_pre_m10 < f_pre_m20)
+				b_m10_up_m20 = true;
+
+		}
+
+		bool bok1 = false;
+
+		if (b_m5_up_m10 || b_m5_up_m20 || b_m10_up_m20)
+		{
+			bok1 = true;
+		}
+
+		int mM20UpNums = 0;
+		for (int i = m_size - 5; i <= m_size - 1; i++)
+		{
+			double f_now_m20 = vec_price_ma20[i];
+			double f_pre_m20 = vec_price_ma20[i - 1];
+			if (f_now_m20 > f_pre_m20)
+				mM20UpNums++;
+		}
+		bool bok2 = false;
+		if (mM20UpNums >= 4)
+			bok2 = true;
+
+		if(bok1 && bok2)
+			vecDropOffData_bk.push_back(pDropOffData);
+		SAFE_DELETE(pStockKDJData);
+
+	}
+
+	vecDropOffData.assign(vecDropOffData_bk.begin(), vecDropOffData_bk.end());
+
+	FilterByReserve();
+	FilterByMerge();
+
+	SetTimer(DROPOFF_EVENT_REFRESH_DATA, 300, 0);
+
+	return TRUE;
+}
 
 
 BOOL  CDlgDropOff::DoFilterSpecialDMI(void)

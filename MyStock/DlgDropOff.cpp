@@ -2984,6 +2984,8 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 			{
 				double f_value_begin = pStockBOLLData->vec_open_price[m_boll_size - j];
 				double f_value_end = pStockBOLLData->vec_close_price[m_boll_size - j];
+				double f_value_low = pStockBOLLData->vec_low_price[m_boll_size - j];
+				double f_value_high = pStockBOLLData->vec_high_price[m_boll_size - j];
 				double f_boll_up = pStockBOLLData->vec_up[m_boll_size - j];
 				double f_boll_value = pStockBOLLData->vec_boll[m_boll_size - j];
 
@@ -2994,8 +2996,12 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 				if (f_boll_up < f_value_min)
 				{
 					double f_temp1 = (f_value_max - f_boll_up) / f_boll_up;
+					double f_temp1_2 = (f_value_high - f_boll_up) / f_boll_up;
+
 					double f_temp2 = (f_value_min - f_boll_up) / f_boll_up;
-					f_boll_up_per = f_temp1 + f_temp2 + 1.0;
+					double f_temp2_2 = (f_value_low - f_boll_up) / f_boll_up;
+					f_boll_up_per = (f_temp1 + f_temp1_2) / 2.0 + (f_temp2+ f_temp2_2)/2.0 + 1.0;
+
 				}
 				else if (f_boll_up > f_value_min && f_boll_up <= f_value_max)
 					f_boll_up_per = 1.0 - (f_boll_up - f_value_min) / (f_value_max - f_value_min);

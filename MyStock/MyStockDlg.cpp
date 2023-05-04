@@ -246,7 +246,7 @@ BOOL CMyStockDlg::OnInitDialog()
 	//CStockSARArithmetic::CalcSARData("SH600016","2022/12/29",125,K_LINE_DAY,4);
 	//CStockASIArithmetic::CalcASIData("SH000001","2018/02/23",125,K_LINE_DAY,6);
 	//CStockKDJArithmetic::CalcKDJData("SH000001","2018/02/28",125,K_LINE_DAY,9,3,3);
-	CStockBOLLArithmetic::CalcBOLLData("SH601398","2023/04/07",125,K_LINE_DAY,20);
+	//CStockBOLLArithmetic::CalcBOLLData("SH601398","2023/04/07",125,K_LINE_DAY,20);
 	//CStockProfitLossArithmetic::CalcProfitLossData("SZ000858","2018/03/20",240,50);
 
 	/*

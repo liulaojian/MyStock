@@ -61,6 +61,7 @@
 #include "StockVRArithmetic.h"
 #include "StockBiasQlArithmetic.h"
 #include "StockDMIAtithmetic.h"
+#include "StockBOLLArithmetic.h"
 
 #include "DlgPVDetail.h"
 #include "DlgVPSFSel.h"
@@ -2974,6 +2975,37 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 			}
 
 
+			CStockBOLLData*  pStockBOLLData = CStockBOLLArithmetic::CalcBOLLData(pDropOffData->strStockCode, strNowDate, 125, K_LINE_DAY, 20);
+			int m_boll_size = pStockBOLLData->m_length;
+			
+			double f_boll_up_per_all[3] = { 0 };
+
+			for (int j = 3; j >= 1; j--)
+			{
+				double f_value_begin = pStockBOLLData->vec_open_price[m_boll_size - j];
+				double f_value_end = pStockBOLLData->vec_close_price[m_boll_size - j];
+				double f_boll_up = pStockBOLLData->vec_up[m_boll_size - j];
+				double f_boll_value = pStockBOLLData->vec_boll[m_boll_size - j];
+
+				double f_value_max = f_value_end > f_value_begin ? f_value_end : f_value_begin;
+				double f_value_min = f_value_begin > f_value_end ? f_value_end : f_value_begin;
+				double f_value_ave = (f_value_max + f_value_min) / 2.0;
+				double f_boll_up_per = 0.0;
+				if (f_boll_up < f_value_min)
+				{
+					double f_temp1 = (f_value_max - f_boll_up) / f_boll_up;
+					double f_temp2 = (f_value_min - f_boll_up) / f_boll_up;
+					f_boll_up_per = f_temp1 + f_temp2 + 1.0;
+				}
+				else if (f_boll_up > f_value_min && f_boll_up <= f_value_max)
+					f_boll_up_per = 1.0 - (f_boll_up - f_value_min) / (f_value_max - f_value_min);
+				else //f_boll_up>f_value_max
+					f_boll_up_per = (f_value_max - f_boll_up) / (f_boll_up - f_value_min);
+
+				f_boll_up_per_all[3 - j] = f_boll_up_per;
+			}
+			
+
 			CStockRSIData* pStockRSIData=NULL;
 			pStockRSIData=CStockRSIArithmetic::CalcRSIData(pDropOffData->strStockCode,strNowDate,125,K_LINE_DAY,6,12,24); 
 			int rsi_size=pStockRSIData->vec_rsi_1_value.size();
@@ -3224,6 +3256,9 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 			rsiData.m_min_vr_day= vr_size-m_vr_min_value_index;
 			rsiData.m_max_vr_day= vr_size - m_vr_max_value_index;
 
+			rsiData.f_boll_up_per[0] = f_boll_up_per_all[0];
+			rsiData.f_boll_up_per[1] = f_boll_up_per_all[1];
+			rsiData.f_boll_up_per[2] = f_boll_up_per_all[2];
 
 			rsiData.strStockCode = pDropOffData->strStockCode;
 			rsiData.strStockName = pDropOffData->strStockName;
@@ -3234,6 +3269,7 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 			SAFE_DELETE(pStockVRData);
 			SAFE_DELETE(pStockMFIData);
 			SAFE_DELETE(pStockCRData);
+			SAFE_DELETE(pStockBOLLData);
 			SAFE_DELETE(pStockRSIData);
 			
 

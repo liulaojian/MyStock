@@ -56,6 +56,7 @@ typedef struct
 	int m_min_vr_day;
 	int m_max_vr_day;
 
+	float f_boll_up_per[3];
 
 	float f_total_value;
 	int   m_low_ave_5_nums;

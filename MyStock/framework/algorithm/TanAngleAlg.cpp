@@ -680,7 +680,7 @@ Vec_TanAngleData  CTanAngleAlg::doFilter(CTime mDropOffTime,int mBackDays,int mM
 
 	
 		int rsi_size=pStockRSIData->vec_rsi_1_value.size();
-		if(pStockCode->strStockCode=="SH600760")
+		if(pStockCode->strStockCode=="SZ300654")
 		{
 			int a=0;
 			a++;

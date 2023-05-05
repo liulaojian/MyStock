@@ -140,6 +140,8 @@ public:
 
 	BOOL DoFiterVPVREqu(void);
 
+	BOOL DoFiterVPBoll01(void);
+
 	BOOL DOFilterAngleAndVR(void);
 
 	BOOL DoFilterSpecialBiasQl (void);

@@ -66,6 +66,10 @@ BOOL CDlgVPSFSel::OnInitDialog()
 	ret = mCmbSFSel.AddString("VR 相等");
 	mCmbSFSel.SetItemData(ret, 5);
 
+
+	ret = mCmbSFSel.AddString("BOLL 0-1");
+	mCmbSFSel.SetItemData(ret, 6);
+
 	mCmbSFSel.SetCurSel(0);
 
 	return TRUE;  // return TRUE unless you set the focus to a control

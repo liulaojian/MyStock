@@ -139,7 +139,8 @@ BOOL CDlgPVDetail::OnInitDialog()
 	mListDetail.AddString(strInfo);
 
 	mListDetail.AddString("    ");
-	strInfo.Format("相对BOLLUp线 %.2f  %.2f  %.2f", mRSIData.f_boll_up_per[0], mRSIData.f_boll_up_per[1], mRSIData.f_boll_up_per[2]);
+	strInfo.Format("相对BOLLUp线 %.2f  %.2f  %.2f  %.2f  %.2f", mRSIData.f_boll_up_per[0], mRSIData.f_boll_up_per[1], mRSIData.f_boll_up_per[2],
+		mRSIData.f_boll_up_per[3], mRSIData.f_boll_up_per[4]);
 	mListDetail.AddString(strInfo);
 
 	return TRUE;  // return TRUE unless you set the focus to a control

@@ -70,6 +70,11 @@ BOOL CDlgVPSFSel::OnInitDialog()
 	ret = mCmbSFSel.AddString("BOLL 0-1");
 	mCmbSFSel.SetItemData(ret, 6);
 
+
+	ret = mCmbSFSel.AddString("ReadyFor");
+	mCmbSFSel.SetItemData(ret, 7);
+
+
 	mCmbSFSel.SetCurSel(0);
 
 	return TRUE;  // return TRUE unless you set the focus to a control

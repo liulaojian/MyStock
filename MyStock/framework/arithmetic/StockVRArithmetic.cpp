@@ -15,7 +15,7 @@ CStockVRArithmetic::~CStockVRArithmetic()
 
 }
 
-CStockVRData* CStockVRArithmetic::CalcVRData(CString strStockCode, CString strDateTime, int mNums, int mType, int mN)
+CStockVRData* CStockVRArithmetic::CalcVRData(CString strStockCode, CString strDateTime, int mNums, int mType, int mN,int mN2)
 {
 	KLineBaseData* pKLineBaseData = NULL;
 
@@ -105,6 +105,8 @@ CStockVRData* CStockVRArithmetic::CalcVRData(CString strStockCode, CString strDa
 	}
 
 
+	std::vector<float> vec_mavr=CStockVRArithmetic::CalcMA(mN2, vecvr);
+
 	CStockVRData* pCStockVRData;
 	pCStockVRData = new CStockVRData();
 	pCStockVRData->vec_open_price.assign(pKLineBaseData->vec_open_price.begin() + mN, pKLineBaseData->vec_open_price.end());
@@ -116,9 +118,11 @@ CStockVRData* CStockVRArithmetic::CalcVRData(CString strStockCode, CString strDa
 	pCStockVRData->vec_volume.assign(pKLineBaseData->vec_volume.begin() + mN, pKLineBaseData->vec_volume.end());
 	pCStockVRData->vec_volume_price.assign(pKLineBaseData->vec_volume_price.begin() + mN, pKLineBaseData->vec_volume_price.end());
 	pCStockVRData->vec_vr = vecvr;
+	pCStockVRData->vec_mavr = vec_mavr;
 	pCStockVRData->m_length = vecvr.size();
 	pCStockVRData->m_type = pKLineBaseData->m_type;
 	pCStockVRData->mN = mN;
+	pCStockVRData->mN2 = mN2;
 	pCStockVRData->strStockCode = strStockCode;
 	SAFE_DELETE(pKLineBaseData);
 	return pCStockVRData;

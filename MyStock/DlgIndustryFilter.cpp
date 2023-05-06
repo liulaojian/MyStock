@@ -268,7 +268,7 @@ void CDlgIndustryFilter::OnBnClickedBtnFilter()
 			vecSecondDiffNowFilterInfo.push_back(vecNowFilterInfo[i]);
 		}
 	}
-#if 1
+#if 0
 	//vecSecondDiffNowFilterInfo 没有 vecFirstDiffNowFilterInfo 有的
 
 	Vec_IndustryFilterInfo vecSecondDiffFirstFilterInfo;

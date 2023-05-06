@@ -138,9 +138,22 @@ BOOL CDlgPVDetail::OnInitDialog()
 	strInfo.Format("最大VR值距今 %d 日", mRSIData.m_max_vr_day);
 	mListDetail.AddString(strInfo);
 
+	if (mRSIData.b_vr_upcross)
+		mListDetail.AddString("VR上穿");
+
 	mListDetail.AddString("    ");
 	strInfo.Format("相对BOLLUp线 %.2f  %.2f  %.2f  %.2f  %.2f", mRSIData.f_boll_up_per[0], mRSIData.f_boll_up_per[1], mRSIData.f_boll_up_per[2],
 		mRSIData.f_boll_up_per[3], mRSIData.f_boll_up_per[4]);
+	mListDetail.AddString(strInfo);
+
+	//mListDetail.AddString("    ");
+	//strInfo.Format("上影线百分比   %.2f  %.2f  %.2f  %.2f  %.2f", mRSIData.f_up_shadow_line_per[0], mRSIData.f_up_shadow_line_per[1], mRSIData.f_up_shadow_line_per[2],
+	//	mRSIData.f_up_shadow_line_per[3], mRSIData.f_up_shadow_line_per[4]);
+	//mListDetail.AddString(strInfo);
+
+	mListDetail.AddString("    ");
+	strInfo.Format("Ma5百分比   %.2f  %.2f  %.2f  %.2f  %.2f", mRSIData.f_ma5_per[0], mRSIData.f_ma5_per[1], mRSIData.f_ma5_per[2],
+		mRSIData.f_ma5_per[3], mRSIData.f_ma5_per[4]);
 	mListDetail.AddString(strInfo);
 
 	return TRUE;  // return TRUE unless you set the focus to a control

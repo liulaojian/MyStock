@@ -55,8 +55,11 @@ typedef struct
 	float f_max_vr;
 	int m_min_vr_day;
 	int m_max_vr_day;
+	bool b_vr_upcross;
 
 	float f_boll_up_per[5];
+	float f_up_shadow_line_per[5];
+	float f_ma5_per[5];
 
 	float f_total_value;
 	int   m_low_ave_5_nums;

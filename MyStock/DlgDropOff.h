@@ -142,6 +142,8 @@ public:
 
 	BOOL DoFiterVPBoll01(void);
 
+	BOOL DoFiterVPReadyFor(void);
+
 	BOOL DOFilterAngleAndVR(void);
 
 	BOOL DoFilterSpecialBiasQl (void);

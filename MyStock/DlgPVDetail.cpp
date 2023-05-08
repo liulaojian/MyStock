@@ -138,13 +138,13 @@ BOOL CDlgPVDetail::OnInitDialog()
 	strInfo.Format("最大VR值距今 %d 日", mRSIData.m_max_vr_day);
 	mListDetail.AddString(strInfo);
 
-	if (mRSIData.b_vr_upcross)
-		mListDetail.AddString("VR上穿");
+	//if (mRSIData.b_vr_upcross)
+	//	mListDetail.AddString("VR上穿");
 
-	mListDetail.AddString("    ");
-	strInfo.Format("相对BOLLUp线 %.2f  %.2f  %.2f  %.2f  %.2f", mRSIData.f_boll_up_per[0], mRSIData.f_boll_up_per[1], mRSIData.f_boll_up_per[2],
-		mRSIData.f_boll_up_per[3], mRSIData.f_boll_up_per[4]);
-	mListDetail.AddString(strInfo);
+	//mListDetail.AddString("    ");
+	//strInfo.Format("相对BOLLUp线 %.2f  %.2f  %.2f  %.2f  %.2f", mRSIData.f_boll_up_per[0], mRSIData.f_boll_up_per[1], mRSIData.f_boll_up_per[2],
+	//	mRSIData.f_boll_up_per[3], mRSIData.f_boll_up_per[4]);
+	//mListDetail.AddString(strInfo);
 
 	//mListDetail.AddString("    ");
 	//strInfo.Format("上影线百分比   %.2f  %.2f  %.2f  %.2f  %.2f", mRSIData.f_up_shadow_line_per[0], mRSIData.f_up_shadow_line_per[1], mRSIData.f_up_shadow_line_per[2],
@@ -154,6 +154,37 @@ BOOL CDlgPVDetail::OnInitDialog()
 	mListDetail.AddString("    ");
 	strInfo.Format("Ma5百分比   %.2f  %.2f  %.2f  %.2f  %.2f", mRSIData.f_ma5_per[0], mRSIData.f_ma5_per[1], mRSIData.f_ma5_per[2],
 		mRSIData.f_ma5_per[3], mRSIData.f_ma5_per[4]);
+	mListDetail.AddString(strInfo);
+
+	mListDetail.AddString("    ");
+
+	if(mRSIData.m_ccivr_data.m_max_cci_value_after_up_100_num>0)
+		strInfo.Format("CCI最大值 %.2f CCI上穿100后最大值 %.2f  CCI现值 %.2f", mRSIData.m_ccivr_data.f_max_cci_value,
+			mRSIData.m_ccivr_data.f_max_cci_value_after_up_100, mRSIData.m_ccivr_data.f_now_cci_value);
+	else
+		strInfo.Format("CCI最大值 %.2f    CCI现值 %.2f", mRSIData.m_ccivr_data.f_max_cci_value,mRSIData.m_ccivr_data.f_now_cci_value);
+	mListDetail.AddString(strInfo);
+
+
+	if (mRSIData.m_ccivr_data.m_max_cci_value_after_up_100_num > 0)
+		strInfo.Format("CCI最大值距今 %d  CCI上穿100后最大值距今 %d  CCI上穿100距今 %d CCI下穿100距今 %d", 
+			mRSIData.m_ccivr_data.m_max_cci_num, mRSIData.m_ccivr_data.m_max_cci_value_after_up_100_num, mRSIData.m_ccivr_data.m_cci_up_100_num, mRSIData.m_ccivr_data.m_cci_down_100_num);
+	else	
+		strInfo.Format("CCI最大值距今 %d   CCI上穿100距今 %d   CCI下穿100距今 %d", 
+			mRSIData.m_ccivr_data.m_max_cci_num, mRSIData.m_ccivr_data.m_cci_up_100_num, mRSIData.m_ccivr_data.m_cci_down_100_num);
+	mListDetail.AddString(strInfo);
+
+
+	if(mRSIData.m_ccivr_data.f_now_cci_value== mRSIData.m_ccivr_data.f_max_cci_value)
+		mListDetail.AddString("当前CCI和最大值CCI相等");
+
+	if (mRSIData.m_ccivr_data.f_now_cci_value == mRSIData.m_ccivr_data.f_max_cci_value_after_up_100)
+		mListDetail.AddString("当前CCI和上穿100后最大值CCI相等");
+
+	mListDetail.AddString("    ");
+
+	strInfo.Format("CCI上穿100时Vr值 %.2f  CCI最大值时Vr值 %.2f  间隔 %d", mRSIData.m_ccivr_data.f_cci_up_100_index_cr_value,
+		mRSIData.m_ccivr_data.f_max_cci_index_cr_value, mRSIData.m_ccivr_data.m_nums_bw_up100_max);
 	mListDetail.AddString(strInfo);
 
 	return TRUE;  // return TRUE unless you set the focus to a control

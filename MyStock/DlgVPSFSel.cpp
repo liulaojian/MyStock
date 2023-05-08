@@ -67,13 +67,15 @@ BOOL CDlgVPSFSel::OnInitDialog()
 	mCmbSFSel.SetItemData(ret, 5);
 
 
-	ret = mCmbSFSel.AddString("BOLL 0-1");
-	mCmbSFSel.SetItemData(ret, 6);
+	//ret = mCmbSFSel.AddString("BOLL 0-1");
+	//mCmbSFSel.SetItemData(ret, 6);
 
 
-	ret = mCmbSFSel.AddString("ReadyFor");
+	ret = mCmbSFSel.AddString("RSI阶梯");
 	mCmbSFSel.SetItemData(ret, 7);
 
+	//ret = mCmbSFSel.AddString("Test");
+	//mCmbSFSel.SetItemData(ret, 8);
 
 	mCmbSFSel.SetCurSel(0);
 

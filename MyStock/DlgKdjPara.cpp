@@ -58,7 +58,7 @@ BOOL CDlgKdjPara::OnInitDialog()
 
 	mRsiPreNums=22;
 	mSpinRsiPreNums.SetBuddy(&mEditRsiPreNums);
-	mSpinRsiPreNums.SetRange(16, 45);
+	mSpinRsiPreNums.SetRange(12, 55);
 	mSpinRsiPreNums.SetPos(mRsiPreNums);
 
 	return TRUE;  // return TRUE unless you set the focus to a control

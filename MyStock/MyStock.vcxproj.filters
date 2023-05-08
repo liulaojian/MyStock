@@ -603,6 +603,9 @@
     <ClInclude Include="DlgIndustryFilter.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="framework\algorithm\CCIVRAngle.h">
+      <Filter>Framework\algorithm</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyStock.cpp">
@@ -1057,6 +1060,9 @@
     </ClCompile>
     <ClCompile Include="DlgIndustryFilter.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="framework\algorithm\CCIVRAngle.cpp">
+      <Filter>Framework\algorithm</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

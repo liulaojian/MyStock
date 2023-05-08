@@ -266,6 +266,7 @@ xcopy /y /r F:\code\MyStock\Debug\MyStock.pdb  F:\stock\soft3\</Command>
     <ClInclude Include="DlgXLH.h" />
     <ClInclude Include="framework\algorithm\Algorithm.h" />
     <ClInclude Include="framework\algorithm\BollFilterAlg.h" />
+    <ClInclude Include="framework\algorithm\CCIVRAngle.h" />
     <ClInclude Include="framework\algorithm\DataType.h" />
     <ClInclude Include="framework\algorithm\GeneralAnalyze.h" />
     <ClInclude Include="framework\algorithm\KLineFilterAlg.h" />
@@ -432,6 +433,7 @@ xcopy /y /r F:\code\MyStock\Debug\MyStock.pdb  F:\stock\soft3\</Command>
     <ClCompile Include="DlgVPSFSel.cpp" />
     <ClCompile Include="DlgXLH.cpp" />
     <ClCompile Include="framework\algorithm\BollFilterAlg.cpp" />
+    <ClCompile Include="framework\algorithm\CCIVRAngle.cpp" />
     <ClCompile Include="framework\algorithm\GeneralAnalyze.cpp" />
     <ClCompile Include="framework\algorithm\KLineFilterAlg.cpp" />
     <ClCompile Include="framework\algorithm\LimitUpAlg.cpp" />

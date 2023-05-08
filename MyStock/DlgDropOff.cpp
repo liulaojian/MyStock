@@ -72,6 +72,8 @@
 #include "DlgSpecSel.h"
 #include "DlgIndustryFilter.h"
 
+#include "CCIVRAngle.h"
+
 #include "CommonMacro.h"
 // CDlgDropOff ¶Ô»°¿ò
 
@@ -2923,6 +2925,9 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 			}
 
 
+			CCIVRAngleData mCCIVRAngleData = CCIVRAngle::CalcCCIVRAngle(pDropOffData->strStockCode, strNowDate, pStockVRData->vec_vr, mRsiPreNums);
+
+
 
 
 			CStockMFIData* pStockMFIData = CStockMFIArithmetic::CalcMFIData(pDropOffData->strStockCode, strNowDate, 125, K_LINE_DAY, 14);
@@ -2959,6 +2964,19 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 			CStockCRData*  pStockCRData=CStockCRArithmetic::CalcCRData(pDropOffData->strStockCode, strNowDate, 125, K_LINE_DAY, 26);
 			int cr_size = pStockCRData->vec_cr.size();
 
+			double f_cr_ma1_all[5] = { 0 };
+			double f_cr_ma2_all[5] = { 0 };
+			double f_cr_ma3_all[5] = { 0 };
+			double f_cr_ma4_all[5] = { 0 };
+			for (int j = cr_size - 5; j < cr_size; j++)
+			{
+				f_cr_ma1_all[5 - (cr_size - j)] = pStockCRData->vec_ma1[j];
+				f_cr_ma2_all[5 - (cr_size - j)] = pStockCRData->vec_ma2[j];
+				f_cr_ma3_all[5 - (cr_size - j)] = pStockCRData->vec_ma3[j];
+				f_cr_ma4_all[5 - (cr_size - j)] = pStockCRData->vec_ma4[j];
+			}
+
+
 			float cr_now_value = pStockCRData->vec_cr[cr_size - 1];
 
 			float f_cr_min_value = 999999.0;
@@ -2994,9 +3012,19 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 			std::vector<double> vec_price_ma5;
 			vec_price_ma5 = CStockKDJArithmetic::CalcMA(5, pStockBOLLData->vec_close_price);
 
+			double f_close_increase_per_all[5] = { 0 };
+			for (int j = 5; j >= 1; j--)
+			{
+				double f_close_value= pStockBOLLData->vec_close_price[m_boll_size - j];
+				double f_pre_close_value = pStockBOLLData->vec_close_price[m_boll_size - j-1];
+				float f_close_increase_per = (f_close_value - f_pre_close_value) * 100.0 / f_pre_close_value;
+				f_close_increase_per_all[5 - j] = f_close_increase_per;
+			}
+
 			double f_boll_up_per_all[5] = { 0 };
 
 			double f_up_shadow_line_per_all[5] = { 0 };
+			double f_down_shadow_line_per_all[5] = { 0 };
 
 			double f_ma5_per_all[5] = { 0 };
 
@@ -3021,6 +3049,8 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 				double f_value_ave = (f_value_max + f_value_min) / 2.0;
 
 				double f_up_shadow_line_per = (f_value_high - f_value_max) / (f_value_high - f_value_low); 
+
+				double f_down_shadow_line_per= (f_value_min - f_value_low) / (f_value_high - f_value_low);
 
 				double f_ma5_per = 0.0;
 				
@@ -3072,10 +3102,7 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 
 					f_boll_up_per = (f_temp1 + f_temp2 + f_temp3)/2.0+1.0;
 
-					
 				
-
-
 				}
 				else if (f_boll_up > f_value_min && f_boll_up <= f_value_max)
 					f_boll_up_per = 1.0 - (f_boll_up - f_value_min) / (f_value_max - f_value_min);
@@ -3084,6 +3111,7 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 
 				f_boll_up_per_all[5 - j] = f_boll_up_per;
 				f_up_shadow_line_per_all[5 - j] = f_up_shadow_line_per;
+				f_down_shadow_line_per_all[5 - j] = f_down_shadow_line_per;
 				f_ma5_per_all[5 - j] = f_ma5_per;
 
 			}
@@ -3353,11 +3381,34 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 			rsiData.f_up_shadow_line_per[3] = f_up_shadow_line_per_all[3];
 			rsiData.f_up_shadow_line_per[4] = f_up_shadow_line_per_all[4];
 
+			rsiData.f_down_shadow_line_per[0] = f_down_shadow_line_per_all[0];
+			rsiData.f_down_shadow_line_per[1] = f_down_shadow_line_per_all[1];
+			rsiData.f_down_shadow_line_per[2] = f_down_shadow_line_per_all[2];
+			rsiData.f_down_shadow_line_per[3] = f_down_shadow_line_per_all[3];
+			rsiData.f_down_shadow_line_per[4] = f_down_shadow_line_per_all[4];
+
+			rsiData.f_close_increase_per[0] = f_close_increase_per_all[0];
+			rsiData.f_close_increase_per[1] = f_close_increase_per_all[1];
+			rsiData.f_close_increase_per[2] = f_close_increase_per_all[2];
+			rsiData.f_close_increase_per[3] = f_close_increase_per_all[3];
+			rsiData.f_close_increase_per[4] = f_close_increase_per_all[4];
+
+
 			rsiData.f_ma5_per[0] = f_ma5_per_all[0];
 			rsiData.f_ma5_per[1] = f_ma5_per_all[1];
 			rsiData.f_ma5_per[2] = f_ma5_per_all[2];
 			rsiData.f_ma5_per[3] = f_ma5_per_all[3];
 			rsiData.f_ma5_per[4] = f_ma5_per_all[4];
+
+			for (int j = 0; j < 5; j++)
+			{
+				rsiData.f_cr_ma1[j] = f_cr_ma1_all[j];
+				rsiData.f_cr_ma2[j] = f_cr_ma2_all[j];
+				rsiData.f_cr_ma3[j] = f_cr_ma3_all[j];
+				rsiData.f_cr_ma4[j] = f_cr_ma4_all[j];
+			}
+
+			rsiData.m_ccivr_data = mCCIVRAngleData;
 
 			rsiData.strStockCode = pDropOffData->strStockCode;
 			rsiData.strStockName = pDropOffData->strStockName;
@@ -9843,42 +9894,191 @@ BOOL CDlgDropOff::DoFiterVPReadyFor(void)
 	RSIData mRSIData;
 	for (int i = 0; i < vecRSIData.size(); i++)
 	{
+			mRSIData = vecRSIData[i];
+
+			bool bok0 = false;
+
+			float f_min_rsi1 = mRSIData.f_min_rsi1;
+			float f_min_rsi2 = mRSIData.f_min_rsi2;
+			float f_min_rsi3 = mRSIData.f_min_rsi3;
+
+			float f_cur_rsi1 = mRSIData.rsi_1;
+			float f_cur_rsi2 = mRSIData.rsi_2;
+			float f_cur_rsi3 = mRSIData.rsi_3;
+
+			if (f_cur_rsi1 > f_cur_rsi2)
+			{
+				if (f_cur_rsi2 > f_cur_rsi3)
+				{
+
+					if (f_min_rsi1 < f_min_rsi2)
+					{
+
+						if (f_min_rsi2 < f_min_rsi3)
+							bok0 = true;
+					}
+				}
+			}
+
+			bool bok1 = false;
+
+			float f_min_dif_3_2 = f_min_rsi3 - f_min_rsi2;
+			float f_min_dif_2_1 = f_min_rsi2 - f_min_rsi1;
+
+			if (f_min_dif_3_2 > 4.0 && f_min_dif_2_1 > 4.0)
+			{
+				float f_max = f_min_dif_3_2 > f_min_dif_2_1 ? f_min_dif_3_2 : f_min_dif_2_1;
+				float f_min = f_min_dif_3_2 > f_min_dif_2_1 ? f_min_dif_2_1 : f_min_dif_3_2;
+				float f_per = f_min / f_max;
+				if (f_per > 0.7)
+					bok1 = true;
+			}
+
+			bool bok2 = false;
+			float f_cur_dif_3_2 = f_cur_rsi2 - f_cur_rsi3;
+			float f_cur_dif_2_1 = f_cur_rsi1 - f_cur_rsi2;
+
+			if (f_cur_dif_3_2 > 4.0 && f_cur_dif_2_1 > 4.0)
+			{
+				float f_max = f_cur_dif_3_2 > f_cur_dif_2_1 ? f_cur_dif_3_2 : f_cur_dif_2_1;
+				float f_min = f_cur_dif_3_2 > f_cur_dif_2_1 ? f_cur_dif_2_1 : f_cur_dif_3_2;
+				float f_per = f_min / f_max;
+				if (f_per > 0.7)
+					bok2 = true;
+
+			}
+
+
+			if (bok0 && bok1 && bok2) 
+			{
+				DropOffData* pDropOffData = new DropOffData();
+				pDropOffData->strStockCode = mRSIData.strStockCode;
+				pDropOffData->strStockName = mRSIData.strStockName;
+				pDropOffData->fAveMultiple = mRSIData.f_total_value;
+				pDropOffData->fMaxMultiple = mRSIData.m_low_ave_5_nums;
+
+				CString strRsiInfo;
+				strRsiInfo.Format("rsi1=%.2f , rsi2=%.2f , rsi3=%.2f\n", mRSIData.rsi_1, mRSIData.rsi_2, mRSIData.rsi_3);
+				pDropOffData->strMaxDate = strRsiInfo;
+				strRsiInfo.Format("rsi1=%.2f , rsi2=%.2f , rsi3=%.2f\n", mRSIData.f_min_rsi1, mRSIData.f_min_rsi2, mRSIData.f_min_rsi3);
+				pDropOffData->strMinDate = strRsiInfo;
+				CString strInfo;
+				strInfo.Format("nowmfi=%.2f maxmfi=%.2f d=%d minmfi=%.2f d=%d", mRSIData.mfi, mRSIData.f_max_mfi, mRSIData.m_max_mfi_day, mRSIData.f_min_mfi, mRSIData.m_min_mfi_day);
+				pDropOffData->strInfo = strInfo;
+				vecDropOffData.push_back(pDropOffData);
+			}
+
+	}
+	
+	std::sort(vecDropOffData.begin(), vecDropOffData.end(), sortFun);
+
+	FilterByReserve();
+	FilterByMerge();
+
+	SetTimer(DROPOFF_EVENT_REFRESH_DATA, 300, 0);
+
+	return TRUE;	
+}
+
+
+#if 0
+BOOL  CDlgDropOff::DoFiterVPTest(void)
+{
+
+	RSIData mRSIData;
+	for (int i = 0; i < vecRSIData.size(); i++)
+	{
 		mRSIData = vecRSIData[i];
 
-		
+	
 
 		bool bok1 = false;
 
 		float f_max_boll_up_per = -9999.0;
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i <= 4; i++)
 		{
 			if (mRSIData.f_boll_up_per[i] > f_max_boll_up_per)
 				f_max_boll_up_per = mRSIData.f_boll_up_per[i];
 		}
-
-		float f_max_m5_per = -9999.0;
-		for (int i = 0; i < 4; i++)
-		{
-			if (mRSIData.f_ma5_per[i] > f_max_m5_per)
-				f_max_m5_per = mRSIData.f_ma5_per[i];
-		}
-
-
-		if (f_max_boll_up_per <0.3 && f_max_m5_per < 1.05)
+		if (f_max_boll_up_per < 0.0)
 			bok1 = true;
 
-		bool bok2 = false;
-
-		if (mRSIData.f_boll_up_per[4] > mRSIData.f_boll_up_per[3])
+		
+		int m_up_shadow_nums = 0;
+		for (int i = 1; i <= 4; i++)
 		{
-			if (mRSIData.f_boll_up_per[3] > mRSIData.f_boll_up_per[2])
-				if (mRSIData.f_boll_up_per[2] > mRSIData.f_boll_up_per[1])
-					bok2 = true;
+
+			if (mRSIData.f_up_shadow_line_per[i] > 0.4)
+				m_up_shadow_nums++;
 		}
 
+		int m_down_shadow_nums = 0;
+		for (int i = 1; i <= 4; i++)
+		{
+
+			if (mRSIData.f_down_shadow_line_per[i] > 0.4)
+				m_down_shadow_nums++;
+		}
+
+		bool bok2 = false;
+		if (m_up_shadow_nums == 0 && m_down_shadow_nums>0)
+			bok2 = true;
+		
+		bool bok3 = true;
+		int m_big_increase_nums = 0;
+		for (int i = 1; i <= 4; i++)
+		{
+
+			if (fabs(mRSIData.f_close_increase_per[i]) > 2.2)
+				m_big_increase_nums++;
+		}
+		if (m_big_increase_nums > 0)
+			bok3 = false;
+
+
+		bool bok4 = false;
+		bool  b_ma2_continu_down = true;
+
+		for (int i = 1; i < 5; i++)
+		{
+			float f_now_ma2 = mRSIData.f_cr_ma2[i];
+			float f_pre_ma2 = mRSIData.f_cr_ma2[i-1];
+
+			if (f_now_ma2 > f_pre_ma2)
+			{
+				b_ma2_continu_down = false;
+				break;
+			}
+		}
+
+
+		bool b_ma1_continu_up = true;
+		for (int i = 1; i < 5; i++)
+		{
+			float f_now_ma1 = mRSIData.f_cr_ma1[i];
+			float f_pre_ma1 = mRSIData.f_cr_ma1[i - 1];
+
+			if (f_pre_ma1 > f_now_ma1)
+			{
+				b_ma1_continu_up = false;
+				break;
+			}
+		}
+
+		//float f_cr_ma_min = mRSIData.f_cr_ma3[4] > mRSIData.f_cr_ma4[4] ? mRSIData.f_cr_ma4[4] : mRSIData.f_cr_ma3[4];
+		//float f_cr_ma_max = mRSIData.f_cr_ma3[4] > mRSIData.f_cr_ma4[4] ? mRSIData.f_cr_ma3[4] : mRSIData.f_cr_ma4[4];
+
+		//float f_cr_ma_per = f_cr_ma_min / f_cr_ma_max;
+
+
+		//if (b_ma1_continu_up && b_ma2_continu_down) //&& f_cr_ma_per>0.90
+		//	bok4 = true;
+		if(mRSIData.f_cr_ma2[4]> mRSIData.f_cr_ma1[4])
+			bok4 = true;
 		
 
-		if (bok1 && bok2) //
+		//if (bok1 && mRSIData.b_vr_upcross&& bok4 && bok3 && bok2) //
+		if (  bok2 && bok3 && bok4) //
 		{
 			DropOffData* pDropOffData = new DropOffData();
 			pDropOffData->strStockCode = mRSIData.strStockCode;
@@ -9908,8 +10108,177 @@ BOOL CDlgDropOff::DoFiterVPReadyFor(void)
 
 	return TRUE;
 
+}
+#else
+
+
+/*
+BOOL  CDlgDropOff::DoFiterVPTest(void)
+{
+	TanAngleData* pTanAngleData = NULL;
+	RSIData mRSIData;
+	for (int i = 0; i < vecRSIData.size(); i++)
+	{
+		mRSIData = vecRSIData[i];
+
+		pTanAngleData = NULL;
+		for (int j = 0; j < vecTanAngleData.size(); j++)
+		{
+			if (vecTanAngleData[j]->strStockCode == mRSIData.strStockCode)
+			{
+				pTanAngleData = vecTanAngleData[j];
+				break;
+			}
+		}
+		if (!pTanAngleData)
+			continue;
+
+		bool bok3 = true;
+		int m_big_increase_nums = 0;
+		for (int i = 1; i <= 4; i++)
+		{
+
+			if (fabs(mRSIData.f_close_increase_per[i]) > 2.2)
+				m_big_increase_nums++;
+		}
+		if (m_big_increase_nums > 0)
+			bok3 = false;
+
+
+		int m_continus_price_m10_up_nums = pTanAngleData->mPara8;
+
+		int m_continus_price_m20_up_nums = pTanAngleData->mPara9;
+
+		bool bok4 = false;
+		if (m_continus_price_m10_up_nums < 20 && m_continus_price_m20_up_nums < 15)
+			bok4 = true;
+		if (bok3 && bok4) //
+		{
+			DropOffData* pDropOffData = new DropOffData();
+			pDropOffData->strStockCode = mRSIData.strStockCode;
+			pDropOffData->strStockName = mRSIData.strStockName;
+			pDropOffData->fAveMultiple = mRSIData.f_total_value;
+			pDropOffData->fMaxMultiple = mRSIData.m_low_ave_5_nums;
+
+			CString strRsiInfo;
+			strRsiInfo.Format("rsi1=%.2f , rsi2=%.2f , rsi3=%.2f\n", mRSIData.rsi_1, mRSIData.rsi_2, mRSIData.rsi_3);
+			pDropOffData->strMaxDate = strRsiInfo;
+			strRsiInfo.Format("rsi1=%.2f , rsi2=%.2f , rsi3=%.2f\n", mRSIData.f_min_rsi1, mRSIData.f_min_rsi2, mRSIData.f_min_rsi3);
+			pDropOffData->strMinDate = strRsiInfo;
+			CString strInfo;
+			strInfo.Format("nowmfi=%.2f maxmfi=%.2f d=%d minmfi=%.2f d=%d", mRSIData.mfi, mRSIData.f_max_mfi, mRSIData.m_max_mfi_day, mRSIData.f_min_mfi, mRSIData.m_min_mfi_day);
+			pDropOffData->strInfo = strInfo;
+			vecDropOffData.push_back(pDropOffData);
+		}
+
+	}
+
+	std::sort(vecDropOffData.begin(), vecDropOffData.end(), sortFun);
+
+	FilterByReserve();
+	FilterByMerge();
+
+	SetTimer(DROPOFF_EVENT_REFRESH_DATA, 300, 0);
+
+	return TRUE;
 
 }
+*/
+
+BOOL  CDlgDropOff::DoFiterVPTest(void)
+{
+	
+	RSIData mRSIData;
+	for (int i = 0; i < vecRSIData.size(); i++)
+	{
+		mRSIData = vecRSIData[i];
+
+		bool bok0 = false;
+
+		float f_min_rsi1 = mRSIData.f_min_rsi1;
+		float f_min_rsi2 = mRSIData.f_min_rsi2;
+		float f_min_rsi3 = mRSIData.f_min_rsi3;
+
+		float f_cur_rsi1 = mRSIData.rsi_1;
+		float f_cur_rsi2 = mRSIData.rsi_2;
+		float f_cur_rsi3 = mRSIData.rsi_3;
+
+		if (f_cur_rsi1 > f_cur_rsi2)
+		{
+			if (f_cur_rsi2 > f_cur_rsi3)
+			{
+
+				if (f_min_rsi1 < f_min_rsi2)
+				{
+
+					if (f_min_rsi2 < f_min_rsi3)
+						bok0 = true;
+				}
+			}
+		}
+
+		bool bok1 = false;
+
+		float f_min_dif_3_2 = f_min_rsi3 - f_min_rsi2;
+		float f_min_dif_2_1 = f_min_rsi2 - f_min_rsi1;
+
+		if (f_min_dif_3_2 > 2.0 && f_min_dif_2_1 > 2.0  )
+		{
+			float f_max = f_min_dif_3_2 > f_min_dif_2_1 ? f_min_dif_3_2 : f_min_dif_2_1;
+			float f_min = f_min_dif_3_2 > f_min_dif_2_1 ? f_min_dif_2_1 : f_min_dif_3_2;
+			float f_per = f_min / f_max;
+			if (f_per > 0.6)
+				bok1 = true;
+		}
+
+		bool bok2 = false;
+		float f_cur_dif_3_2 = f_cur_rsi2 - f_cur_rsi3;
+		float f_cur_dif_2_1 = f_cur_rsi1 - f_cur_rsi2;
+
+		if (f_cur_dif_3_2 >2.0 && f_cur_dif_2_1 > 2.0  )
+		{
+			float f_max = f_cur_dif_3_2 > f_cur_dif_2_1 ? f_cur_dif_3_2 : f_cur_dif_2_1;
+			float f_min = f_cur_dif_3_2 > f_cur_dif_2_1 ? f_cur_dif_2_1 : f_cur_dif_3_2;
+			float f_per = f_min / f_max;
+			if (f_per > 0.6)
+				bok2 = true;
+
+		}
+
+
+		if (bok0 && bok1 && bok2)
+		{
+			DropOffData* pDropOffData = new DropOffData();
+			pDropOffData->strStockCode = mRSIData.strStockCode;
+			pDropOffData->strStockName = mRSIData.strStockName;
+			pDropOffData->fAveMultiple = mRSIData.f_total_value;
+			pDropOffData->fMaxMultiple = mRSIData.m_low_ave_5_nums;
+
+			CString strRsiInfo;
+			strRsiInfo.Format("rsi1=%.2f , rsi2=%.2f , rsi3=%.2f\n", mRSIData.rsi_1, mRSIData.rsi_2, mRSIData.rsi_3);
+			pDropOffData->strMaxDate = strRsiInfo;
+			strRsiInfo.Format("rsi1=%.2f , rsi2=%.2f , rsi3=%.2f\n", mRSIData.f_min_rsi1, mRSIData.f_min_rsi2, mRSIData.f_min_rsi3);
+			pDropOffData->strMinDate = strRsiInfo;
+			CString strInfo;
+			strInfo.Format("nowmfi=%.2f maxmfi=%.2f d=%d minmfi=%.2f d=%d", mRSIData.mfi, mRSIData.f_max_mfi, mRSIData.m_max_mfi_day, mRSIData.f_min_mfi, mRSIData.m_min_mfi_day);
+			pDropOffData->strInfo = strInfo;
+			vecDropOffData.push_back(pDropOffData);
+		}
+
+	}
+
+	std::sort(vecDropOffData.begin(), vecDropOffData.end(), sortFun);
+
+	FilterByReserve();
+	FilterByMerge();
+
+	SetTimer(DROPOFF_EVENT_REFRESH_DATA, 300, 0);
+
+	return TRUE;
+
+}
+
+#endif
 
 #if 0
 BOOL CDlgDropOff::DOFilterAngleAndVR(void)
@@ -10186,6 +10555,19 @@ void CDlgDropOff::OnBnClickedBtnVpSel()
 
 			vecDropOffData.clear();
 			DoFiterVPReadyFor();
+		}
+		else if (mSFSel == 8)
+		{
+		bReserveFilter = mCheckReserveFilter.GetCheck();
+
+		if (bReserveFilter)
+		{
+			vecDropOffData_Reserve.clear();
+			vecDropOffData_Reserve = vecDropOffData;
+		}
+
+		vecDropOffData.clear();
+		DoFiterVPTest();
 		}
 	}
 }

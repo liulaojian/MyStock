@@ -238,7 +238,7 @@ BOOL CMyStockDlg::OnInitDialog()
 
 	//CStockBIASQLArithmetic::CalcBiasQlData("SH600036", "2023/04/07", 125, K_LINE_DAY, 6,6);
 
-	//CStockCCIArithmetic::CalcCCIData("SH600036","2018/02/23 1500",125,K_LINE_60MIN,14);
+	//CStockCCIData* pCStockCCIData=	CStockCCIArithmetic::CalcCCIData("SH600036","2023/04/07",125, K_LINE_DAY,14);
 
 	//CStockRSIArithmetic::CalcRSIData("SH000001","2018/02/23",125,K_LINE_DAY,6,12,24);
 	//CStockMACDArithmetic::CalcMACDData("SH000001","2018/02/23",125,K_LINE_DAY,12,26,9);

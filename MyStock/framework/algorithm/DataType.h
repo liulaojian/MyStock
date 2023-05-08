@@ -20,38 +20,33 @@ typedef struct
 typedef std::vector<DropOffData *> Vec_DropOffData;
 
 
+
+typedef struct
+{
+	float f_cci_value;
+	int   m_cci_num;
+	long  m_cci_time;
+	float f_vr_value;
+	int   m_mode;		//0 up 100 , 1 down 100 , 2 max ,3 now,-1 other
+}CciVrUnit;
+
+
+
 typedef struct
 {
 	CString strStockCode;
 
-	float f_max_cci_value;
-	int m_max_cci_num;
+	CciVrUnit mMaxUnit;
 
-	float f_max_cci_value_after_up_100;
-	int  m_max_cci_value_after_up_100_num;
+	CciVrUnit mCCiUp100BefMaxUnit{ 0.0,-1,0,0.0,-1 };
 
-	int m_cci_up_100_num;
+	std::vector< CciVrUnit> vecUpDown100AftMaxUnit;
 
-	int m_cci_down_100_num;
+	CciVrUnit mNowUnit{ 0.0,-1,0,0.0,-1 };
 
-	float f_now_cci_value;
+	std::vector< CString> vecInfo;
 
-	float f_max_cci_index_cr_value;
-
-	float f_cci_up_100_index_cr_value;
-
-	float f_cci_down_100_index_cr_value;
-
-	float f_vr_per_increase_bw_up100_max;		//vr值从cci up 100 -> max 每周期增长值
-
-	int m_nums_bw_up100_max;				//从cci up 100 -> max 周期数
-
-	float f_vr_per_increase_bw_up100_now;		//vr值从cci up 100 -> now 每周期增长值
-
-	int m_nums_bw_up100_now;				//从cci up 100 -> now 周期数
-
-} CCIVRAngleData;
-
+} CCIVRAngleData2;
 
 typedef struct
 {
@@ -101,7 +96,7 @@ typedef struct
 	double f_cr_ma3[5];
 	double f_cr_ma4[5];
 
-	CCIVRAngleData m_ccivr_data;
+	CCIVRAngleData2 m_ccivr_data;
 
 	float f_total_value;
 	int   m_low_ave_5_nums;

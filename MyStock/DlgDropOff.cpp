@@ -2925,7 +2925,7 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 			}
 
 
-			CCIVRAngleData mCCIVRAngleData = CCIVRAngle::CalcCCIVRAngle(pDropOffData->strStockCode, strNowDate, pStockVRData->vec_vr, mRsiPreNums);
+			CCIVRAngleData2 mCCIVRAngleData = CCIVRAngle::CalcCCIVRAngle2(pDropOffData->strStockCode, strNowDate, pStockVRData->vec_vr, mRsiPreNums);
 
 
 

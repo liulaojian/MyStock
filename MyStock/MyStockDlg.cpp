@@ -230,9 +230,9 @@ BOOL CMyStockDlg::OnInitDialog()
 	
 	//CStockMFIArithmetic::CalcMFIData("SH600036", "2023/04/07", 125, K_LINE_DAY, 14);
 	
-	//CStockPSYArithmetic::CalcPSYData("SH600036", "2023/04/07", 125, K_LINE_DAY, 12);
+	//CStockPSYArithmetic::CalcPSYData("SH600036", "2023/04/07", 125, K_LINE_DAY, 12,6);
 
-	//CStockVRArithmetic::CalcVRData("SH600036", "2023/04/07", 125, K_LINE_DAY, 26,6);
+	//CStockVRArithmetic::CalcVRData("SZ300459", "2023/03/06", 125, K_LINE_DAY, 26,6);
 
 	//CStockDMIArithmetic::CalcDMIData("SH600036", "2023/04/07", 125, K_LINE_DAY, 14,6);
 

@@ -51,6 +51,11 @@ CCIVRAngleData2 CCIVRAngle::CalcCCIVRAngle2(CString strStockCode, CString strDat
 	mMaxUnit.m_cci_time = m_max_cci_time;
 	mMaxUnit.m_mode = 2;
 
+	float f_max_cci_close_value = pCStockCCIData->vec_close_price[m_cci_size - m_max_cci_num];
+	float f_now_close_value = pCStockCCIData->vec_close_price[m_cci_size - 1];
+	float f_now_max_cci_close_per = (f_now_close_value - f_max_cci_close_value) * 100.0 / f_max_cci_close_value;
+
+
 	if (f_max_cci_value < 100.0)
 	{
 		CString strInfo = "CCI最大值小于100.0,不做分析";
@@ -66,6 +71,9 @@ CCIVRAngleData2 CCIVRAngle::CalcCCIVRAngle2(CString strStockCode, CString strDat
 
 		CString strInfo;
 		strInfo.Format("CCI最大值 %.2f  %s  距今%d日  VR值 %.2f", f_max_cci_value, (LPCSTR)strDate, m_max_cci_num, f_max_cci_vr_value);
+		mCCIVRAngleData.vecInfo.push_back(strInfo);
+
+		strInfo.Format("CCI最大值时到现在股价涨了 %.2f", f_now_max_cci_close_per);
 		mCCIVRAngleData.vecInfo.push_back(strInfo);
 	}
 
@@ -91,7 +99,7 @@ CCIVRAngleData2 CCIVRAngle::CalcCCIVRAngle2(CString strStockCode, CString strDat
 	int m_cci_up100_premax_index = -1;
 	float f_cci_up100_premax_vr_value = 0.0;
 
-	for (int i = m_max_cci_index; i >= m_cci_size - m_prenum; i--)
+	for (int i = m_max_cci_index-1; i >= m_cci_size - m_prenum; i--)
 	{
 		float nowvalue = pCStockCCIData->vec_cci_value[i];
 		float prevalue = pCStockCCIData->vec_cci_value[i - 1];
@@ -108,7 +116,7 @@ CCIVRAngleData2 CCIVRAngle::CalcCCIVRAngle2(CString strStockCode, CString strDat
 
 	}
 
-	CciVrUnit mCCiUp100BefMaxUnit;
+	CciVrUnit mCCiUp100BefMaxUnit{ 0.0,-1,0,0.0,-1 };
 	if (m_cci_up100_premax_num < 0)
 	{
 		CString strInfo;
@@ -135,7 +143,7 @@ CCIVRAngleData2 CCIVRAngle::CalcCCIVRAngle2(CString strStockCode, CString strDat
 		mCCIVRAngleData.vecInfo.push_back(strInfo);
 	}
 
-	for (int i = m_max_cci_index; i < m_cci_size ; i++)
+	for (int i = m_max_cci_index+1; i < m_cci_size ; i++)
 	{
 		float nowvalue = pCStockCCIData->vec_cci_value[i];
 		float prevalue = pCStockCCIData->vec_cci_value[i - 1];
@@ -185,6 +193,7 @@ CCIVRAngleData2 CCIVRAngle::CalcCCIVRAngle2(CString strStockCode, CString strDat
 	mCCIVRAngleData.strStockCode = strStockCode;
 	mCCIVRAngleData.mMaxUnit = mMaxUnit;
 	mCCIVRAngleData.mNowUnit = mNowUnit;
+	mCCIVRAngleData.f_now_max_cci_close_per = f_now_max_cci_close_per;
 	mCCIVRAngleData.mCCiUp100BefMaxUnit = mCCiUp100BefMaxUnit;
 	SAFE_DELETE(pCStockCCIData);
 	return mCCIVRAngleData;

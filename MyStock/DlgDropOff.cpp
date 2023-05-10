@@ -62,6 +62,7 @@
 #include "StockBiasQlArithmetic.h"
 #include "StockDMIAtithmetic.h"
 #include "StockBOLLArithmetic.h"
+#include "StockPSYArithmetic.h"
 
 #include "DlgPVDetail.h"
 #include "DlgVPSFSel.h"
@@ -2928,7 +2929,17 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 			CCIVRAngleData2 mCCIVRAngleData = CCIVRAngle::CalcCCIVRAngle2(pDropOffData->strStockCode, strNowDate, pStockVRData->vec_vr, mRsiPreNums);
 
 
+			CStockPSYData* pStockPSYData=CStockPSYArithmetic::CalcPSYData(pDropOffData->strStockCode, strNowDate, 125, K_LINE_DAY, 12, 6);
+			float f_psy_all[3] = { 0 };
+			float f_mpsy_all[3] = { 0 };
+			int m_psy_size = pStockPSYData->vec_psy.size();
+			f_psy_all[0] = pStockPSYData->vec_psy[m_psy_size - 3];
+			f_psy_all[1] = pStockPSYData->vec_psy[m_psy_size - 2];
+			f_psy_all[2] = pStockPSYData->vec_psy[m_psy_size - 1];
 
+			f_mpsy_all[0] = pStockPSYData->vec_mpsy[m_psy_size - 3];
+			f_mpsy_all[1] = pStockPSYData->vec_mpsy[m_psy_size - 2];
+			f_mpsy_all[2] = pStockPSYData->vec_mpsy[m_psy_size - 1];
 
 			CStockMFIData* pStockMFIData = CStockMFIArithmetic::CalcMFIData(pDropOffData->strStockCode, strNowDate, 125, K_LINE_DAY, 14);
 			int mfi_size = pStockMFIData->vec_mfi.size();
@@ -3028,6 +3039,11 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 
 			double f_ma5_per_all[5] = { 0 };
 
+			double f_amplitude_per_all[5] = { 0 };
+
+			double f_close_per_all[5] = { 0 };
+
+
 			for (int j = 5; j >= 1; j--)
 			{
 
@@ -3052,6 +3068,10 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 
 				double f_down_shadow_line_per= (f_value_min - f_value_low) / (f_value_high - f_value_low);
 
+
+				double f_amplitude_per = (f_value_high - f_value_low)*100.0 / f_value_end;
+
+			
 				double f_ma5_per = 0.0;
 				
 				/*double f_ma5_temp1 = (f_value_high - f_price_ma5) / f_price_ma5;
@@ -3113,6 +3133,7 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 				f_up_shadow_line_per_all[5 - j] = f_up_shadow_line_per;
 				f_down_shadow_line_per_all[5 - j] = f_down_shadow_line_per;
 				f_ma5_per_all[5 - j] = f_ma5_per;
+				f_amplitude_per_all[5 - j] = f_amplitude_per;
 
 			}
 			
@@ -3393,6 +3414,12 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 			rsiData.f_close_increase_per[3] = f_close_increase_per_all[3];
 			rsiData.f_close_increase_per[4] = f_close_increase_per_all[4];
 
+			rsiData.f_amplitude_per[0] = f_amplitude_per_all[0];
+			rsiData.f_amplitude_per[1] = f_amplitude_per_all[1];
+			rsiData.f_amplitude_per[2] = f_amplitude_per_all[2];
+			rsiData.f_amplitude_per[3] = f_amplitude_per_all[3];
+			rsiData.f_amplitude_per[4] = f_amplitude_per_all[4];
+
 
 			rsiData.f_ma5_per[0] = f_ma5_per_all[0];
 			rsiData.f_ma5_per[1] = f_ma5_per_all[1];
@@ -3408,6 +3435,17 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 				rsiData.f_cr_ma4[j] = f_cr_ma4_all[j];
 			}
 
+			rsiData.f_psy[0] = f_psy_all[0];
+			rsiData.f_psy[1] = f_psy_all[1];
+			rsiData.f_psy[2] = f_psy_all[2];
+
+			rsiData.f_mpsy[0] = f_mpsy_all[0];
+			rsiData.f_mpsy[1] = f_mpsy_all[1];
+			rsiData.f_mpsy[2] = f_mpsy_all[2];
+
+			
+
+
 			rsiData.m_ccivr_data = mCCIVRAngleData;
 
 			rsiData.strStockCode = pDropOffData->strStockCode;
@@ -3418,6 +3456,7 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 
 			SAFE_DELETE(pStockVRData);
 			SAFE_DELETE(pStockMFIData);
+			SAFE_DELETE(pStockPSYData);
 			SAFE_DELETE(pStockCRData);
 			SAFE_DELETE(pStockBOLLData);
 			SAFE_DELETE(pStockRSIData);
@@ -10359,33 +10398,71 @@ BOOL CDlgDropOff::DOFilterAngleAndVR(void)
 BOOL CDlgDropOff::DOFilterAngleAndVR(void)
 {
 	RSIData mRSIData;
-	TanAngleData* pTanAngleData = NULL;
+	
 	for (int i = 0; i < vecRSIData.size(); i++)
 	{
 		mRSIData = vecRSIData[i];
 		
-		pTanAngleData = NULL;
-		for (int j = 0; j < vecTanAngleData.size(); j++)
+
+		if (mRSIData.strStockCode == "SZ300226")
 		{
-			if (vecTanAngleData[j]->strStockCode == mRSIData.strStockCode)
-			{
-				pTanAngleData = vecTanAngleData[j];
-				break;
-			}
+
+			int a = 0;
+			a++;
+			printf("a=%d", a);
 		}
-		if (!pTanAngleData)
-			continue;
+
 		
-		int mNowIsMaxPriceNums = pTanAngleData->mNowIsMaxPriceNums;
+		bool bok1 = false;
+		if (mRSIData.m_ccivr_data.mMaxUnit.f_cci_value < 250.0 && mRSIData.m_ccivr_data.mMaxUnit.f_cci_value>100.0
+			&& mRSIData.m_ccivr_data.mMaxUnit.f_vr_value<300) 
+			bok1 = true;
 
-		float f_vr = mRSIData.vr;
-		float f_max_vr = mRSIData.f_max_vr;
+		bool bok2 = false;
 
-		int m_max_vr_day = mRSIData.m_max_vr_day;
+		if (mRSIData.m_ccivr_data.vecUpDown100AftMaxUnit.size() == 0)
+			bok2 = true;
 
-		int m_min_vr_day = mRSIData.m_min_vr_day;
+		
+		bool bok3 = false;
+		if(mRSIData.m_ccivr_data.mCCiUp100BefMaxUnit.m_cci_num>0 || mRSIData.m_ccivr_data.mCCiUp100BefMaxUnit.m_cci_num <=5)
+			bok3 = true;
 
-		if ((f_vr>100&& f_vr<200)  && (f_max_vr>210 && f_max_vr<297) && (m_max_vr_day<=4) && (m_min_vr_day>=5) && (mNowIsMaxPriceNums==0))
+		bool bok4 = false;
+		if (mRSIData.m_ccivr_data.f_now_max_cci_close_per > 15.0)
+			bok4 = true;
+
+		bool bok5 = false;
+
+		if (mRSIData.m_ccivr_data.mCCiUp100BefMaxUnit.f_vr_value > 120.0)
+			bok5 = true;
+		
+		bool bok6 = false;
+
+		if (mRSIData.m_ccivr_data.mCCiUp100BefMaxUnit.m_cci_num<6 && mRSIData.m_ccivr_data.mCCiUp100BefMaxUnit.m_cci_num>0)
+			bok6 = true;
+
+		bool bok7 = false;
+		if (mRSIData.m_ccivr_data.mCCiUp100BefMaxUnit.f_vr_value>150.0)
+			bok7 = true;
+
+		bool bok8 = false;
+		if (mRSIData.m_ccivr_data.mCCiUp100BefMaxUnit.f_vr_value < mRSIData.m_ccivr_data.mMaxUnit.f_vr_value)
+			bok8 = true;
+
+		bool bok9 = false;
+		if (mRSIData.rsi_1<94.0)
+			bok9 = true;
+
+		bool bok10 = false;
+		if (mRSIData.f_max_vr < 500.0)
+			bok10 = true;
+
+		bool bok11 = false;
+		if (mRSIData.m_ccivr_data.mNowUnit.f_cci_value > 100.0)
+			bok11 = true;
+		//if(bok4 && bok5) //bok1 && bok2 &&  bok3
+		if(bok6&& bok7&& bok8&& bok9&& bok10&& bok11)
 		{
 			DropOffData* pDropOffData = new DropOffData();
 			pDropOffData->strStockCode = mRSIData.strStockCode;
@@ -10539,8 +10616,8 @@ void CDlgDropOff::OnBnClickedBtnVpSel()
 			}
 
 			vecDropOffData.clear();
-			DoFiterVPBoll01();
-			//DOFilterAngleAndVR();
+			
+			DOFilterAngleAndVR();
 			//DoFiterVPVREqu();
 		}
 		else if (mSFSel == 7)

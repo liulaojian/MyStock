@@ -44,6 +44,8 @@ typedef struct
 
 	CciVrUnit mNowUnit{ 0.0,-1,0,0.0,-1 };
 
+	float f_now_max_cci_close_per;
+
 	std::vector< CString> vecInfo;
 
 } CCIVRAngleData2;
@@ -90,11 +92,16 @@ typedef struct
 	float f_down_shadow_line_per[5];
 	float f_ma5_per[5];
 	float f_close_increase_per[5];
+	float f_amplitude_per[5];
 
 	double f_cr_ma1[5];
 	double f_cr_ma2[5];
 	double f_cr_ma3[5];
 	double f_cr_ma4[5];
+
+	float  f_psy[3];
+
+	float  f_mpsy[3];
 
 	CCIVRAngleData2 m_ccivr_data;
 

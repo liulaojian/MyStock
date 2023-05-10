@@ -71,10 +71,9 @@ CStockVRData* CStockVRArithmetic::CalcVRData(CString strStockCode, CString strDa
 	std::vector<float> vecvr;
 	for (int i = mN; i < pKLineBaseData->m_length; i++)
 	{
-		
-		int uptoatlvolume = 0;
-		int downtoatlvolume = 0;
-		int middletoatlvolume = 0;
+		int64_t uptoatlvolume = 0;
+		int64_t downtoatlvolume = 0;
+		int64_t middletoatlvolume = 0;
 
 		for (int j = i - mN + 1; j <= i; j++)
 		{
@@ -83,24 +82,23 @@ CStockVRData* CStockVRArithmetic::CalcVRData(CString strStockCode, CString strDa
 
 			if (nowclose > preclose)
 			{
-				int voulme = pKLineBaseData->vec_volume[j];
+				int64_t voulme = pKLineBaseData->vec_volume[j];
 				uptoatlvolume += voulme;
 			}
 			else if (nowclose < preclose)
 			{
-				int voulme = pKLineBaseData->vec_volume[j];
+				int64_t voulme = pKLineBaseData->vec_volume[j];
 				downtoatlvolume += voulme;
 			}
 			else
 			{
-				int voulme = pKLineBaseData->vec_volume[j];
+				int64_t voulme = pKLineBaseData->vec_volume[j];
 				middletoatlvolume += voulme;
 			}
 		
 		}
 
 		float vr = (float)(uptoatlvolume+ middletoatlvolume/2.0) / (float)(downtoatlvolume+ middletoatlvolume/2.0) * 100.0;
-
 		vecvr.push_back(vr);
 	}
 

@@ -52,7 +52,7 @@ BOOL CDlgPVDetail::OnInitDialog()
 	mListDetail.AddString(strInfo);
 	strInfo.Format("当前RSI2值 %.2f", mRSIData.rsi_2);
 	mListDetail.AddString(strInfo);
-	strInfo.Format("当前RSI3值 %.2f", mRSIData.rsi_2);
+	strInfo.Format("当前RSI3值 %.2f", mRSIData.rsi_3);
 	mListDetail.AddString(strInfo);
 
 	mListDetail.AddString("    ");
@@ -146,13 +146,27 @@ BOOL CDlgPVDetail::OnInitDialog()
 	//	mRSIData.f_boll_up_per[3], mRSIData.f_boll_up_per[4]);
 	//mListDetail.AddString(strInfo);
 
-	//mListDetail.AddString("    ");
-	//strInfo.Format("上影线百分比   %.2f  %.2f  %.2f  %.2f  %.2f", mRSIData.f_up_shadow_line_per[0], mRSIData.f_up_shadow_line_per[1], mRSIData.f_up_shadow_line_per[2],
-	//	mRSIData.f_up_shadow_line_per[3], mRSIData.f_up_shadow_line_per[4]);
-	//mListDetail.AddString(strInfo);
+	
+	mListDetail.AddString("    ");
+
+	strInfo.Format("最近三日PSY (%.2f  %.2f)  (%.2f  %.2f)  (%.2f  %.2f)", mRSIData.f_psy[0], mRSIData.f_mpsy[1], 
+		mRSIData.f_psy[1],mRSIData.f_mpsy[1], mRSIData.f_psy[2], mRSIData.f_mpsy[2]);
+	mListDetail.AddString(strInfo);
 
 	mListDetail.AddString("    ");
-	strInfo.Format("Ma5百分比   %.2f  %.2f  %.2f  %.2f  %.2f", mRSIData.f_ma5_per[0], mRSIData.f_ma5_per[1], mRSIData.f_ma5_per[2],
+	strInfo.Format("上影线比率      %.2f  %.2f  %.2f  %.2f  %.2f", mRSIData.f_up_shadow_line_per[0], mRSIData.f_up_shadow_line_per[1], mRSIData.f_up_shadow_line_per[2],
+		mRSIData.f_up_shadow_line_per[3], mRSIData.f_up_shadow_line_per[4]);
+	mListDetail.AddString(strInfo);
+	strInfo.Format("下影线比率      %.2f  %.2f  %.2f  %.2f  %.2f", mRSIData.f_down_shadow_line_per[0], mRSIData.f_down_shadow_line_per[1], mRSIData.f_down_shadow_line_per[2],
+		mRSIData.f_down_shadow_line_per[3], mRSIData.f_down_shadow_line_per[4]);
+	mListDetail.AddString(strInfo);
+	strInfo.Format("全振幅百分比   %.2f  %.2f  %.2f  %.2f  %.2f", mRSIData.f_amplitude_per[0], mRSIData.f_amplitude_per[1], mRSIData.f_amplitude_per[2],
+		mRSIData.f_amplitude_per[3], mRSIData.f_amplitude_per[4]);
+	mListDetail.AddString(strInfo);
+	strInfo.Format("5日涨幅百分比  %.2f  %.2f  %.2f  %.2f  %.2f", mRSIData.f_close_increase_per[0], mRSIData.f_close_increase_per[1], mRSIData.f_close_increase_per[2],
+		mRSIData.f_close_increase_per[3], mRSIData.f_close_increase_per[4]);
+	mListDetail.AddString(strInfo);
+	strInfo.Format("Ma5线比率      %.2f  %.2f  %.2f  %.2f  %.2f", mRSIData.f_ma5_per[0], mRSIData.f_ma5_per[1], mRSIData.f_ma5_per[2],
 		mRSIData.f_ma5_per[3], mRSIData.f_ma5_per[4]);
 	mListDetail.AddString(strInfo);
 

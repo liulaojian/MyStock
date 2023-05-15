@@ -146,6 +146,69 @@ BOOL CDlgAngleDetail::OnInitDialog()
 	mListDetail.AddString(strInfo);
 
 	
+	/*double fcustomvalue = -pTanAngleData->fcustomtotalvalue;
+	f_per = f_20_10_cross_price_increase / m_10_big_20_nums;
+	double f_per2 = f_60_20_cross_price_increase / m_60_big_20_nums;
+	if (m_continus_price_m20_up_nums == 0)
+		m_continus_price_m20_up_nums = 1;
+	float fMyValue;
+	
+	float f_temp1 = 0;
+	if (m_continus_price_m20_up_nums > 50)
+		f_temp1 = m_continus_price_m20_up_nums + m_continus_price_m10_up_nums+ mPriceM5ContiUpNums;
+	else if (m_continus_price_m20_up_nums > 45)
+		f_temp1 = m_continus_price_m20_up_nums + pow(m_continus_price_m10_up_nums, 0.5) + mPriceM5ContiUpNums;
+	else if (m_continus_price_m20_up_nums > 40)
+		f_temp1 = m_continus_price_m20_up_nums + pow(m_continus_price_m10_up_nums, 0.5) + pow(mPriceM5ContiUpNums, 0.5);
+	else if (m_continus_price_m20_up_nums > 35)
+		f_temp1 = pow(m_continus_price_m20_up_nums, 0.5) + pow(m_continus_price_m10_up_nums, 0.5) + pow(mPriceM5ContiUpNums, 0.5);
+	else
+		f_temp1 = pow(m_continus_price_m20_up_nums, 0.5);
+	
+	float f_temp2 = 0;
+
+	if (f_per > 4.0)
+		f_temp2 = pow(f_per, 1.40);
+	else if (f_per > 3.5)
+		f_temp2 = pow(f_per, 1.30);
+	else if (f_per > 3.0)
+		f_temp2 = pow(f_per, 1.20);
+	else if (f_per > 2.5)
+		f_temp2 = pow(f_per, 1.10);
+	else
+		f_temp2 = f_per;
+
+	if (f_per2 > 6.0)
+		f_temp2 = f_temp2 * 2.0;
+	else if (f_per2 > 5.5)
+		f_temp2 = f_temp2 * 1.4;
+	else if (f_per2 > 5.0)
+		f_temp2 = f_temp2 * 1.2;
+	
+
+	float fMyValue_t1 = f_temp1 +(fabs(f_ma20_angle) + pow(fabs(f_ma10_angle), 0.5) + pow(fabs(f_ma5_angle), 0.33)) * f_temp2;
+	fMyValue = fMyValue_t1;
+	float f_increase = f_20_10_cross_price_increase > f_60_20_cross_price_increase ? f_20_10_cross_price_increase : f_60_20_cross_price_increase;
+
+	if (pTanAngleData->fcustomtotalvalue < 0)
+	{
+		if (f_increase > fcustomvalue)
+		{
+			float f_compne = f_increase - fcustomvalue;
+				fMyValue = fMyValue + f_compne;
+		}
+		
+	}
+	
+		
+	//fMyValue = (fcustomvalue / fMyValue_t1 +1.0)* fMyValue_t1;
+
+	//fMyValue = pow((fcustomvalue / fMyValue_t1 + 1.0),2.0) * fMyValue_t1;
+	//fMyValue = fcustomvalue / fMyValue_t1;
+
+
+	strInfo.Format("角度综合值 %.2f", fMyValue);
+	mListDetail.AddString(strInfo);*/
 
 
 	int mContiDownNums = pTanAngleData->mContiDownNums;
@@ -201,6 +264,7 @@ BOOL CDlgAngleDetail::OnInitDialog()
 	int mStepIndex = pTanAngleData->mStepIndex;
 	strInfo.Format("股价启动前交易量10日均线大于5日均线并连续下降 %d日", mStepIndex);
 	mListDetail.AddString(strInfo);
+
 
 
 

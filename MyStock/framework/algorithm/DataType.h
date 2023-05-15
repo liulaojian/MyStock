@@ -91,6 +91,7 @@ typedef struct
 	float f_up_shadow_line_per[5];
 	float f_down_shadow_line_per[5];
 	float f_ma5_per[5];
+	float f_sar_per[5];
 	float f_close_increase_per[5];
 	float f_amplitude_per[5];
 

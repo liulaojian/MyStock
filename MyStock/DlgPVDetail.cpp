@@ -170,6 +170,10 @@ BOOL CDlgPVDetail::OnInitDialog()
 		mRSIData.f_ma5_per[3], mRSIData.f_ma5_per[4]);
 	mListDetail.AddString(strInfo);
 
+	strInfo.Format("Sar比率        %.3f  %.3f  %.3f  %.3f  %.3f", mRSIData.f_sar_per[0], mRSIData.f_sar_per[1], mRSIData.f_sar_per[2],
+		mRSIData.f_sar_per[3], mRSIData.f_sar_per[4]);
+	mListDetail.AddString(strInfo);
+
 	mListDetail.AddString("    ");
 
 

@@ -53,6 +53,10 @@ BOOL CDlgSpecSel::OnInitDialog()
 	ret = mCmbSfSel.AddString("DMI上穿");
 	mCmbSfSel.SetItemData(ret, 1);
 
+
+//	ret = mCmbSfSel.AddString("BiasQl");
+//	mCmbSfSel.SetItemData(ret, 2);
+
 	mCmbSfSel.SetCurSel(0);
 
 	return TRUE;  // return TRUE unless you set the focus to a control

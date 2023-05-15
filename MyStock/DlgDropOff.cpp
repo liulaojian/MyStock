@@ -63,6 +63,7 @@
 #include "StockDMIAtithmetic.h"
 #include "StockBOLLArithmetic.h"
 #include "StockPSYArithmetic.h"
+#include "StockSARArithmetic.h"
 
 #include "DlgPVDetail.h"
 #include "DlgVPSFSel.h"
@@ -139,6 +140,7 @@ BEGIN_MESSAGE_MAP(CDlgDropOff, CDialogEx)
 	ON_WM_ERASEBKGND()
 	ON_COMMAND(IDR_MENU_PV_DETAIL, &CDlgDropOff::OnMenuPvDetail)
 	ON_BN_CLICKED(IDC_BTN_VP_SEL, &CDlgDropOff::OnBnClickedBtnVpSel)
+	ON_BN_CLICKED(IDC_BTN_ADD_TO_LEFTXOR_L2, &CDlgDropOff::OnBnClickedBtnAddToLeftxorL2)
 END_MESSAGE_MAP()
 
 
@@ -153,18 +155,18 @@ BOOL CDlgDropOff::OnInitDialog()
 
 
 	mListCtrlItem.SetExtendedStyle(LVS_EX_FULLROWSELECT|LVS_EX_GRIDLINES); 
-	mListCtrlItem.InsertColumn( DROPOFF_COLUMN_ID, "顺序ID号", LVCFMT_LEFT, 80 );
-	mListCtrlItem.InsertColumn( DROPOFF_COLUMN_STOCK_CODE, "股票代码", LVCFMT_LEFT, 90 );
+	mListCtrlItem.InsertColumn( DROPOFF_COLUMN_ID, "ID号", LVCFMT_CENTER, 60 );
+	mListCtrlItem.InsertColumn( DROPOFF_COLUMN_STOCK_CODE, "股票代码", LVCFMT_CENTER, 90 );
 
-	mListCtrlItem.InsertColumn( DROPOFF_COLUMN_STOCK_NAME, "股票名称", LVCFMT_LEFT, 90 );
-	mListCtrlItem.InsertColumn( DROPOFF_COLUMN_MAX_MULTIPLE, "20日Tan/5日低量数", LVCFMT_LEFT, 130 ); //最大倍数/5日低量数
-	mListCtrlItem.InsertColumn( DROPOFF_COLUMN_AVE_MULTIPLE, "10日Tan/量价值", LVCFMT_LEFT, 110 );		//平均倍数/量价值
-	mListCtrlItem.InsertColumn( DROPOFF_COLUMN_MAX_DATE, "5日Tan/当前rsi", LVCFMT_LEFT, 70 );
-	mListCtrlItem.InsertColumn( DROPOFF_COLUMN_MIN_DATE, "Tan量价/最小rsi", LVCFMT_LEFT, 70 );
-	mListCtrlItem.InsertColumn( DROPOFF_COLUMN_MAX_PASS_DAY, "60日Tan/触发系数", LVCFMT_LEFT, 130 );
-	mListCtrlItem.InsertColumn( DROPOFF_COLUMN_FILTERNUMS, "10>20/过滤", LVCFMT_LEFT, 45 );
-	mListCtrlItem.InsertColumn( DROPOFF_COLUMN_SPECNUMS, "60>20/指定", LVCFMT_LEFT, 40 );
-	mListCtrlItem.InsertColumn( DROPOFF_COLUMN_INFO, "杂项", LVCFMT_LEFT, 40 );
+	mListCtrlItem.InsertColumn( DROPOFF_COLUMN_STOCK_NAME, "股票名称", LVCFMT_CENTER, 90 );
+	mListCtrlItem.InsertColumn( DROPOFF_COLUMN_MAX_MULTIPLE, "参数1", LVCFMT_CENTER, 130 ); //最大倍数/5日低量数
+	mListCtrlItem.InsertColumn( DROPOFF_COLUMN_AVE_MULTIPLE, "参数2", LVCFMT_CENTER, 110 );		//平均倍数/量价值
+	mListCtrlItem.InsertColumn( DROPOFF_COLUMN_MAX_DATE, "参数3", LVCFMT_CENTER, 70 );
+	mListCtrlItem.InsertColumn( DROPOFF_COLUMN_MIN_DATE, "参数4", LVCFMT_CENTER, 70 );
+	mListCtrlItem.InsertColumn( DROPOFF_COLUMN_MAX_PASS_DAY, "参数5", LVCFMT_CENTER, 110 );
+	mListCtrlItem.InsertColumn( DROPOFF_COLUMN_FILTERNUMS, "参数6", LVCFMT_CENTER, 110 );
+	mListCtrlItem.InsertColumn( DROPOFF_COLUMN_SPECNUMS, "参数7", LVCFMT_CENTER, 110 );
+	mListCtrlItem.InsertColumn( DROPOFF_COLUMN_INFO, "参数8", LVCFMT_CENTER,165 );
 
 	mSecondListCtrlItem.SetExtendedStyle(LVS_EX_FULLROWSELECT|LVS_EX_GRIDLINES); 
 	mSecondListCtrlItem.InsertColumn( DROPOFF2_COLUMN_ID, "顺序ID号", LVCFMT_LEFT, 80 );
@@ -2125,12 +2127,16 @@ void CDlgDropOff::OnBnClickedBtnDropOff()
 
 			if (mSfSel == 0)		//Bias-ql 过滤
 			{
-				//DoFilterSpecialBiasQl();
+				//
 				DoFilterSpecialAveLine();
 			}
 			else if (mSfSel == 1)	//DMI过滤
 			{
 				DoFilterSpecialDMI();
+			}
+			else if (mSfSel == 2)
+			{
+				DoFilterSpecialBiasQl();
 			}
 
 		}
@@ -2798,6 +2804,40 @@ void CDlgDropOff::OnBnClickedBtnAddToLeftxor3()
 }
 
 
+void CDlgDropOff::OnBnClickedBtnAddToLeftxorL2()
+{
+	DropOffData* pDropOffData = NULL;
+	DropOffData* pDropOffData_Left = NULL;
+	Vec_DropOffData  vecDropOffData2;
+
+	for (int i = 0; i < vecDropOffData_Second.size(); i++)
+	{
+		pDropOffData = vecDropOffData_Second[i];
+		bool bFound = false;
+
+		for (int j = 0; j < vecDropOffData.size(); j++)
+		{
+			pDropOffData_Left = vecDropOffData[j];
+			if (pDropOffData->strStockCode == pDropOffData_Left->strStockCode)
+			{
+				bFound = true;
+				break;
+			}
+
+		}
+
+		if (!bFound)
+		{
+			vecDropOffData2.push_back(pDropOffData);
+		}
+	}
+	vecDropOffData.clear();
+	vecDropOffData = vecDropOffData2;
+
+	SetTimer(DROPOFF_EVENT_REFRESH_DATA, 300, 0);
+}
+
+
 
 void CDlgDropOff::OnBnClickedBtnShowHide()
 {
@@ -2880,6 +2920,10 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 				a++;
 
 			}
+
+			CStockSARData*  pStockSARData=CStockSARArithmetic::CalcSARData(pDropOffData->strStockCode, strNowDate, 125, K_LINE_DAY, 4);
+			int sar_size = pStockSARData->vec_sar.size();
+			
 
 			CStockVRData*  pStockVRData=CStockVRArithmetic::CalcVRData(pDropOffData->strStockCode, strNowDate, 125, K_LINE_DAY, 26,6);
 			int vr_size = pStockVRData->vec_vr.size();
@@ -3023,13 +3067,17 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 			std::vector<double> vec_price_ma5;
 			vec_price_ma5 = CStockKDJArithmetic::CalcMA(5, pStockBOLLData->vec_close_price);
 
+			float f_sar_all[5] = { 0 };
+			
 			double f_close_increase_per_all[5] = { 0 };
 			for (int j = 5; j >= 1; j--)
 			{
 				double f_close_value= pStockBOLLData->vec_close_price[m_boll_size - j];
+				double f_high_value= pStockBOLLData->vec_high_price[m_boll_size - j];
 				double f_pre_close_value = pStockBOLLData->vec_close_price[m_boll_size - j-1];
 				float f_close_increase_per = (f_close_value - f_pre_close_value) * 100.0 / f_pre_close_value;
 				f_close_increase_per_all[5 - j] = f_close_increase_per;
+				f_sar_all[5-j]= f_high_value/ pStockSARData->vec_sar[sar_size - j];
 			}
 
 			double f_boll_up_per_all[5] = { 0 };
@@ -3427,6 +3475,13 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 			rsiData.f_ma5_per[3] = f_ma5_per_all[3];
 			rsiData.f_ma5_per[4] = f_ma5_per_all[4];
 
+
+			rsiData.f_sar_per[0] = f_sar_all[0];
+			rsiData.f_sar_per[1] = f_sar_all[1];
+			rsiData.f_sar_per[2] = f_sar_all[2];
+			rsiData.f_sar_per[3] = f_sar_all[3];
+			rsiData.f_sar_per[4] = f_sar_all[4];
+
 			for (int j = 0; j < 5; j++)
 			{
 				rsiData.f_cr_ma1[j] = f_cr_ma1_all[j];
@@ -3455,6 +3510,7 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 			vecRSIData.push_back(rsiData);
 
 			SAFE_DELETE(pStockVRData);
+			SAFE_DELETE(pStockSARData);
 			SAFE_DELETE(pStockMFIData);
 			SAFE_DELETE(pStockPSYData);
 			SAFE_DELETE(pStockCRData);
@@ -7077,12 +7133,21 @@ BOOL CDlgDropOff::DoFilterTanMatch7(void)
 	{
 		pTanAngleData = vecTanAngleData[i];
 
+		if (pTanAngleData->strStockCode == "SZ300406")
+		{
+			int a = 0;
+			a++;
+
+		}
+		
+	
+
 		double f_ma5_angle = pTanAngleData->fPara0;
 		double f_ma10_angle = pTanAngleData->fPara1;
 		double f_ma20_angle = pTanAngleData->fPara2;
 		double f_ma60_angle = pTanAngleData->fPara3;
 		double f_max_volume_per = pTanAngleData->fPara4;
-		double f_ave_volume_per = pTanAngleData->fPara5;
+		float f_ave_volume_per = pTanAngleData->fPara5;
 		double f_60_20_cross_price_increase = pTanAngleData->fPara6;
 		double f_20_10_cross_price_increase = pTanAngleData->fPara7;
 		double f_60_day_increase = pTanAngleData->fPara8;
@@ -7095,9 +7160,7 @@ BOOL CDlgDropOff::DoFilterTanMatch7(void)
 		int m_10_big_20_nums = pTanAngleData->mPara6;
 		int m_60_big_20_nums = pTanAngleData->mPara7;
 
-		int m_continus_price_m10_up_nums = pTanAngleData->mPara8;
-		int m_continus_price_m20_up_nums = pTanAngleData->mPara9;
-		int m_continus_price_m60_up_nums = pTanAngleData->mPara10;
+		
 		int m_max_volume_distance = pTanAngleData->mMaxDis;
 		int mContiDownNums = pTanAngleData->mContiDownNums;
 		int mBigIncreaseNums = pTanAngleData->mBigIncreaseNums;
@@ -7107,17 +7170,57 @@ BOOL CDlgDropOff::DoFilterTanMatch7(void)
 		int mContiVolDownNums = pTanAngleData->mContiVolDownNums;
 		int mStepIndex = pTanAngleData->mStepIndex;
 
-		int mPriceM5ContiUpNums = pTanAngleData->mPriceM5ContiUpNums;
+		
 		int mVolM5ContiUpNums = pTanAngleData->mVolM5ContiUpNums;
 		int mVolM10ContiUpNums = pTanAngleData->mVolM10ContiUpNums;
 
-		double f_temp = f_ma10_angle;
+		int mPriceM5ContiUpNums = pTanAngleData->mPriceM5ContiUpNums;
+		int m_continus_price_m10_up_nums = pTanAngleData->mPara8;
+		int m_continus_price_m20_up_nums = pTanAngleData->mPara9;
+		int m_continus_price_m60_up_nums = pTanAngleData->mPara10;
 
-		if (f_ma5_angle > f_ma10_angle)
-			f_temp = f_ma5_angle;
-		double f_value = f_60_20_cross_price_increase / f_20_10_cross_price_increase;
-		//if (f_value > 0.95 && f_value < 1.05 && f_ave_volume_per < 4.6 && f_temp<70.0)
-		if (f_value > 0.92 && f_value < 1.08 )
+		bool bok1 = false;
+		if (mPriceM5ContiUpNums > 3 && mPriceM5ContiUpNums< m_continus_price_m20_up_nums  && m_continus_price_m10_up_nums > 10 && m_continus_price_m10_up_nums<20)
+		{
+			if (m_continus_price_m20_up_nums > 12 )
+			{
+				
+				if(m_continus_price_m20_up_nums>= m_continus_price_m10_up_nums)
+					bok1 = true;
+				
+			}
+				
+		}
+
+		bool bok2 = false;
+		if (mVolM5ContiUpNums >= 1 && mVolM10ContiUpNums >= 1)
+		{
+				bok2 = true;
+		}
+
+		bool bok3 = false;
+		if (f_ma10_angle > f_ma20_angle)
+		{
+			double f_per = f_ma5_angle /f_ma10_angle;
+			if(f_per>0.96)
+				bok3 = true;
+			
+		}
+
+		bool bok4 = false;
+		if(f_ave_volume_per>1.0&& f_ave_volume_per<7.0)
+			bok4 = true;
+
+
+		bool bok5 = true;
+		double f_per = f_20_10_cross_price_increase / m_10_big_20_nums;
+
+		
+
+		if((f_per > 1.6 && f_ma20_angle > 55.0)||(f_per > 1.9 && f_ma20_angle > 52.0) || (f_per > 3.5 && f_ma5_angle >= 72.0) || (f_per>3.3&& m_continus_price_m20_up_nums>=40) || m_continus_price_m20_up_nums>=50)
+			bok5 = false;
+
+		if (bok2 && bok1&& bok3&& bok4 && bok5) //
 		{
 
 			DropOffData* pDropOffData = new DropOffData();
@@ -7651,85 +7754,15 @@ BOOL CDlgDropOff::DoFilterTanMatch9(void)
 		double fVolumePerForM5 = pTanAngleData->fVolumePerForM5;
 
 		bool bOk = false;
-#if 0
-		if (fVolumePerForM30 > fVolumePerForM20)
+
+		bool bok5 = true;
+		double f_per = f_20_10_cross_price_increase / m_10_big_20_nums;
+
+		double f_temp = f_ma20_angle * f_per;
+		
+		if(f_temp>45.0 && f_temp<80.0 && f_ma20_angle<50.0)
 		{
-			if (fVolumePerForM20 > fVolumePer)
-			{
-				if (fVolumePer > fVolumePerForM5)
-				{
-					bOk = true;
-
-				}
-
-			}
-
-		}
-		bool bOk2 = false;
-		double f_per = fVolumePerForM30 / fVolumePerForM5;
-		if (f_per >= 2.0 && fVolumePerForM30 < 3.5 && fVolumePerForM30>1.3) //1.5
-			bOk2 = true;
-		int    mMinRsi3Interval = pTanAngleData->mMinRsi3Interval;
-		double f_temp = fVolumePerForM30 / mMinRsi3Interval;
-		bool bOk3 = false;
-		if(f_temp>0.05)
-			bOk3 = true;
-
-		bool bOk4 = false;
-		if(mBigIncreaseNums<1 && mRsi1BigNums < 1)
-			bOk4 = true;
-		//bool bOk5 = false;
-		//if(mVolM5ContiUpNums<=5&& mVolM10ContiUpNums<=10)
-		//	bOk5 = true;
-		double fMinRsi3 = pTanAngleData->fMinRsi3;
-		double fMinRsi1 = pTanAngleData->fMinRsi1;
-		mMinRsi3Interval = pTanAngleData->mMinRsi3Interval;
-		bool bOk6 = false;
-		if (fMinRsi1 < 19.0 && fMinRsi3 < 39.0 ) //&& mMinRsi3Interval<40
-		{
-			bOk6= true;
-		}
-
-		f_20_10_cross_price_increase = pTanAngleData->fPara7;
-		m_10_big_20_nums = pTanAngleData->mPara6;
-
-		double f_day10_increase = f_20_10_cross_price_increase / m_10_big_20_nums;
-		bool bOk7 = false;
-		if(f_day10_increase >=1.0&& f_day10_increase<=3.0)
-			bOk7 = true;
-
-		f_60_20_cross_price_increase = pTanAngleData->fPara6;
-		m_60_big_20_nums = pTanAngleData->mPara7;
-		double f_day20_increase = f_60_20_cross_price_increase / m_60_big_20_nums;
-		bool bOk8 = false;
-		if (f_day20_increase >= 1.0&& f_day20_increase<=4.5)
-			bOk8 = true;
-
-		double f_max = f_20_10_cross_price_increase;
-		if (f_60_20_cross_price_increase > f_max)
-			f_max = f_60_20_cross_price_increase;
-
-
-		double f_10_20_per = f_20_10_cross_price_increase / f_60_20_cross_price_increase;
-		bool bOk9 = false;
-		if (f_10_20_per > 1.0 && f_10_20_per < 2.0)
-		{
-			bOk9 = true;
-		}
-
-		bool bOk10 = false;
-		if (f_max > 10.0 && f_max < 30.0)
-		{
-			bOk10 = true;
-		}
-
-		if (bOk && bOk2 && bOk4 && (f_cur_rsi_1 < 90.0) && bOk10) //bOk6&& 
-#else
-
-		if(f_ave_volume_per>7.0)
-#endif
-		{
-
+			printf("%s  %s  %.2f\n", (LPCSTR)vecTanAngleData[i]->strStockCode, (LPCSTR)vecTanAngleData[i]->strStockName, f_temp);
 			DropOffData* pDropOffData = new DropOffData();
 			pDropOffData->strStockCode = vecTanAngleData[i]->strStockCode;
 			pDropOffData->strStockName = vecTanAngleData[i]->strStockName;
@@ -9935,6 +9968,14 @@ BOOL CDlgDropOff::DoFiterVPReadyFor(void)
 	{
 			mRSIData = vecRSIData[i];
 
+			/*if (mRSIData.strStockCode == "SH600428")
+			{
+				int a = 0;
+				a++;
+
+			}*/
+
+#if 0
 			bool bok0 = false;
 
 			float f_min_rsi1 = mRSIData.f_min_rsi1;
@@ -9989,6 +10030,76 @@ BOOL CDlgDropOff::DoFiterVPReadyFor(void)
 
 
 			if (bok0 && bok1 && bok2) 
+#else
+		
+			/*float f_max_rsi1 = mRSIData.f_max_rsi1;
+			float f_max_rsi2 = mRSIData.f_max_rsi2;
+			float f_max_rsi3 = mRSIData.f_max_rsi3;
+
+			bool bok1 = false;
+
+			float f_max_dif_3_2 = f_max_rsi2- f_max_rsi3;
+			float f_max_dif_2_1 = f_max_rsi1 - f_max_rsi2;
+
+			if (f_max_dif_3_2 > 5.0 && f_max_dif_2_1 > 5.0)
+			{
+				float f_max = f_max_dif_3_2 > f_max_dif_2_1 ? f_max_dif_3_2 : f_max_dif_2_1;
+				float f_min = f_max_dif_3_2 > f_max_dif_2_1 ? f_max_dif_2_1 : f_max_dif_3_2;
+				float f_per = f_min / f_max;
+				if (f_per > 0.9)
+					bok1 = true;
+			}
+
+			if(bok1)*/
+
+			bool bok1 = false;
+			
+			int nums = 0;
+
+			for (int j = 0; j < 5; j++)
+			{
+				if (mRSIData.f_ma5_per[j] < 1.0)
+					nums++;
+			}
+
+
+			int maxindex = -1;
+			float f_max_value = -99999.0;
+			for (int j = 1; j < 5; j++)
+			{
+
+				if (mRSIData.f_ma5_per[j] > f_max_value)
+				{
+					f_max_value = mRSIData.f_ma5_per[j];
+					maxindex = j;
+				}
+			}
+
+			if (nums >= 3 && (maxindex==4|| maxindex == 3))
+			{
+				float f_max_ma5 = -99999.0;
+				for (int j = 1; j < 5; j++)
+				{
+					if (mRSIData.f_ma5_per[j] > f_max_ma5)
+					{
+						f_max_ma5 = mRSIData.f_ma5_per[j];
+					}
+				}
+				if (f_max_ma5 <= 1.03 )
+				{
+
+					if (mRSIData.f_close_increase_per[4] > 1.0)
+					{
+						if(mRSIData.f_up_shadow_line_per[4]<0.4)
+							bok1 = true;
+					}
+				}
+					
+			}
+
+				
+			if (bok1)
+#endif
 			{
 				DropOffData* pDropOffData = new DropOffData();
 				pDropOffData->strStockCode = mRSIData.strStockCode;
@@ -10228,64 +10339,77 @@ BOOL  CDlgDropOff::DoFiterVPTest(void)
 {
 	
 	RSIData mRSIData;
+	TanAngleData* pTanAngleData = NULL;
 	for (int i = 0; i < vecRSIData.size(); i++)
 	{
 		mRSIData = vecRSIData[i];
 
-		bool bok0 = false;
+		
 
-		float f_min_rsi1 = mRSIData.f_min_rsi1;
-		float f_min_rsi2 = mRSIData.f_min_rsi2;
-		float f_min_rsi3 = mRSIData.f_min_rsi3;
-
-		float f_cur_rsi1 = mRSIData.rsi_1;
-		float f_cur_rsi2 = mRSIData.rsi_2;
-		float f_cur_rsi3 = mRSIData.rsi_3;
-
-		if (f_cur_rsi1 > f_cur_rsi2)
+		bool bok = false;
+		if (mRSIData.f_sar_per[4] > mRSIData.f_sar_per[3])
 		{
-			if (f_cur_rsi2 > f_cur_rsi3)
+			if (mRSIData.f_sar_per[3] > mRSIData.f_sar_per[2])
 			{
-
-				if (f_min_rsi1 < f_min_rsi2)
+				if (mRSIData.f_sar_per[4] < 1.2)
 				{
-
-					if (f_min_rsi2 < f_min_rsi3)
-						bok0 = true;
+					bok = true;
 				}
+					
 			}
 		}
 
+
 		bool bok1 = false;
 
-		float f_min_dif_3_2 = f_min_rsi3 - f_min_rsi2;
-		float f_min_dif_2_1 = f_min_rsi2 - f_min_rsi1;
+		int nums = 0;
 
-		if (f_min_dif_3_2 > 2.0 && f_min_dif_2_1 > 2.0  )
+		for (int j = 0; j < 5; j++)
 		{
-			float f_max = f_min_dif_3_2 > f_min_dif_2_1 ? f_min_dif_3_2 : f_min_dif_2_1;
-			float f_min = f_min_dif_3_2 > f_min_dif_2_1 ? f_min_dif_2_1 : f_min_dif_3_2;
-			float f_per = f_min / f_max;
-			if (f_per > 0.6)
-				bok1 = true;
-		}
-
-		bool bok2 = false;
-		float f_cur_dif_3_2 = f_cur_rsi2 - f_cur_rsi3;
-		float f_cur_dif_2_1 = f_cur_rsi1 - f_cur_rsi2;
-
-		if (f_cur_dif_3_2 >2.0 && f_cur_dif_2_1 > 2.0  )
-		{
-			float f_max = f_cur_dif_3_2 > f_cur_dif_2_1 ? f_cur_dif_3_2 : f_cur_dif_2_1;
-			float f_min = f_cur_dif_3_2 > f_cur_dif_2_1 ? f_cur_dif_2_1 : f_cur_dif_3_2;
-			float f_per = f_min / f_max;
-			if (f_per > 0.6)
-				bok2 = true;
-
+			if (mRSIData.f_ma5_per[j] < 1.0)
+				nums++;
 		}
 
 
-		if (bok0 && bok1 && bok2)
+		int maxindex = -1;
+		float f_max_value = -99999.0;
+		for (int j = 1; j < 5; j++)
+		{
+
+			if (mRSIData.f_ma5_per[j] > f_max_value)
+			{
+				f_max_value = mRSIData.f_ma5_per[j];
+				maxindex = j;
+			}
+		}
+
+		if (nums >= 3 && (maxindex == 4 || maxindex == 3))
+		{
+			float f_max_ma5 = -99999.0;
+			for (int j = 1; j < 5; j++)
+			{
+				if (mRSIData.f_ma5_per[j] > f_max_ma5)
+				{
+					f_max_ma5 = mRSIData.f_ma5_per[j];
+				}
+			}
+			if (f_max_ma5 <= 1.03)
+			{
+
+				if (mRSIData.f_close_increase_per[4] > 1.0)
+				{
+					if (mRSIData.f_up_shadow_line_per[4] < 0.4)
+						bok1 = true;
+				}
+			}
+
+		}
+
+
+
+		if(bok&& bok1)
+
+		
 		{
 			DropOffData* pDropOffData = new DropOffData();
 			pDropOffData->strStockCode = mRSIData.strStockCode;
@@ -10403,66 +10527,27 @@ BOOL CDlgDropOff::DOFilterAngleAndVR(void)
 	{
 		mRSIData = vecRSIData[i];
 		
+		bool bok1 = true;
+		if (mRSIData.rsi_3>80.0 ||  (mRSIData.f_max_rsi3 > 80.0 && mRSIData.m_max_rsi_day < 8))
+			bok1 = false;
 
-		if (mRSIData.strStockCode == "SZ300226")
+		bool bok2 = true;
+		for (int j = 0; j < 3; j++)
 		{
-
-			int a = 0;
-			a++;
-			printf("a=%d", a);
+			if (mRSIData.f_psy[j] > 70.0 && mRSIData.f_mpsy[j] > 70.0)
+			{
+				bok2 = false;
+				break;
+			}
+				
 		}
 
-		
-		bool bok1 = false;
-		if (mRSIData.m_ccivr_data.mMaxUnit.f_cci_value < 250.0 && mRSIData.m_ccivr_data.mMaxUnit.f_cci_value>100.0
-			&& mRSIData.m_ccivr_data.mMaxUnit.f_vr_value<300) 
-			bok1 = true;
-
-		bool bok2 = false;
-
-		if (mRSIData.m_ccivr_data.vecUpDown100AftMaxUnit.size() == 0)
-			bok2 = true;
+		bool bok3 = true;
+		if ((mRSIData.f_max_mfi > 95.0 && mRSIData.m_max_mfi_day < 6) || mRSIData.mfi > 95.0)
+			bok3 = false;
 
 		
-		bool bok3 = false;
-		if(mRSIData.m_ccivr_data.mCCiUp100BefMaxUnit.m_cci_num>0 || mRSIData.m_ccivr_data.mCCiUp100BefMaxUnit.m_cci_num <=5)
-			bok3 = true;
-
-		bool bok4 = false;
-		if (mRSIData.m_ccivr_data.f_now_max_cci_close_per > 15.0)
-			bok4 = true;
-
-		bool bok5 = false;
-
-		if (mRSIData.m_ccivr_data.mCCiUp100BefMaxUnit.f_vr_value > 120.0)
-			bok5 = true;
-		
-		bool bok6 = false;
-
-		if (mRSIData.m_ccivr_data.mCCiUp100BefMaxUnit.m_cci_num<6 && mRSIData.m_ccivr_data.mCCiUp100BefMaxUnit.m_cci_num>0)
-			bok6 = true;
-
-		bool bok7 = false;
-		if (mRSIData.m_ccivr_data.mCCiUp100BefMaxUnit.f_vr_value>150.0)
-			bok7 = true;
-
-		bool bok8 = false;
-		if (mRSIData.m_ccivr_data.mCCiUp100BefMaxUnit.f_vr_value < mRSIData.m_ccivr_data.mMaxUnit.f_vr_value)
-			bok8 = true;
-
-		bool bok9 = false;
-		if (mRSIData.rsi_1<94.0)
-			bok9 = true;
-
-		bool bok10 = false;
-		if (mRSIData.f_max_vr < 500.0)
-			bok10 = true;
-
-		bool bok11 = false;
-		if (mRSIData.m_ccivr_data.mNowUnit.f_cci_value > 100.0)
-			bok11 = true;
-		//if(bok4 && bok5) //bok1 && bok2 &&  bok3
-		if(bok6&& bok7&& bok8&& bok9&& bok10&& bok11)
+		if(bok1 && bok2&& bok3)
 		{
 			DropOffData* pDropOffData = new DropOffData();
 			pDropOffData->strStockCode = mRSIData.strStockCode;
@@ -10916,3 +11001,4 @@ BOOL  CDlgDropOff::DoFilterSpecialDMI(void)
 	return TRUE;
 
 }
+

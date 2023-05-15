@@ -329,4 +329,5 @@ public:
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnMenuPvDetail();
 	afx_msg void OnBnClickedBtnVpSel();
+	afx_msg void OnBnClickedBtnAddToLeftxorL2();
 };

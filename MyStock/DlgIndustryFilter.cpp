@@ -56,6 +56,12 @@ BOOL CDlgIndustryFilter::OnInitDialog()
 
 	int ret;
 
+	ret = mCmbFirstPos.AddString("2交易日");
+	mCmbFirstPos.SetItemData(ret, 2);
+
+	ret = mCmbFirstPos.AddString("3交易日");
+	mCmbFirstPos.SetItemData(ret, 3);
+
 	ret = mCmbFirstPos.AddString("5交易日");
 	mCmbFirstPos.SetItemData(ret, 5);
 
@@ -79,9 +85,14 @@ BOOL CDlgIndustryFilter::OnInitDialog()
 	mCmbFirstPos.SetItemData(ret, 35);
 
 
-	mCmbFirstPos.SetCurSel(2);
+	mCmbFirstPos.SetCurSel(4);
 
-	
+	ret = mCmbSecondPos.AddString("5交易日");
+	mCmbSecondPos.SetItemData(ret, 5);
+
+	ret = mCmbSecondPos.AddString("7交易日");
+	mCmbSecondPos.SetItemData(ret, 7);
+
 	ret = mCmbSecondPos.AddString("10交易日");
 	mCmbSecondPos.SetItemData(ret, 10);
 
@@ -102,7 +113,16 @@ BOOL CDlgIndustryFilter::OnInitDialog()
 
 	ret = mCmbSecondPos.AddString("40交易日");
 	mCmbSecondPos.SetItemData(ret, 40);
-	mCmbSecondPos.SetCurSel(4);
+
+	ret = mCmbSecondPos.AddString("50交易日");
+	mCmbSecondPos.SetItemData(ret, 50);
+
+	ret = mCmbSecondPos.AddString("60交易日");
+	mCmbSecondPos.SetItemData(ret, 60);
+
+	ret = mCmbSecondPos.AddString("70交易日");
+	mCmbSecondPos.SetItemData(ret, 70);
+	mCmbSecondPos.SetCurSel(6);
 
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -225,7 +245,7 @@ void CDlgIndustryFilter::OnBnClickedBtnFilter()
 	}
 	vecTanAngleData.clear();
 
-	//First没有  Now 有的
+	//First没有  Now 有的  表示从First后处于均线排列的
 	Vec_IndustryFilterInfo vecFirstDiffNowFilterInfo;
 
 	for (int i = 0; i < vecNowFilterInfo.size(); i++)
@@ -248,7 +268,7 @@ void CDlgIndustryFilter::OnBnClickedBtnFilter()
 	}
 
 
-	//Second 没有 Now 有的
+	//Second 没有 Now 有的 表示从Second后处于均线排列的
 	Vec_IndustryFilterInfo vecSecondDiffNowFilterInfo;
 	for (int i = 0; i < vecNowFilterInfo.size(); i++)
 	{
@@ -269,7 +289,9 @@ void CDlgIndustryFilter::OnBnClickedBtnFilter()
 		}
 	}
 #if 0
-	//vecSecondDiffNowFilterInfo 没有 vecFirstDiffNowFilterInfo 有的
+	//vecFirstDiffNowFilterInfo 有的 vecSecondDiffNowFilterInfo 没有
+	//表示First后处于均线排列的中有   Second后处于均线排列的中没有 
+	//表示 筛选 剩下的 是  First后才开始均线排列的
 
 	Vec_IndustryFilterInfo vecSecondDiffFirstFilterInfo;
 	for (int i = 0; i < vecFirstDiffNowFilterInfo.size(); i++)
@@ -291,7 +313,9 @@ void CDlgIndustryFilter::OnBnClickedBtnFilter()
 		}
 	}
 #else
-
+	//vecFirstDiffNowFilterInfo 有的 vecSecondDiffNowFilterInfo 有的
+	//表示First后处于均线排列的中有   Second后处于均线排列的中有的
+	//表示 筛选 剩下的 是  Second->First->Now 一直都有 Second前没有
 	Vec_IndustryFilterInfo vecSecondDiffFirstFilterInfo;
 	for (int i = 0; i < vecFirstDiffNowFilterInfo.size(); i++)
 	{

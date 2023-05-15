@@ -44,8 +44,8 @@ BOOL CDlgSFSel::OnInitDialog()
 	int ret;
 	
 
-	ret=mCmbSFSel.AddString("K线分析-1");
-	mCmbSFSel.SetItemData(ret,0);
+	//ret=mCmbSFSel.AddString("K线分析-1");
+	//mCmbSFSel.SetItemData(ret,0);
 	
 	//ret=mCmbSFSel.AddString("掉量不掉价");
 	//mCmbSFSel.SetItemData(ret,1);
@@ -54,8 +54,8 @@ BOOL CDlgSFSel::OnInitDialog()
 	mCmbSFSel.SetItemData(ret,2);
 
 
-	ret=mCmbSFSel.AddString("TAN配套(发展均衡)");
-	mCmbSFSel.SetItemData(ret,3);
+	//ret=mCmbSFSel.AddString("TAN配套(发展均衡)");
+	//mCmbSFSel.SetItemData(ret,3);
 	
 
 	//ret=mCmbSFSel.AddString("多日均线TAN");
@@ -76,13 +76,13 @@ BOOL CDlgSFSel::OnInitDialog()
 	//mCmbSFSel.SetItemData(ret,8);
 
 
-	ret=mCmbSFSel.AddString("TAN配套3(走势M20中间)");
-	mCmbSFSel.SetItemData(ret,9);
+	//ret=mCmbSFSel.AddString("TAN配套3(走势M20中间)");
+	//mCmbSFSel.SetItemData(ret,9);
 
 	ret=mCmbSFSel.AddString("TAN配套4(启动均衡)");
 	mCmbSFSel.SetItemData(ret,10);
 
-	ret=mCmbSFSel.AddString("TAN配套5(<10)"); //TAN配套5  //(角度均衡)
+	ret=mCmbSFSel.AddString("TAN配套5(总体均衡)"); //TAN配套5  //(角度均衡)
 	mCmbSFSel.SetItemData(ret,11);
 
 	ret=mCmbSFSel.AddString("TAN配套6(长时间涨)");
@@ -91,17 +91,17 @@ BOOL CDlgSFSel::OnInitDialog()
 	//ret=mCmbSFSel.AddString("K线分析-配套");
 	//mCmbSFSel.SetItemData(ret,13);
 
-	ret=mCmbSFSel.AddString("TAN配套7(增长相同)");
+	ret=mCmbSFSel.AddString("TAN配套7(角度筛选)");
 	mCmbSFSel.SetItemData(ret,13);
 
 	//ret=mCmbSFSel.AddString("TAN配套8");
 	//mCmbSFSel.SetItemData(ret,14);
 
-	ret = mCmbSFSel.AddString("TAN配套9(长间隔)");
+	ret = mCmbSFSel.AddString("TAN配套9(角度筛选2)");
 	mCmbSFSel.SetItemData(ret, 15);
 
-	ret = mCmbSFSel.AddString("TAN配套10(行业选择)");
-	mCmbSFSel.SetItemData(ret, 16);
+	//ret = mCmbSFSel.AddString("TAN配套10(行业选择)");
+	//mCmbSFSel.SetItemData(ret, 16);
 
 #if 0
 	ret=mCmbSFSel.AddString("ThreeLow");
@@ -112,7 +112,7 @@ BOOL CDlgSFSel::OnInitDialog()
 #endif	
 
 
-	mCmbSFSel.SetCurSel(1);
+	mCmbSFSel.SetCurSel(0);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常: OCX 属性页应返回 FALSE

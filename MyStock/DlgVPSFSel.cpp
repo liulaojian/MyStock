@@ -71,10 +71,10 @@ BOOL CDlgVPSFSel::OnInitDialog()
 	mCmbSFSel.SetItemData(ret, 6);
 
 
-	//ret = mCmbSFSel.AddString("卡Ma5上");
-	//mCmbSFSel.SetItemData(ret, 7);
-
 	ret = mCmbSFSel.AddString("Sar Ma5过滤");
+	mCmbSFSel.SetItemData(ret, 7);
+
+	ret = mCmbSFSel.AddString("Sar Ma5过滤2");
 	mCmbSFSel.SetItemData(ret, 8);
 
 	

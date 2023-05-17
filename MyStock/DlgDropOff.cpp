@@ -7760,7 +7760,7 @@ BOOL CDlgDropOff::DoFilterTanMatch9(void)
 
 		double f_temp = f_ma20_angle * f_per;
 		
-		if(f_temp>45.0 && f_temp<80.0 && f_ma20_angle<50.0)
+		if(f_temp>45.0 && f_temp<80.0 && f_ma20_angle<50.0&&(f_ma10_angle> f_ma20_angle))
 		{
 			printf("%s  %s  %.2f\n", (LPCSTR)vecTanAngleData[i]->strStockCode, (LPCSTR)vecTanAngleData[i]->strStockName, f_temp);
 			DropOffData* pDropOffData = new DropOffData();
@@ -9976,128 +9976,42 @@ BOOL CDlgDropOff::DoFiterVPReadyFor(void)
 			}*/
 
 #if 0
-			bool bok0 = false;
-
-			float f_min_rsi1 = mRSIData.f_min_rsi1;
-			float f_min_rsi2 = mRSIData.f_min_rsi2;
-			float f_min_rsi3 = mRSIData.f_min_rsi3;
-
-			float f_cur_rsi1 = mRSIData.rsi_1;
-			float f_cur_rsi2 = mRSIData.rsi_2;
-			float f_cur_rsi3 = mRSIData.rsi_3;
-
-			if (f_cur_rsi1 > f_cur_rsi2)
-			{
-				if (f_cur_rsi2 > f_cur_rsi3)
-				{
-
-					if (f_min_rsi1 < f_min_rsi2)
-					{
-
-						if (f_min_rsi2 < f_min_rsi3)
-							bok0 = true;
-					}
-				}
-			}
-
-			bool bok1 = false;
-
-			float f_min_dif_3_2 = f_min_rsi3 - f_min_rsi2;
-			float f_min_dif_2_1 = f_min_rsi2 - f_min_rsi1;
-
-			if (f_min_dif_3_2 > 4.0 && f_min_dif_2_1 > 4.0)
-			{
-				float f_max = f_min_dif_3_2 > f_min_dif_2_1 ? f_min_dif_3_2 : f_min_dif_2_1;
-				float f_min = f_min_dif_3_2 > f_min_dif_2_1 ? f_min_dif_2_1 : f_min_dif_3_2;
-				float f_per = f_min / f_max;
-				if (f_per > 0.7)
-					bok1 = true;
-			}
-
-			bool bok2 = false;
-			float f_cur_dif_3_2 = f_cur_rsi2 - f_cur_rsi3;
-			float f_cur_dif_2_1 = f_cur_rsi1 - f_cur_rsi2;
-
-			if (f_cur_dif_3_2 > 4.0 && f_cur_dif_2_1 > 4.0)
-			{
-				float f_max = f_cur_dif_3_2 > f_cur_dif_2_1 ? f_cur_dif_3_2 : f_cur_dif_2_1;
-				float f_min = f_cur_dif_3_2 > f_cur_dif_2_1 ? f_cur_dif_2_1 : f_cur_dif_3_2;
-				float f_per = f_min / f_max;
-				if (f_per > 0.7)
-					bok2 = true;
-
-			}
-
-
-			if (bok0 && bok1 && bok2) 
+		
 #else
 		
-			/*float f_max_rsi1 = mRSIData.f_max_rsi1;
-			float f_max_rsi2 = mRSIData.f_max_rsi2;
-			float f_max_rsi3 = mRSIData.f_max_rsi3;
-
-			bool bok1 = false;
-
-			float f_max_dif_3_2 = f_max_rsi2- f_max_rsi3;
-			float f_max_dif_2_1 = f_max_rsi1 - f_max_rsi2;
-
-			if (f_max_dif_3_2 > 5.0 && f_max_dif_2_1 > 5.0)
-			{
-				float f_max = f_max_dif_3_2 > f_max_dif_2_1 ? f_max_dif_3_2 : f_max_dif_2_1;
-				float f_min = f_max_dif_3_2 > f_max_dif_2_1 ? f_max_dif_2_1 : f_max_dif_3_2;
-				float f_per = f_min / f_max;
-				if (f_per > 0.9)
-					bok1 = true;
-			}
-
-			if(bok1)*/
-
+			
 			bool bok1 = false;
 			
 			int nums = 0;
 
+			float f_max_ma5_per = -9999.0;
 			for (int j = 0; j < 5; j++)
 			{
-				if (mRSIData.f_ma5_per[j] < 1.0)
-					nums++;
+				if (mRSIData.f_ma5_per[j] > f_max_ma5_per)
+					f_max_ma5_per = mRSIData.f_ma5_per[j];
+			}
+
+			float f_max_sar_per = -9999.0;
+			for (int j = 0; j < 5; j++)
+			{
+				if (mRSIData.f_sar_per[j] > f_max_sar_per)
+					f_max_sar_per = mRSIData.f_sar_per[j];
 			}
 
 
-			int maxindex = -1;
-			float f_max_value = -99999.0;
-			for (int j = 1; j < 5; j++)
+			if (f_max_ma5_per < 1.06 && f_max_sar_per<1.16)
 			{
-
-				if (mRSIData.f_ma5_per[j] > f_max_value)
+				if (mRSIData.f_ma5_per[3] < 1.0 && mRSIData.f_ma5_per[4] < 1.0)
 				{
-					f_max_value = mRSIData.f_ma5_per[j];
-					maxindex = j;
-				}
-			}
-
-			if (nums >= 3 && (maxindex==4|| maxindex == 3))
-			{
-				float f_max_ma5 = -99999.0;
-				for (int j = 1; j < 5; j++)
-				{
-					if (mRSIData.f_ma5_per[j] > f_max_ma5)
-					{
-						f_max_ma5 = mRSIData.f_ma5_per[j];
-					}
-				}
-				if (f_max_ma5 <= 1.03 )
-				{
-
-					if (mRSIData.f_close_increase_per[4] > 1.0)
-					{
-						if(mRSIData.f_up_shadow_line_per[4]<0.4)
-							bok1 = true;
-					}
+					if(mRSIData.f_ma5_per[4] > 0.3)
+						bok1 = true;
 				}
 					
+
 			}
 
-				
+
+
 			if (bok1)
 #endif
 			{
@@ -10705,7 +10619,7 @@ void CDlgDropOff::OnBnClickedBtnVpSel()
 			DOFilterAngleAndVR();
 			//DoFiterVPVREqu();
 		}
-		else if (mSFSel == 7)
+		else if (mSFSel == 7)		//Sar Ma5¹ýÂË
 		{
 			bReserveFilter = mCheckReserveFilter.GetCheck();
 
@@ -10716,9 +10630,10 @@ void CDlgDropOff::OnBnClickedBtnVpSel()
 			}
 
 			vecDropOffData.clear();
-			DoFiterVPReadyFor();
+			
+			DoFiterVPTest();
 		}
-		else if (mSFSel == 8)
+		else if (mSFSel == 8)		//Sar Ma5¹ýÂË2
 		{
 		bReserveFilter = mCheckReserveFilter.GetCheck();
 
@@ -10729,7 +10644,7 @@ void CDlgDropOff::OnBnClickedBtnVpSel()
 		}
 
 		vecDropOffData.clear();
-		DoFiterVPTest();
+		DoFiterVPReadyFor();
 		}
 	}
 }

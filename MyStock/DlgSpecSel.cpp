@@ -54,8 +54,8 @@ BOOL CDlgSpecSel::OnInitDialog()
 	mCmbSfSel.SetItemData(ret, 1);
 
 
-//	ret = mCmbSfSel.AddString("BiasQl");
-//	mCmbSfSel.SetItemData(ret, 2);
+	ret = mCmbSfSel.AddString("PSY Low");
+	mCmbSfSel.SetItemData(ret, 2);
 
 	mCmbSfSel.SetCurSel(0);
 

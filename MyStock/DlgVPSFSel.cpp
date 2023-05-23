@@ -67,9 +67,11 @@ BOOL CDlgVPSFSel::OnInitDialog()
 	mCmbSFSel.SetItemData(ret, 5);
 
 
-	ret = mCmbSFSel.AddString("RSI PTY过滤");
+	ret = mCmbSFSel.AddString("PTY过滤");
 	mCmbSFSel.SetItemData(ret, 6);
 
+	ret = mCmbSFSel.AddString("PTY过滤2");
+	mCmbSFSel.SetItemData(ret, 9);
 
 	ret = mCmbSFSel.AddString("Sar Ma5过滤");
 	mCmbSFSel.SetItemData(ret, 7);
@@ -77,7 +79,7 @@ BOOL CDlgVPSFSel::OnInitDialog()
 	ret = mCmbSFSel.AddString("Sar Ma5过滤2");
 	mCmbSFSel.SetItemData(ret, 8);
 
-	
+
 
 	mCmbSFSel.SetCurSel(0);
 

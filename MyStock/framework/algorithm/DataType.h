@@ -100,9 +100,9 @@ typedef struct
 	double f_cr_ma3[5];
 	double f_cr_ma4[5];
 
-	float  f_psy[3];
+	float  f_psy[5];
 
-	float  f_mpsy[3];
+	float  f_mpsy[5];
 
 	CCIVRAngleData2 m_ccivr_data;
 

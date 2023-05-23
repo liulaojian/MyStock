@@ -149,8 +149,9 @@ BOOL CDlgPVDetail::OnInitDialog()
 	
 	mListDetail.AddString("    ");
 
-	strInfo.Format("最近三日PSY (%.2f  %.2f)  (%.2f  %.2f)  (%.2f  %.2f)", mRSIData.f_psy[0], mRSIData.f_mpsy[1], 
-		mRSIData.f_psy[1],mRSIData.f_mpsy[1], mRSIData.f_psy[2], mRSIData.f_mpsy[2]);
+	strInfo.Format("最近五日PSY (%.2f  %.2f)  (%.2f  %.2f)  (%.2f  %.2f)  (%.2f  %.2f)  (%.2f  %.2f)", mRSIData.f_psy[0], mRSIData.f_mpsy[1], 
+		mRSIData.f_psy[1],mRSIData.f_mpsy[1], mRSIData.f_psy[2], mRSIData.f_mpsy[2],
+		mRSIData.f_psy[3],mRSIData.f_mpsy[3], mRSIData.f_psy[4], mRSIData.f_mpsy[4]);
 	mListDetail.AddString(strInfo);
 
 	mListDetail.AddString("    ");

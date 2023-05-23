@@ -2974,16 +2974,20 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 
 
 			CStockPSYData* pStockPSYData=CStockPSYArithmetic::CalcPSYData(pDropOffData->strStockCode, strNowDate, 125, K_LINE_DAY, 12, 6);
-			float f_psy_all[3] = { 0 };
-			float f_mpsy_all[3] = { 0 };
+			float f_psy_all[5] = { 0 };
+			float f_mpsy_all[5] = { 0 };
 			int m_psy_size = pStockPSYData->vec_psy.size();
-			f_psy_all[0] = pStockPSYData->vec_psy[m_psy_size - 3];
-			f_psy_all[1] = pStockPSYData->vec_psy[m_psy_size - 2];
-			f_psy_all[2] = pStockPSYData->vec_psy[m_psy_size - 1];
+			f_psy_all[0] = pStockPSYData->vec_psy[m_psy_size - 5];
+			f_psy_all[1] = pStockPSYData->vec_psy[m_psy_size - 4];
+			f_psy_all[2] = pStockPSYData->vec_psy[m_psy_size - 3];
+			f_psy_all[3] = pStockPSYData->vec_psy[m_psy_size - 2];
+			f_psy_all[4] = pStockPSYData->vec_psy[m_psy_size - 1];
 
-			f_mpsy_all[0] = pStockPSYData->vec_mpsy[m_psy_size - 3];
-			f_mpsy_all[1] = pStockPSYData->vec_mpsy[m_psy_size - 2];
-			f_mpsy_all[2] = pStockPSYData->vec_mpsy[m_psy_size - 1];
+			f_mpsy_all[0] = pStockPSYData->vec_mpsy[m_psy_size - 5];
+			f_mpsy_all[1] = pStockPSYData->vec_mpsy[m_psy_size - 4];
+			f_mpsy_all[2] = pStockPSYData->vec_mpsy[m_psy_size - 3];
+			f_mpsy_all[3] = pStockPSYData->vec_mpsy[m_psy_size - 2];
+			f_mpsy_all[4] = pStockPSYData->vec_mpsy[m_psy_size - 1];
 
 			CStockMFIData* pStockMFIData = CStockMFIArithmetic::CalcMFIData(pDropOffData->strStockCode, strNowDate, 125, K_LINE_DAY, 14);
 			int mfi_size = pStockMFIData->vec_mfi.size();
@@ -3493,12 +3497,14 @@ BOOL CDlgDropOff::DoFilterKDJ(void)
 			rsiData.f_psy[0] = f_psy_all[0];
 			rsiData.f_psy[1] = f_psy_all[1];
 			rsiData.f_psy[2] = f_psy_all[2];
+			rsiData.f_psy[3] = f_psy_all[3];
+			rsiData.f_psy[4] = f_psy_all[4];
 
 			rsiData.f_mpsy[0] = f_mpsy_all[0];
 			rsiData.f_mpsy[1] = f_mpsy_all[1];
 			rsiData.f_mpsy[2] = f_mpsy_all[2];
-
-			
+			rsiData.f_mpsy[3] = f_mpsy_all[3];
+			rsiData.f_mpsy[4] = f_mpsy_all[4];
 
 
 			rsiData.m_ccivr_data = mCCIVRAngleData;
@@ -6552,7 +6558,7 @@ BOOL CDlgDropOff::DoFilterTanMatch4(void)
 		int mVolM5ContiUpNums = pTanAngleData->mVolM5ContiUpNums;
 		int mVolM10ContiUpNums = pTanAngleData->mVolM10ContiUpNums;
 
-		if(mBigIncreaseNums>0||mRsi1BigNums>2) 
+		/*if (mBigIncreaseNums>0 || mRsi1BigNums>2)
 			continue;
 
 		double f_per=f_20_10_cross_price_increase/m_10_big_20_nums;
@@ -6566,10 +6572,14 @@ BOOL CDlgDropOff::DoFilterTanMatch4(void)
 			continue;
 
 		if(m_continus_price_m10_up_nums>20||m_continus_price_m20_up_nums>20||m_continus_price_m60_up_nums>20)
+			continue;*/
+
+		bool bok = false;
+		if (m_60_big_20_nums <= 10 && m_10_big_20_nums <= 10 && m_continus_price_m10_up_nums <= 15 && m_continus_price_m20_up_nums <= 15)
+			bok = true;
+		if(!bok)
 			continue;
 
-
-		
 		DropOffData *pDropOffData=new DropOffData();
 		pDropOffData->strStockCode=vecTanAngleData[i]->strStockCode;
 		pDropOffData->strStockName=vecTanAngleData[i]->strStockName;
@@ -10441,6 +10451,7 @@ BOOL CDlgDropOff::DOFilterAngleAndVR(void)
 	{
 		mRSIData = vecRSIData[i];
 		
+#if 0
 		bool bok1 = true;
 		if (mRSIData.rsi_3>80.0 ||  (mRSIData.f_max_rsi3 > 80.0 && mRSIData.m_max_rsi_day < 8))
 			bok1 = false;
@@ -10462,6 +10473,21 @@ BOOL CDlgDropOff::DOFilterAngleAndVR(void)
 
 		
 		if(bok1 && bok2&& bok3)
+#else
+
+		bool bok2 = true;
+		for (int j = 0; j < 5; j++)
+		{
+			if (mRSIData.f_psy[j] > 50.5 || mRSIData.f_mpsy[j] > 50.2)
+			{
+				bok2 = false;
+				break;
+			}
+		}
+
+	
+#endif
+		if(bok2) 
 		{
 			DropOffData* pDropOffData = new DropOffData();
 			pDropOffData->strStockCode = mRSIData.strStockCode;
@@ -10495,6 +10521,77 @@ BOOL CDlgDropOff::DOFilterAngleAndVR(void)
 
 
 #endif
+
+BOOL CDlgDropOff::DoFiterPSY2(void)
+{
+	RSIData mRSIData;
+
+	for (int i = 0; i < vecRSIData.size(); i++)
+	{
+		mRSIData = vecRSIData[i];
+
+		bool bok1 = false;
+
+		if (mRSIData.f_psy[4] > mRSIData.f_psy[3])
+		{
+			if (mRSIData.f_psy[3] > mRSIData.f_psy[2])
+			{
+				if (mRSIData.f_psy[2] > mRSIData.f_psy[1])
+				{
+					if (mRSIData.f_psy[1] > mRSIData.f_psy[0])
+						bok1 = true;
+
+				}
+			}
+		}
+		
+
+		bool bok2 = false;
+
+		if (mRSIData.f_mpsy[4] >= mRSIData.f_mpsy[3])
+		{
+			if (mRSIData.f_mpsy[3] >= mRSIData.f_mpsy[2])
+			{
+				if (mRSIData.f_mpsy[2] >= mRSIData.f_mpsy[1])
+				{
+					if (mRSIData.f_mpsy[1] >= mRSIData.f_mpsy[0])
+						bok2 = true;
+
+				}
+			}
+		}
+
+
+		if (bok2 || bok1)
+		{
+			DropOffData* pDropOffData = new DropOffData();
+			pDropOffData->strStockCode = mRSIData.strStockCode;
+			pDropOffData->strStockName = mRSIData.strStockName;
+			pDropOffData->fAveMultiple = mRSIData.f_total_value;
+			pDropOffData->fMaxMultiple = mRSIData.m_low_ave_5_nums;
+
+			CString strRsiInfo;
+			strRsiInfo.Format("rsi1=%.2f , rsi2=%.2f , rsi3=%.2f\n", mRSIData.rsi_1, mRSIData.rsi_2, mRSIData.rsi_3);
+			pDropOffData->strMaxDate = strRsiInfo;
+			strRsiInfo.Format("rsi1=%.2f , rsi2=%.2f , rsi3=%.2f\n", mRSIData.f_min_rsi1, mRSIData.f_min_rsi2, mRSIData.f_min_rsi3);
+			pDropOffData->strMinDate = strRsiInfo;
+			CString strInfo;
+			strInfo.Format("nowmfi=%.2f maxmfi=%.2f d=%d minmfi=%.2f d=%d", mRSIData.mfi, mRSIData.f_max_mfi, mRSIData.m_max_mfi_day, mRSIData.f_min_mfi, mRSIData.m_min_mfi_day);
+			pDropOffData->strInfo = strInfo;
+			vecDropOffData.push_back(pDropOffData);
+		}
+
+	}
+
+	std::sort(vecDropOffData.begin(), vecDropOffData.end(), sortFun);
+
+	FilterByReserve();
+	FilterByMerge();
+
+	SetTimer(DROPOFF_EVENT_REFRESH_DATA, 300, 0);
+
+	return TRUE;
+}
 
 
 void CDlgDropOff::OnBnClickedBtnVpSel()
@@ -10646,6 +10743,19 @@ void CDlgDropOff::OnBnClickedBtnVpSel()
 		vecDropOffData.clear();
 		DoFiterVPReadyFor();
 		}
+		else if (mSFSel == 9)		//PTY2
+		{
+			bReserveFilter = mCheckReserveFilter.GetCheck();
+
+			if (bReserveFilter)
+			{
+				vecDropOffData_Reserve.clear();
+				vecDropOffData_Reserve = vecDropOffData;
+			}
+
+			vecDropOffData.clear();
+			DoFiterPSY2();
+		}
 	}
 }
 
@@ -10666,54 +10776,76 @@ BOOL CDlgDropOff::DoFilterSpecialBiasQl(void)
 
 	Vec_DropOffData  vecDropOffData_bk;
 	DropOffData* pDropOffData = NULL;
+	CStockPSYData* pStockPSYData = NULL;
+	CStockMFIData* pStockMFIData = NULL;
 	CStocBIASQLData* pStocBIASQLData = NULL;
 	for (int i = 0; i < vecDropOffData.size(); i++)
 	{
 		pDropOffData = vecDropOffData[i];
 		pStockDayTable = StockDataMgr()->GetStockDayTable(pDropOffData->strStockCode);
 		CString strNowDate = pStockDayTable->GetNearestStockDayDate(mDropOffTime);
-		pStocBIASQLData= CStockBIASQLArithmetic::CalcBiasQlData(pDropOffData->strStockCode, strNowDate, 125, K_LINE_DAY, 6, 6);
+		
+		pStockPSYData=CStockPSYArithmetic::CalcPSYData(pDropOffData->strStockCode, strNowDate, 125, K_LINE_DAY, 12, 6);
 
-		int m_size = pStocBIASQLData->vec_bias.size();
+		pStockMFIData=CStockMFIArithmetic::CalcMFIData(pDropOffData->strStockCode, strNowDate, 125, K_LINE_DAY, 14);
+		pStocBIASQLData = CStockBIASQLArithmetic::CalcBiasQlData(pDropOffData->strStockCode, strNowDate, 125, K_LINE_DAY, 6, 6);
+		int m_size = pStockPSYData->vec_psy.size();
 
-		float fmin_bias = 99999.0;
-		for (int i = m_size - 4; i < m_size; i++)
+		int m_mfi_size = pStockMFIData->vec_mfi.size();
+		int m_bias_size = pStocBIASQLData->vec_bias.size();
+
+		bool bok1 = false;
+		int mNums = -1;
+		for (int j = m_size - 7; j < m_size; j++)
 		{
-			if (pStocBIASQLData->vec_bias[i] < fmin_bias)
+			if (pStockPSYData->vec_psy[j] < 20.0 && pStockPSYData->vec_mpsy[j] < 20.0)
 			{
-				fmin_bias = pStocBIASQLData->vec_bias[i];
+				bok1 = true;
+				mNums = m_size - j;
+				break;
 			}
 		}
 
-		float fmax_bias = -99999.0;
-		int m_max_bias_index = -1;
-		for (int i = m_size - 20; i < m_size; i++)
+		float f_mfi = 0.0;
+		if (mNums > 0)
 		{
-			if (pStocBIASQLData->vec_bias[i] > fmax_bias)
-			{
-				fmax_bias = pStocBIASQLData->vec_bias[i];
-				m_max_bias_index = m_size - i;
-			}
+			f_mfi = pStockMFIData->vec_mfi[m_mfi_size - mNums];
 		}
 
-		float f_now_bias = pStocBIASQLData->vec_bias[m_size - 1];
-		float f_now_ql = pStocBIASQLData->vec_ql[m_size - 1];
-
-		float f_pre_bias = pStocBIASQLData->vec_bias[m_size - 2];
-		float f_pre_ql = pStocBIASQLData->vec_ql[m_size - 2];
-
-		bool bok = false;
-
-		if (f_pre_bias< f_pre_ql && f_now_bias> f_now_ql  ) //&& fmin_bias<-8.0
-			bok = true;
-		if (bok)
+	
+		bool bok2 = false;
+		float f_mark_bias = 0.0;
+		for (int j = m_bias_size - 5; j < m_bias_size; j++)
 		{
-			pDropOffData->fMaxMultiple = fmin_bias;
+			float f_now_bias = pStocBIASQLData->vec_bias[j];
+			float f_now_ql = pStocBIASQLData->vec_ql[j];
+
+			float f_pre_bias = pStocBIASQLData->vec_bias[j-1];
+			float f_pre_ql = pStocBIASQLData->vec_ql[j-1];
+
+			if (f_pre_bias< f_pre_ql && f_now_bias> f_now_ql)
+			{
+				bok2 = true;
+				f_mark_bias = f_now_bias;
+				break;
+			}
+
+		}
+
+		
+		
+
+		
+		if (bok1&& bok2)
+		{
+			pDropOffData->fMaxMultiple = f_mark_bias;
 			//pDropOffData->fAveMultiple = fmax_bias;
 			//pDropOffData->strMaxDate.Format("%d", m_max_bias_index);
 			vecDropOffData_bk.push_back(pDropOffData);
 		}
 
+		SAFE_DELETE(pStockPSYData);
+		SAFE_DELETE(pStockMFIData);
 		SAFE_DELETE(pStocBIASQLData);
 	}
 
